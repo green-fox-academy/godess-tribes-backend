@@ -1,4 +1,4 @@
-package com.greenfoxacademy.goddesstribesbackend.modells;
+package com.greenfoxacademy.goddesstribesbackend.modells.dtos;
 
 public class KingdomDTO {
 

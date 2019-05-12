@@ -1,11 +1,12 @@
-package com.greenfoxacademy.goddesstribesbackend.modells;
+package com.greenfoxacademy.goddesstribesbackend.modells.dtos;
 
-public class UserDTO {
+public class UserAndKingdomRequestDTO {
 
   private String username;
   private String password;
+  private String kingdomname;
 
-  public UserDTO() {
+  public UserAndKingdomRequestDTO() {
   }
 
   public String getUsername() {
@@ -22,6 +23,14 @@ public class UserDTO {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getKingdomname() {
+    return kingdomname;
+  }
+
+  public void setKingdomname(String kingdomname) {
+    this.kingdomname = kingdomname;
   }
 
 }

@@ -1,4 +1,4 @@
-package com.greenfoxacademy.goddesstribesbackend.modells;
+package com.greenfoxacademy.goddesstribesbackend.modells.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
