@@ -1,4 +1,4 @@
-package com.greenfoxacademy.goddesstribesbackend.modells.dtos;
+package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
 public class UserDTO {
 
