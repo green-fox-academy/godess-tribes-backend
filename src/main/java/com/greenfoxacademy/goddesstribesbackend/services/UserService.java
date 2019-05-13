@@ -17,12 +17,20 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
+  public boolean checkPassword(String passwordToCheck) {
+    return passwordToCheck != null && passwordToCheck.length() >= 8;
+  }
+
   public boolean checkUserByName(String usernameToCheck) {
     return userRepository.findUserByUsername(usernameToCheck).isPresent();
   }
 
-  public boolean checkPassword(String passwordToCheck) {
-    return passwordToCheck != null && passwordToCheck.length() >= 8;
+  public boolean checkUserByNameAndPassword(String usernameToCheck, String passwordToCheck){
+    return userRepository.findUserByUsernameAndPassword(usernameToCheck, passwordToCheck).isPresent();
+  }
+
+  public Optional<User> findUserByName(String username){
+    return userRepository.findUserByUsername(username);
   }
 
   public User saveUser(String username, String password) {
@@ -33,20 +41,12 @@ public class UserService {
     return null;
   }
 
-  public boolean checkUserByNameAndPassword(String usernameToCheck, String passwordToCheck){
-    return userRepository.findUserByUsernameAndPassword(usernameToCheck, passwordToCheck).isPresent();
-  }
-
   public void loginUser(String username) {
     if (checkUserByName(username)) {
-      User loggidInUser = findUserByName(username).get();
-      loggidInUser.setLoggedIn(true);
-      userRepository.save(loggidInUser);
+      User loggedInUser = findUserByName(username).get();
+      loggedInUser.setLoggedIn(true);
+      userRepository.save(loggedInUser);
     }
-  }
-
-  public Optional<User> findUserByName(String username){
-    return userRepository.findUserByUsername(username);
   }
 
 }

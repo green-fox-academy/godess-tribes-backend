@@ -40,10 +40,10 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("Password is required."));
     }
     if (userService.checkUserByName(username)) {
-      return ResponseEntity.status(400).body("Username is already taken.");
+      return ResponseEntity.status(400).body(new ErrorMessage("Username is already taken."));
     }
     if (!userService.checkPassword(password)) {
-      return ResponseEntity.status(400).body("Password must be at least 8 characters.");
+      return ResponseEntity.status(400).body(new ErrorMessage("Password must be at least 8 characters."));
     }
 
     User newUser = userService.saveUser(username, password);
