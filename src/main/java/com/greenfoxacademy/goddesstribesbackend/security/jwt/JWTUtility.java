@@ -23,7 +23,6 @@ public class JWTUtility {
   public static Authentication getAuthentication(HttpServletRequest request) {
     String token = request.getHeader(SecurityCostants.HEADER_STRING);
     String username;
-
     if (token != null) {
       try {
         username = Jwts.parser()
@@ -32,7 +31,6 @@ public class JWTUtility {
                 .getBody()
                 .getSubject();
         return new UsernamePasswordAuthenticationToken(username, null, emptyList());
-
       } catch (SignatureException e) {
         return null;
       }

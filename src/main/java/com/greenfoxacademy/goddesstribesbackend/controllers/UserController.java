@@ -25,7 +25,7 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<Object> register(@RequestBody UserAndKingdomRequestDTO userAndKingdomRequestDTO){
+  public ResponseEntity<Object> register(@RequestBody UserAndKingdomRequestDTO userAndKingdomRequestDTO) {
     String username = userAndKingdomRequestDTO.getUsername();
     String password = userAndKingdomRequestDTO.getPassword();
     String kingdomname = userAndKingdomRequestDTO.getKingdomname();
@@ -40,7 +40,7 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("Password is required."));
     }
     if (userService.checkUserByName(username)) {
-      return ResponseEntity.status(400).body(new ErrorMessage("Username is already taken."));
+      return ResponseEntity.status(409).body(new ErrorMessage(username + " as username is already taken."));
     }
     if (!userService.checkPassword(password)) {
       return ResponseEntity.status(400).body(new ErrorMessage("Password must be at least 8 characters."));
@@ -52,7 +52,7 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Object> login(@RequestBody UserDTO userDTO){
+  public ResponseEntity<Object> login(@RequestBody UserDTO userDTO) {
     String username = userDTO.getUsername();
     String password = userDTO.getPassword();
 
@@ -65,13 +65,12 @@ public class UserController {
     if (password == null || password.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Password is required."));
     }
-
-    if (!userService.checkUserByNameAndPassword(username, password)){
+    if (!userService.checkUserByNameAndPassword(username, password)) {
       return ResponseEntity.status(401).body(new ErrorMessage("Username or password is incorrect."));
-    } else {
-      userService.loginUser(username);
-      return  ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
     }
+
+    userService.loginUser(username);
+    return ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
   }
 
 }
