@@ -29,9 +29,6 @@ public class UserController {
     String password = userAndKingdomRequestDTO.getPassword();
     String kingdomname = userAndKingdomRequestDTO.getKingdomname();
 
-    if (userService.checkMockRegisterRequest(userAndKingdomRequestDTO)) {
-      return ResponseEntity.status(200).body(userService.createMockRegisterResponse());
-    }
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
     }

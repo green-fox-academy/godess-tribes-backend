@@ -20,23 +20,6 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public boolean checkMockRegisterRequest(UserAndKingdomRequestDTO userAndKingdomRequestDTO) {
-    if (userAndKingdomRequestDTO == null) return false;
-
-    String username = userAndKingdomRequestDTO.getUsername();
-    String password = userAndKingdomRequestDTO.getPassword();
-    String kingdomname = userAndKingdomRequestDTO.getKingdomname();
-
-    if (username != null && password != null && kingdomname != null) {
-      return username.equals(Mock.USERNAME) && password.equals(Mock.PASSWORD) && kingdomname.equals(Mock.KINGDOMNAME);
-    }
-    return false;
-  }
-
-  public UserAndKingdomResponseDTO createMockRegisterResponse() {
-    return new UserAndKingdomResponseDTO(Mock.USERID, Mock.USERNAME, Mock.KINGDOMID);
-  }
-
   public boolean checkUserByName(String usernameToCheck) {
     return userRepository.findUserByUsername(usernameToCheck).isPresent();
   }
