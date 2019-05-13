@@ -1,8 +1,5 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.Mock;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.UserAndKingdomRequestDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.UserAndKingdomResponseDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
