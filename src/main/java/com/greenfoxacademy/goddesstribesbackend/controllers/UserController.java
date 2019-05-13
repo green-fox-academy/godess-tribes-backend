@@ -3,6 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
+import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class UserController {
       return ResponseEntity.status(401).body(new ErrorMessage("Username or password is incorrect."));
     } else {
       userService.loginUser(username);
-      return  ResponseEntity.status(200).body(new TokenMessage("Token is still under implementation"));
+      return  ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
     }
   }
 
