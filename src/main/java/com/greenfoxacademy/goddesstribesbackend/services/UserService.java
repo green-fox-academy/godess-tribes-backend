@@ -8,6 +8,8 @@ import com.greenfoxacademy.goddesstribesbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -49,6 +51,22 @@ public class UserService {
       return userRepository.save(newUser);
     }
     return null;
+  }
+
+  public boolean checkUserByNameAndPassword(String usernameToCheck, String passwordToCheck){
+    return userRepository.findUserByUsernameAndPassword(usernameToCheck, passwordToCheck).isPresent();
+  }
+
+  public void loginUser(String username) {
+    if (checkUserByName(username)) {
+      User loggidInUser = findUserByName(username).get();
+      loggidInUser.setLoggedIn(true);
+      userRepository.save(loggidInUser);
+    }
+  }
+
+  public Optional<User> findUserByName(String username){
+    return userRepository.findUserByUsername(username);
   }
 
 }
