@@ -73,4 +73,16 @@ public class UserController {
     return ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
   }
 
+  @PostMapping("/auth")
+  public ResponseEntity<Object> authenticate(@RequestBody TokenDTO tokenDTO) {
+    if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
+      return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
+    }
+    if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
+      return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
+    }
+
+    return ResponseEntity.status(200).body(kingdomService.findUserIdAndKingdomIdDTO(tokenDTO));
+  }
+
 }

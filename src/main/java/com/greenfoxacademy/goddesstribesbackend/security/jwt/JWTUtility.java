@@ -1,5 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.security.jwt;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
@@ -18,6 +19,20 @@ public class JWTUtility {
             .signWith(SignatureAlgorithm.HS256, SecurityCostants.SECRET)
             .compact();
     return jwtToken;
+  }
+
+  public static String parseToken(String jwtToken){
+    if (jwtToken == null || jwtToken.isEmpty()) return null;
+    try {
+      String username = Jwts.parser()
+              .setSigningKey(SecurityCostants.SECRET)
+              .parseClaimsJws(jwtToken)
+              .getBody()
+              .getSubject();
+      return username;
+    } catch (JwtException e) {
+      return null;
+    }
   }
 
   public static Authentication getAuthentication(HttpServletRequest request) {
