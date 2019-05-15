@@ -20,7 +20,7 @@ public class JWTUtility {
     return jwtToken;
   }
 
-  public static String parseToken(String jwtToken){
+  public static String parseToken(String jwtToken) {
     if (jwtToken == null || jwtToken.isEmpty()) return null;
     try {
       String username = Jwts.parser()
