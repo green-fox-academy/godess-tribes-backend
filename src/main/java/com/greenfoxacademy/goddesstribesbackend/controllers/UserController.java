@@ -28,7 +28,7 @@ public class UserController {
   public ResponseEntity<Object> register(@RequestBody UserAndKingdomRequestDTO userAndKingdomRequestDTO) {
     String username = userAndKingdomRequestDTO.getUsername();
     String password = userAndKingdomRequestDTO.getPassword();
-    String kingdomname = userAndKingdomRequestDTO.getKingdomname();
+    String kingdomName = userAndKingdomRequestDTO.getKingdomName();
 
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     User newUser = userService.saveUser(username, password);
-    Kingdom newKingdom = kingdomService.saveKingdom(kingdomname, newUser);
+    Kingdom newKingdom = kingdomService.saveKingdom(kingdomName, newUser);
     return ResponseEntity.status(200).body(new UserAndKingdomResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getId()));
   }
 

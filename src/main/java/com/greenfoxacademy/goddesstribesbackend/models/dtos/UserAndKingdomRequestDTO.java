@@ -4,7 +4,7 @@ public class UserAndKingdomRequestDTO {
 
   private String username;
   private String password;
-  private String kingdomname;
+  private String kingdomName;
 
   public UserAndKingdomRequestDTO() {
   }
@@ -25,12 +25,12 @@ public class UserAndKingdomRequestDTO {
     this.password = password;
   }
 
-  public String getKingdomname() {
-    return kingdomname;
+  public String getKingdomName() {
+    return kingdomName;
   }
 
-  public void setKingdomname(String kingdomname) {
-    this.kingdomname = kingdomname;
+  public void setKingdomName(String kingdomName) {
+    this.kingdomName = kingdomName;
   }
 
 }

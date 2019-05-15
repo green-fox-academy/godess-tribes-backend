@@ -21,14 +21,14 @@ public class KingdomService {
     this.userService = userService;
   }
 
-  public Kingdom saveKingdom(String kingdomname, User user) {
+  public Kingdom saveKingdom(String kingdomName, User user) {
     if (user != null && userService.checkUserByName(user.getUsername())) {
       Kingdom newKingdom;
 
-      if (kingdomname == null || kingdomname.isEmpty()) {
+      if (kingdomName == null || kingdomName.isEmpty()) {
         newKingdom = new Kingdom(user.getUsername() + "'s kingdom", user);
       } else {
-        newKingdom = new Kingdom(kingdomname, user);
+        newKingdom = new Kingdom(kingdomName, user);
       }
       return kingdomRepository.save(newKingdom);
     }

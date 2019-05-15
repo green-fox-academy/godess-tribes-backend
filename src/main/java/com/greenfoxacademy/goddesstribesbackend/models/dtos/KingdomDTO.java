@@ -3,7 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 public class KingdomDTO {
 
   private Long kingdomId;
-  private String kingdomname;
+  private String kingdomName;
   private String username;
 
   public KingdomDTO() {
@@ -17,12 +17,12 @@ public class KingdomDTO {
     this.kingdomId = kingdomId;
   }
 
-  public String getKingdomname() {
-    return kingdomname;
+  public String getKingdomName() {
+    return kingdomName;
   }
 
-  public void setKingdomname(String kingdomname) {
-    this.kingdomname = kingdomname;
+  public void setKingdomName(String kingdomName) {
+    this.kingdomName = kingdomName;
   }
 
   public String getUsername() {
