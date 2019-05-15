@@ -3,7 +3,6 @@ package com.greenfoxacademy.goddesstribesbackend.security.jwt;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -16,7 +15,7 @@ public class JWTUtility {
   public static String generateToken(String username) {
     String jwtToken = Jwts.builder()
             .setSubject(username)
-            .signWith(SignatureAlgorithm.HS256, SecurityCostants.SECRET)
+            .signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
             .compact();
     return jwtToken;
   }
@@ -25,7 +24,7 @@ public class JWTUtility {
     if (jwtToken == null || jwtToken.isEmpty()) return null;
     try {
       String username = Jwts.parser()
-              .setSigningKey(SecurityCostants.SECRET)
+              .setSigningKey(SecurityConstants.SECRET)
               .parseClaimsJws(jwtToken)
               .getBody()
               .getSubject();
@@ -36,21 +35,12 @@ public class JWTUtility {
   }
 
   public static Authentication getAuthentication(HttpServletRequest request) {
-    String token = request.getHeader(SecurityCostants.HEADER_STRING);
-    String username;
-    if (token != null) {
-      try {
-        username = Jwts.parser()
-                .setSigningKey(SecurityCostants.SECRET)
-                .parseClaimsJws(token.replace(SecurityCostants.TOKEN_PREFIX, ""))
-                .getBody()
-                .getSubject();
-        return new UsernamePasswordAuthenticationToken(username, null, emptyList());
-      } catch (SignatureException e) {
-        return null;
-      }
-    }
-    return null;
+    String token = request.getHeader(SecurityConstants.HEADER_STRING);
+
+    if (token == null || token.isEmpty() || !token.startsWith(SecurityConstants.TOKEN_PREFIX)) return null;
+    String username = parseToken(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
+
+    return username != null ? new UsernamePasswordAuthenticationToken(username, null, emptyList()) : null;
   }
 
 }
