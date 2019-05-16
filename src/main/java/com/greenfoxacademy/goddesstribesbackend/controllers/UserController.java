@@ -85,4 +85,16 @@ public class UserController {
     return ResponseEntity.status(200).body(kingdomService.createAuthenticationResponseDTO(tokenDTO));
   }
 
+  @PostMapping("/logout")
+  public ResponseEntity<Object> mockLogout(@RequestBody TokenDTO tokenDTO) {
+    if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
+      return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
+    }
+    if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
+      return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
+    }
+
+    return ResponseEntity.status(200).body(new StatusOkMessage("Logged our successfully."));
+  }
+
 }

@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(restAuthenticationEntryPoint)
             .and()
             .authorizeRequests()
-            .antMatchers("/register", "/login", "/auth").permitAll()
+            .antMatchers("/register", "/login", "/auth", "/logout").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
