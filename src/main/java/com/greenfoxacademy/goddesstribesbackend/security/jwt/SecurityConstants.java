@@ -1,6 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.security.jwt;
 
-public final class SecurityCostants {
+public final class SecurityConstants {
 
   public static final String SECRET = "ThisIsASecret";
   public static final String TOKEN_PREFIX = "Bearer ";

@@ -25,11 +25,11 @@ public class UserService {
     return userRepository.findUserByUsername(usernameToCheck).isPresent();
   }
 
-  public boolean checkUserByNameAndPassword(String usernameToCheck, String passwordToCheck){
+  public boolean checkUserByNameAndPassword(String usernameToCheck, String passwordToCheck) {
     return userRepository.findUserByUsernameAndPassword(usernameToCheck, passwordToCheck).isPresent();
   }
 
-  public Optional<User> findUserByName(String username){
+  public Optional<User> findUserByName(String username) {
     return userRepository.findUserByUsername(username);
   }
 

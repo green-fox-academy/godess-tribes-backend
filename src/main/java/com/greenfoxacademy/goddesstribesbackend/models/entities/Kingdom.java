@@ -9,7 +9,7 @@ public class Kingdom {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String kingdomname;
+  private String kingdomName;
 
   @OneToOne(optional = false)
   private User user;
@@ -17,8 +17,8 @@ public class Kingdom {
   public Kingdom() {
   }
 
-  public Kingdom(String kingdomname, User user) {
-    this.kingdomname = kingdomname;
+  public Kingdom(String kingdomName, User user) {
+    this.kingdomName = kingdomName;
     this.user = user;
   }
 
@@ -30,12 +30,12 @@ public class Kingdom {
     this.id = id;
   }
 
-  public String getKingdomname() {
-    return kingdomname;
+  public String getKingdomName() {
+    return kingdomName;
   }
 
-  public void setKingdomname(String kingdomname) {
-    this.kingdomname = kingdomname;
+  public void setKingdomName(String kingdomName) {
+    this.kingdomName = kingdomName;
   }
 
   public User getUser() {
