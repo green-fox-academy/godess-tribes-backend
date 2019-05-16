@@ -1,10 +1,16 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import java.util.List;
+
 public class KingdomDTO {
 
   private Long id;
   private String kingdomName;
-  private String username;
+  private Long userId;
+  private List<BuildingDTO> buildings;
+  private List<ResourceDTO> resources;
+  private List<SoldierDTO> soldiers;
+  private LocationDTO location;
 
   public KingdomDTO() {
   }
@@ -25,12 +31,44 @@ public class KingdomDTO {
     this.kingdomName = kingdomName;
   }
 
-  public String getUsername() {
-    return username;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public List<BuildingDTO> getBuildings() {
+    return buildings;
+  }
+
+  public void setBuildings(List<BuildingDTO> buildings) {
+    this.buildings = buildings;
+  }
+
+  public List<ResourceDTO> getResources() {
+    return resources;
+  }
+
+  public void setResources(List<ResourceDTO> resources) {
+    this.resources = resources;
+  }
+
+  public List<SoldierDTO> getSoldiers() {
+    return soldiers;
+  }
+
+  public void setSoldiers(List<SoldierDTO> soldiers) {
+    this.soldiers = soldiers;
+  }
+
+  public LocationDTO getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDTO location) {
+    this.location = location;
   }
 
 }

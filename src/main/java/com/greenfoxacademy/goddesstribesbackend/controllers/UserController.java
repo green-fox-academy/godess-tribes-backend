@@ -52,9 +52,9 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Object> login(@RequestBody UserDTO userDTO) {
-    String username = userDTO.getUsername();
-    String password = userDTO.getPassword();
+  public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    String username = loginRequestDTO.getUsername();
+    String password = loginRequestDTO.getPassword();
 
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
