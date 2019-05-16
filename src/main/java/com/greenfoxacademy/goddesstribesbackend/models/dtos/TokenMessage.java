@@ -3,11 +3,11 @@ package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 public class TokenMessage {
 
   private String status;
-  private String tribes_token;
+  private String token;
 
   public TokenMessage(String token) {
     status = "ok";
-    this.tribes_token = token;
+    this.token = token;
   }
 
   public String getStatus() {
@@ -18,12 +18,12 @@ public class TokenMessage {
     this.status = status;
   }
 
-  public String getTribes_token() {
-    return tribes_token;
+  public String getToken() {
+    return token;
   }
 
-  public void setTribes_token(String tribes_token) {
-    this.tribes_token = tribes_token;
+  public void setToken(String token) {
+    this.token = token;
   }
 
 }

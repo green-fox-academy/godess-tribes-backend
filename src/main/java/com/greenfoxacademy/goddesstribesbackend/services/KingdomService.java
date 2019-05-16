@@ -1,7 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.UserIdAndKingdomIdDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
@@ -35,14 +35,14 @@ public class KingdomService {
     return null;
   }
 
-  public UserIdAndKingdomIdDTO findUserIdAndKingdomIdDTO(TokenDTO tokenDTO) {
+  public AuthenticationResponseDTO createAuthenticationResponseDTO(TokenDTO tokenDTO) {
     if (tokenDTO == null) return null;
     String username = JWTUtility.parseToken(tokenDTO.getToken());
 
     if (username != null && userService.checkUserByName(username)) {
       User user = userService.findUserByName(username).get();
       Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-      return new UserIdAndKingdomIdDTO(user.getId(), kingdom.getId());
+      return new AuthenticationResponseDTO(user.getId(), kingdom.getId());
     }
     return null;
   }

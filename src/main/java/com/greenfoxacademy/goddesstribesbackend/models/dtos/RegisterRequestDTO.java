@@ -1,12 +1,12 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
-public class UserAndKingdomRequestDTO {
+public class RegisterRequestDTO {
 
   private String username;
   private String password;
   private String kingdomName;
 
-  public UserAndKingdomRequestDTO() {
+  public RegisterRequestDTO() {
   }
 
   public String getUsername() {

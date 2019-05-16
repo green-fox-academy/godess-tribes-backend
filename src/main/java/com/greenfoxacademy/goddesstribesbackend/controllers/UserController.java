@@ -25,10 +25,10 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<Object> register(@RequestBody UserAndKingdomRequestDTO userAndKingdomRequestDTO) {
-    String username = userAndKingdomRequestDTO.getUsername();
-    String password = userAndKingdomRequestDTO.getPassword();
-    String kingdomName = userAndKingdomRequestDTO.getKingdomName();
+  public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    String username = registerRequestDTO.getUsername();
+    String password = registerRequestDTO.getPassword();
+    String kingdomName = registerRequestDTO.getKingdomName();
 
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
@@ -48,7 +48,7 @@ public class UserController {
 
     User newUser = userService.saveUser(username, password);
     Kingdom newKingdom = kingdomService.saveKingdom(kingdomName, newUser);
-    return ResponseEntity.status(200).body(new UserAndKingdomResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getId()));
+    return ResponseEntity.status(200).body(new RegisterResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getId()));
   }
 
   @PostMapping("/login")
@@ -82,7 +82,7 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }
 
-    return ResponseEntity.status(200).body(kingdomService.findUserIdAndKingdomIdDTO(tokenDTO));
+    return ResponseEntity.status(200).body(kingdomService.createAuthenticationResponseDTO(tokenDTO));
   }
 
 }

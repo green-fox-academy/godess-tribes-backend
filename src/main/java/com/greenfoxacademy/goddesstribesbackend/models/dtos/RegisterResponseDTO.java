@@ -1,12 +1,14 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
-public class UserIdAndKingdomIdDTO {
+public class RegisterResponseDTO {
 
   private Long userId;
+  private String username;
   private Long kingdomId;
 
-  public UserIdAndKingdomIdDTO(Long userId, Long kingdomId) {
+  public RegisterResponseDTO(Long userId, String username, Long kingdomId) {
     this.userId = userId;
+    this.username = username;
     this.kingdomId = kingdomId;
   }
 
@@ -16,6 +18,14 @@ public class UserIdAndKingdomIdDTO {
 
   public void setUserId(Long userId) {
     this.userId = userId;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public Long getKingdomId() {

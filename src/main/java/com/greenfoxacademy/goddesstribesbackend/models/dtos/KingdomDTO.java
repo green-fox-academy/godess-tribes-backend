@@ -2,19 +2,19 @@ package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
 public class KingdomDTO {
 
-  private Long kingdomId;
+  private Long id;
   private String kingdomName;
   private String username;
 
   public KingdomDTO() {
   }
 
-  public Long getKingdomId() {
-    return kingdomId;
+  public Long getId() {
+    return id;
   }
 
-  public void setKingdomId(Long kingdomId) {
-    this.kingdomId = kingdomId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getKingdomName() {
