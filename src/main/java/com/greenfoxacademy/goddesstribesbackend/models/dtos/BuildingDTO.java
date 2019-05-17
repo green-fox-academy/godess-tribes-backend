@@ -12,6 +12,14 @@ public class BuildingDTO {
   public BuildingDTO() {
   }
 
+  public BuildingDTO(Long id, BuldingTypeENUM buldingTypeENUM, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
+    this.id = id;
+    this.buldingTypeENUM = buldingTypeENUM;
+    this.level = level;
+    this.startedAt = startedAt;
+    this.finishedAt = finishedAt;
+  }
+
   public Long getId() {
     return id;
   }

@@ -9,6 +9,10 @@ public class BuildingsDTO {
   public BuildingsDTO() {
   }
 
+  public BuildingsDTO(List<BuildingDTO> buildingDTOS) {
+    this.buildingDTOS = buildingDTOS;
+  }
+
   public void add(BuildingDTO buildingDTO){
     buildingDTOS.add(buildingDTO);
   }

@@ -9,6 +9,12 @@ public class ResourceDTO {
   public ResourceDTO() {
   }
 
+  public ResourceDTO(ResourceTypeENUM resourceTypeENUM, int amount, int generationRate) {
+    this.resourceTypeENUM = resourceTypeENUM;
+    this.amount = amount;
+    this.generationRate = generationRate;
+  }
+
   public ResourceTypeENUM getResourceTypeENUM() {
     return resourceTypeENUM;
   }

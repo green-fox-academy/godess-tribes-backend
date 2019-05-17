@@ -11,6 +11,13 @@ public class SoldierDTO {
   public SoldierDTO() {
   }
 
+  public SoldierDTO(Long id, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
+    this.id = id;
+    this.level = level;
+    this.startedAt = startedAt;
+    this.finishedAt = finishedAt;
+  }
+
   public Long getId() {
     return id;
   }

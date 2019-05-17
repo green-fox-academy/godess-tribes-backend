@@ -10,6 +10,13 @@ public class UserDTO {
   public UserDTO() {
   }
 
+  public UserDTO(Long id, String username, Long kingdomId, int points) {
+    this.id = id;
+    this.username = username;
+    this.kingdomId = kingdomId;
+    this.points = points;
+  }
+
   public Long getId() {
     return id;
   }

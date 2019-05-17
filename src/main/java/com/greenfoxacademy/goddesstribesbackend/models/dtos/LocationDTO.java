@@ -7,6 +7,11 @@ public class LocationDTO {
   public LocationDTO() {
   }
 
+  public LocationDTO(int xCoord, int yCoord) {
+    this.xCoord = xCoord;
+    this.yCoord = yCoord;
+  }
+
   public int getxCoord() {
     return xCoord;
   }

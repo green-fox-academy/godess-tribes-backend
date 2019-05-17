@@ -15,6 +15,18 @@ public class KingdomDTO {
   public KingdomDTO() {
   }
 
+  public KingdomDTO(Long id, String kingdomName, Long userId,
+                    List<BuildingDTO> buildings, List<ResourceDTO> resources,
+                    List<SoldierDTO> soldiers, LocationDTO location) {
+    this.id = id;
+    this.kingdomName = kingdomName;
+    this.userId = userId;
+    this.buildings = buildings;
+    this.resources = resources;
+    this.soldiers = soldiers;
+    this.location = location;
+  }
+
   public Long getId() {
     return id;
   }

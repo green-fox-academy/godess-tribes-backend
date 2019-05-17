@@ -7,6 +7,10 @@ public class TokenDTO {
   public TokenDTO() {
   }
 
+  public TokenDTO(String token) {
+    this.token = token;
+  }
+
   public String getToken() {
     return token;
   }
