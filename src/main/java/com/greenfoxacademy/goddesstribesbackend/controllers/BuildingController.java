@@ -14,11 +14,14 @@ public class BuildingController {
   }
 
   @PostMapping("/kingdom/buildings")
-  public ResponseEntity<Object> mockCreateABuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
-    if (buildingTypeDTO.getType().isEmpty()) {
+  public ResponseEntity<Object> mockCreateABuilding (@RequestBody (required = false) BuildingTypeDTO buildingTypeDTO) {
+    if (buildingTypeDTO.getType().isEmpty() || buildingTypeDTO.getType() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): type!"));
     }
-    if (buildingTypeDTO.getType() != BuldingTypeENUM.values().toString()) {
+    if (!(BuldingTypeENUM.FARM.toString().equalsIgnoreCase(buildingTypeDTO.getType())) &&
+        !(BuldingTypeENUM.MINE.toString().equalsIgnoreCase(buildingTypeDTO.getType())) &&
+        !(BuldingTypeENUM.BARRACK.toString().equalsIgnoreCase(buildingTypeDTO.getType())) )
+        {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building type"));
     }
     if (MockData.gold.getAmount() <= 250) {

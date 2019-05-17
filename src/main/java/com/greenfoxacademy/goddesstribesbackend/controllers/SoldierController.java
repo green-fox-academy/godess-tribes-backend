@@ -31,7 +31,7 @@ public class SoldierController {
     if (MockData.soldierDTO.getId() == id) {
       return ResponseEntity.status(200).body(MockData.soldierDTO);
     }
-    return ResponseEntity.status(404).body("Id not found");
+    return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
   @PutMapping("/kingdom/soldiers/{id}")
