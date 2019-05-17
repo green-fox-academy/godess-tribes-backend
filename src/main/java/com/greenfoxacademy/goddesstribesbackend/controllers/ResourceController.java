@@ -19,7 +19,9 @@ public class ResourceController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = ResourcesDTO.class)})
-  @GetMapping("/kingdom/resources")
+  @GetMapping(value = "/kingdom/resources",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockListResources() {
     return ResponseEntity.status(200).body(MockData.resourcesDTO);
   }

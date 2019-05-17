@@ -17,7 +17,9 @@ public class BuildingController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
-  @GetMapping("/kingdom/buildings")
+  @GetMapping(value = "/kingdom/buildings",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockListOfBuildings() {
     return ResponseEntity.status(200).body(MockData.buildingsDTO);
   }
@@ -30,7 +32,9 @@ public class BuildingController {
       @ApiResponse(code = 400, message ="Missing parameter(s): type!"),
       @ApiResponse(code = 406, message ="Invalid building type"),
       @ApiResponse(code = 409, message ="Not enough resource")})
-  @PostMapping("/kingdom/buildings")
+  @PostMapping(value = "/kingdom/buildings",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockCreateABuilding (@RequestBody (required = false) BuildingTypeDTO buildingTypeDTO) {
     if (buildingTypeDTO.getType().isEmpty() || buildingTypeDTO.getType() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): type!"));
@@ -53,7 +57,9 @@ public class BuildingController {
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
       @ApiResponse(code = 409, message ="Id not found")})
-  @GetMapping("/kingdom/buildings/{id}")
+  @GetMapping(value = "/kingdom/buildings/{id}",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockRenderBuilding (@PathVariable Long id){
     if (MockData.buildingDTO.getId() == id){
       return ResponseEntity.status(200).body(MockData.buildingDTO);
@@ -70,7 +76,9 @@ public class BuildingController {
       @ApiResponse(code = 404, message ="Id not found"),
       @ApiResponse(code = 406, message ="Invalid building level"),
       @ApiResponse(code = 409, message ="Not enough resource")})
-  @PutMapping("/kingdom/buildings/{id}")
+  @PutMapping(value = "/kingdom/buildings/{id}",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object>mockChangeBuildingLevel(
       @PathVariable Long id,
       @RequestBody (required =  false) LevelDTO levelDTO){

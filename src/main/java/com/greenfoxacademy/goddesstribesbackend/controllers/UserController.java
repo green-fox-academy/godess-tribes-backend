@@ -33,7 +33,9 @@ public class UserController {
       @ApiResponse(code = 400, message ="Password is required."),
       @ApiResponse(code = 400, message ="Password must be at least 8 characters"),
       @ApiResponse(code = 409, message ="Username is already taken")})
-  @PostMapping("/register")
+  @PostMapping(value = "/register",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
     String username = registerRequestDTO.getUsername();
     String password = registerRequestDTO.getPassword();
@@ -66,7 +68,9 @@ public class UserController {
       @ApiResponse(code = 400, message ="Username is required."),
       @ApiResponse(code = 400, message ="Password is required."),
       @ApiResponse(code = 401, message ="Username or password is incorrect.")})
-  @PostMapping("/login")
+  @PostMapping(value = "/login",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
     String username = loginRequestDTO.getUsername();
     String password = loginRequestDTO.getPassword();
@@ -92,7 +96,9 @@ public class UserController {
       @ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class),
       @ApiResponse(code = 400, message ="No token provided."),
       @ApiResponse(code = 400, message ="Invalid token.")})
-  @PostMapping("/auth")
+  @PostMapping(value = "/auth",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   public ResponseEntity<Object> authenticate(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
@@ -108,7 +114,9 @@ public class UserController {
       @ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class),
       @ApiResponse(code = 400, message ="No token provided"),
       @ApiResponse(code = 400, message ="Invalid token")})
-  @PostMapping("/logout")
+  @PostMapping(value = "/logout",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   public ResponseEntity<Object> mockLogout(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));

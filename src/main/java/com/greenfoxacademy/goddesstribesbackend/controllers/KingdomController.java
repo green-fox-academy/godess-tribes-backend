@@ -20,7 +20,9 @@ public class KingdomController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class)})
-  @GetMapping("/kingdom")
+  @GetMapping(value = "/kingdom",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> findOwnKingdom() {
     return ResponseEntity.status(200).body(MockData.kingdomDTO);
   }
@@ -31,7 +33,9 @@ public class KingdomController {
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
       @ApiResponse(code = 400, message ="Missing parameter(s): name!")})
-  @PutMapping("/kingdom")
+  @PutMapping(value = "/kingdom",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   public ResponseEntity<Object>mockChangeKingdomName(
             @RequestBody(required =  false) KingdomNameDTO kingdomNameDTO){
 
@@ -49,7 +53,9 @@ public class KingdomController {
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
       @ApiResponse(code = 404, message ="Id not found")})
-  @GetMapping("/kingdom/{id}")
+  @GetMapping(value = "/kingdom/{id}",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockRenderKingdom (@PathVariable Long id){
     if (MockData.kingdomDTO.getId() == id){
       return ResponseEntity.status(200).body(MockData.kingdomDTO);

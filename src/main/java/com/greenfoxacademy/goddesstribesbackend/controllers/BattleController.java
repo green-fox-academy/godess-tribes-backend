@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BattleController {
 
-  @GetMapping("/users")
-
+  @GetMapping(value = "/users",
+      produces = { "application/json" },
+      consumes = { "application/json" })
   @ApiImplicitParams({
       @ApiImplicitParam(name = "token", value = "Authorization token",
           required = true, dataType = "string", paramType = "header") })

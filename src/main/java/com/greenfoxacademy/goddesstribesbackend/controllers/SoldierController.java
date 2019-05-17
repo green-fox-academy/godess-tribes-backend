@@ -65,7 +65,9 @@ public class SoldierController {
       @ApiResponse(code = 404, message ="Id not found"),
       @ApiResponse(code = 406, message ="Invalid soldier level"),
       @ApiResponse(code = 409, message ="Not enough resource")})
-  @PutMapping("/kingdom/soldiers/{id}")
+  @PutMapping(value = "/kingdom/soldiers/{id}",
+  produces = { "application/json" },
+  consumes = { "application/json" })
   public ResponseEntity<Object> mockChangeSoldierLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
 
     if (levelDTO.getLevel() == null){
