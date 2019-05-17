@@ -6,6 +6,8 @@ import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,13 @@ public class UserController {
     this.kingdomService = kingdomService;
   }
 
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = RegisterResponseDTO.class),
+      @ApiResponse(code = 400, message ="Username and password are required."),
+      @ApiResponse(code = 400, message ="Username is required."),
+      @ApiResponse(code = 400, message ="Password is required."),
+      @ApiResponse(code = 400, message ="Password must be at least 8 characters"),
+      @ApiResponse(code = 409, message ="Username is already taken")})
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
     String username = registerRequestDTO.getUsername();
@@ -51,6 +60,12 @@ public class UserController {
     return ResponseEntity.status(200).body(new RegisterResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getId()));
   }
 
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = TokenMessage.class),
+      @ApiResponse(code = 400, message ="Username and password are required."),
+      @ApiResponse(code = 400, message ="Username is required."),
+      @ApiResponse(code = 400, message ="Password is required."),
+      @ApiResponse(code = 401, message ="Username or password is incorrect.")})
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
     String username = loginRequestDTO.getUsername();
@@ -73,6 +88,10 @@ public class UserController {
     return ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
   }
 
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class),
+      @ApiResponse(code = 400, message ="No token provided."),
+      @ApiResponse(code = 400, message ="Invalid token.")})
   @PostMapping("/auth")
   public ResponseEntity<Object> authenticate(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
@@ -85,6 +104,10 @@ public class UserController {
     return ResponseEntity.status(200).body(kingdomService.createAuthenticationResponseDTO(tokenDTO));
   }
 
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class),
+      @ApiResponse(code = 400, message ="No token provided"),
+      @ApiResponse(code = 400, message ="Invalid token")})
   @PostMapping("/logout")
   public ResponseEntity<Object> mockLogout(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
@@ -94,7 +117,7 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }
 
-    return ResponseEntity.status(200).body(new StatusOkMessage("Logged our successfully."));
+    return ResponseEntity.status(200).body(new StatusOkMessage("Logged out successfully."));
   }
 
 }

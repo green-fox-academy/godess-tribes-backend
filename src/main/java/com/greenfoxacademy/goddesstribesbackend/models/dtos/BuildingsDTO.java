@@ -1,8 +1,11 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
 
+import io.swagger.annotations.SwaggerDefinition;
+
 import java.util.List;
 
+@SwaggerDefinition
 public class BuildingsDTO {
   private List<BuildingDTO> buildingDTOS;
 

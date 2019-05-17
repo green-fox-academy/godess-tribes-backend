@@ -3,6 +3,11 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 import com.greenfoxacademy.goddesstribesbackend.models.MockData;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.LevelDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.SoldierDTO;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +15,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SoldierController {
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "token", value = "Authorization token",
+          required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class)})
   @GetMapping("/kingdom/soldiers")
   public ResponseEntity<Object> mockListOfSoldiers() {
     return ResponseEntity.status(200).body(MockData.soldiersDTO);
   }
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "token", value = "Authorization token",
+          required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class),
+      @ApiResponse(code = 409, message ="Not enough resource")})
   @PostMapping("/kingdom/soldiers")
   public ResponseEntity<Object> mockTrainANewSoldier () {
 
@@ -25,6 +41,12 @@ public class SoldierController {
 
   }
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "token", value = "Authorization token",
+          required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class),
+      @ApiResponse(code = 404, message ="Id not found")})
   @GetMapping("/kingdom/soldiers/{id}")
   public ResponseEntity<Object> mockRenderSoldier(@PathVariable Long id) {
 
@@ -34,6 +56,15 @@ public class SoldierController {
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "token", value = "Authorization token",
+          required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class),
+      @ApiResponse(code = 400, message ="Missing parameter(s): level!"),
+      @ApiResponse(code = 404, message ="Id not found"),
+      @ApiResponse(code = 406, message ="Invalid soldier level"),
+      @ApiResponse(code = 409, message ="Not enough resource")})
   @PutMapping("/kingdom/soldiers/{id}")
   public ResponseEntity<Object> mockChangeSoldierLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
 

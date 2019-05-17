@@ -1,5 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.SwaggerDefinition;
+
+@SwaggerDefinition
 public class TokenDTO {
 
   private String token;

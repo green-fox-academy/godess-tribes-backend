@@ -1,7 +1,10 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.SwaggerDefinition;
+
 import java.time.LocalDateTime;
 
+@SwaggerDefinition
 public class BuildingDTO {
   private Long id;
   private BuldingTypeENUM buldingTypeENUM;
