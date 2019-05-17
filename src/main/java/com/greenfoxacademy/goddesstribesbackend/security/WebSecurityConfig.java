@@ -16,6 +16,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
+  private static final String[] AUTH_WHITELIST = {
+
+      // -- swagger ui
+      "/swagger-resources/**",
+      "/swagger-ui.html",
+      "/v2/api-docs",
+      "/webjars/**"
+  };
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors()
@@ -28,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/register", "/login", "/auth", "/logout").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
