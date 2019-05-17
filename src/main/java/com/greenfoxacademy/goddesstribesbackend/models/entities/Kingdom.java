@@ -1,5 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
+import com.greenfoxacademy.goddesstribesbackend.models.Location;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,12 +16,15 @@ public class Kingdom {
   @OneToOne(optional = false)
   private User user;
 
+  private Location location;
+
   public Kingdom() {
   }
 
   public Kingdom(String kingdomName, User user) {
     this.kingdomName = kingdomName;
     this.user = user;
+    location = new Location(0, 0);
   }
 
   public Long getId() {
@@ -44,6 +49,14 @@ public class Kingdom {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public Location getLocation() {
+    return location;
+  }
+
+  public void setLocation(Location location) {
+    this.location = location;
   }
 
 }
