@@ -10,7 +10,7 @@ public abstract class ProductionBuilding extends ActiveBuilding {
   public ProductionBuilding() {
   }
 
-  public ProductionBuilding(Kingdom kingdom, int productionRate) {
+  public ProductionBuilding(int productionRate, Kingdom kingdom) {
     super(kingdom);
     this.productionRate = productionRate;
   }

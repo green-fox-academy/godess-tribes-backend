@@ -7,28 +7,29 @@ import java.time.LocalDateTime;
 public abstract class Building {
 
   private static int maxLevel = 3;
-  private static int upgradingTime = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private int level;
+  private int upgradingCost;
+  private int upgradingTime;
+  private LocalDateTime startedAt;
+  private LocalDateTime finishedAt;
 
   @ManyToOne(optional = false)
   private Kingdom kingdom;
-
-  private int upgradingCost;
-  private LocalDateTime startedAt;
-  private LocalDateTime finishedAt;
 
   public Building() {
   }
 
   public Building(Kingdom kingdom) {
-    this.kingdom = kingdom;
     level = 1;
     upgradingCost = 100 * level;
+    upgradingTime = 1;
+    startedAt = LocalDateTime.now();
+    this.kingdom = kingdom;
   }
 
   public Long getId() {
@@ -47,20 +48,20 @@ public abstract class Building {
     this.level = level;
   }
 
-  public Kingdom getKingdom() {
-    return kingdom;
-  }
-
-  public void setKingdom(Kingdom kingdom) {
-    this.kingdom = kingdom;
-  }
-
   public int getUpgradingCost() {
     return upgradingCost;
   }
 
   public void setUpgradingCost(int upgradingCost) {
     this.upgradingCost = upgradingCost;
+  }
+
+  public int getUpgradingTime() {
+    return upgradingTime;
+  }
+
+  public void setUpgradingTime(int upgradingTime) {
+    this.upgradingTime = upgradingTime;
   }
 
   public LocalDateTime getStartedAt() {
@@ -77,6 +78,14 @@ public abstract class Building {
 
   public void setFinishedAt(LocalDateTime finishedAt) {
     this.finishedAt = finishedAt;
+  }
+
+  public Kingdom getKingdom() {
+    return kingdom;
+  }
+
+  public void setKingdom(Kingdom kingdom) {
+    this.kingdom = kingdom;
   }
 
 }

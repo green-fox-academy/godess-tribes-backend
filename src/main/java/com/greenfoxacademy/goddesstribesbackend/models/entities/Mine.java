@@ -11,7 +11,7 @@ public class Mine extends ProductionBuilding {
   }
 
   public Mine(Kingdom kingdom) {
-    super(kingdom, productionRate);
+    super(productionRate, kingdom);
   }
 
 }

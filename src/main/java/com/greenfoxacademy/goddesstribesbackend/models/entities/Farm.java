@@ -11,7 +11,7 @@ public class Farm extends ProductionBuilding {
   }
 
   public Farm(Kingdom kingdom) {
-    super(kingdom, productionRate);
+    super(productionRate, kingdom);
   }
 
 }
