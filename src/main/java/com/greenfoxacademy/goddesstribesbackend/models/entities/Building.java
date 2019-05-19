@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 public abstract class Building {
 
-  private static int maxLevel = 3;
+  public static final int MAXLEVEL = 3;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,14 @@ public abstract class Building {
   }
 
   public Building(Kingdom kingdom) {
+    this(kingdom, LocalDateTime.now());
+  }
+
+  public Building(Kingdom kingdom, LocalDateTime startedAt) {
     level = 1;
     upgradingCost = 100 * level;
     upgradingTime = 1;
-    startedAt = LocalDateTime.now();
+    this.startedAt = startedAt;
     this.kingdom = kingdom;
   }
 

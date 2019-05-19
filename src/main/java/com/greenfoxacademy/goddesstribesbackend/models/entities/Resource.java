@@ -2,12 +2,15 @@ package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class Resource {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private ResourceType type;
   private int amount;
@@ -24,6 +27,14 @@ public class Resource {
     this.amount = amount;
     updateTime = LocalDateTime.now();
     this.townhall = townhall;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public ResourceType getType() {

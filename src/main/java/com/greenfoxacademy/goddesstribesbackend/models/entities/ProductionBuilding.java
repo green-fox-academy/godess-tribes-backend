@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Entity
 public abstract class ProductionBuilding extends ActiveBuilding {
@@ -10,8 +11,13 @@ public abstract class ProductionBuilding extends ActiveBuilding {
   public ProductionBuilding() {
   }
 
-  public ProductionBuilding(int productionRate, Kingdom kingdom) {
+  public ProductionBuilding(Kingdom kingdom, int productionRate) {
     super(kingdom);
+    this.productionRate = productionRate;
+  }
+
+  public ProductionBuilding(Kingdom kingdom, int productionRate, LocalDateTime startedAt) {
+    super(kingdom, startedAt);
     this.productionRate = productionRate;
   }
 

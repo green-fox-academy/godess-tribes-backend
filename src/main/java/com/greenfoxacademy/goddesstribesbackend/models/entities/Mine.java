@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Entity
 public class Mine extends ProductionBuilding {
@@ -11,7 +12,11 @@ public class Mine extends ProductionBuilding {
   }
 
   public Mine(Kingdom kingdom) {
-    super(productionRate, kingdom);
+    super(kingdom, productionRate);
+  }
+
+  public Mine(Kingdom kingdom, LocalDateTime startedAt) {
+    super(kingdom, productionRate, startedAt);
   }
 
 }

@@ -12,19 +12,20 @@ public class Kingdom {
   private Long id;
 
   private String kingdomName;
+  private Location location;
+  private boolean active;
 
   @OneToOne(optional = false)
   private User user;
-
-  private Location location;
 
   public Kingdom() {
   }
 
   public Kingdom(String kingdomName, User user) {
     this.kingdomName = kingdomName;
-    this.user = user;
     location = new Location(0, 0);
+    active = false;
+    this.user = user;
   }
 
   public Long getId() {
@@ -43,20 +44,28 @@ public class Kingdom {
     this.kingdomName = kingdomName;
   }
 
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
   public Location getLocation() {
     return location;
   }
 
   public void setLocation(Location location) {
     this.location = location;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
 }

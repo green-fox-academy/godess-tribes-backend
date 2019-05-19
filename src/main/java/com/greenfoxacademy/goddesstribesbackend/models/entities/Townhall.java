@@ -15,6 +15,7 @@ public class Townhall extends Building {
     super(kingdom);
     foodCapacity = 1000;
     goldCapacity = 1000;
+    setFinishedAt(getStartedAt());
   }
 
   public int getFoodCapacity() {
