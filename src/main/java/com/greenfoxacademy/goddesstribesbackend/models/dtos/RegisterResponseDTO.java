@@ -4,12 +4,12 @@ public class RegisterResponseDTO {
 
   private Long userId;
   private String username;
-  private Long kingdomId;
+  private String kingdomName;
 
-  public RegisterResponseDTO(Long userId, String username, Long kingdomId) {
+  public RegisterResponseDTO(Long userId, String username, String kingdomName) {
     this.userId = userId;
     this.username = username;
-    this.kingdomId = kingdomId;
+    this.kingdomName = kingdomName;
   }
 
   public Long getUserId() {
@@ -28,12 +28,12 @@ public class RegisterResponseDTO {
     this.username = username;
   }
 
-  public Long getKingdomId() {
-    return kingdomId;
+  public String getKingdomName() {
+    return kingdomName;
   }
 
-  public void setKingdomId(Long kingdomId) {
-    this.kingdomId = kingdomId;
+  public void setKingdomName(String kingdomName) {
+    this.kingdomName = kingdomName;
   }
 
 }
