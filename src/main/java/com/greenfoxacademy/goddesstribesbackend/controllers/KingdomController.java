@@ -36,9 +36,9 @@ public class KingdomController {
       produces = { "application/json" },
       consumes = { "application/json" })
   public ResponseEntity<Object>mockChangeKingdomName(
-            @RequestBody(required =  false) KingdomNameDTO kingdomNameDTO){
+            @RequestBody KingdomNameDTO kingdomNameDTO){
 
-    if (kingdomNameDTO.getName() == null){
+    if (kingdomNameDTO.getName() == null || kingdomNameDTO.getName() == ""){
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <name>!"));
     }
 

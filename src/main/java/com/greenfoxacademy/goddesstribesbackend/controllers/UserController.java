@@ -1,6 +1,5 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
-import com.greenfoxacademy.goddesstribesbackend.models.MockData;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
@@ -9,7 +8,6 @@ import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ExampleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

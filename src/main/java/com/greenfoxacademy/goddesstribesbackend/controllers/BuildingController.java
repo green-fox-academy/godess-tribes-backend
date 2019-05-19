@@ -35,8 +35,8 @@ public class BuildingController {
   @PostMapping(value = "/kingdom/buildings",
   produces = { "application/json" },
   consumes = { "application/json" })
-  public ResponseEntity<Object> mockCreateABuilding (@RequestBody (required = false) BuildingTypeDTO buildingTypeDTO) {
-    if (buildingTypeDTO.getType().isEmpty() || buildingTypeDTO.getType() == null) {
+  public ResponseEntity<Object> mockCreateABuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
+    if (buildingTypeDTO.getType() == null || buildingTypeDTO.getType().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): type!"));
     }
     if (!(BuldingTypeENUM.FARM.toString().equalsIgnoreCase(buildingTypeDTO.getType())) &&
@@ -90,7 +90,7 @@ public class BuildingController {
   consumes = { "application/json" })
   public ResponseEntity<Object>mockChangeBuildingLevel(
       @PathVariable Long id,
-      @RequestBody (required =  false) LevelDTO levelDTO){
+      @RequestBody LevelDTO levelDTO){
 
     if (levelDTO.getLevel() == null){
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));
