@@ -35,6 +35,19 @@ public class KingdomService {
     return null;
   }
 
+  public void initKingdom(String username) {
+    if (username != null && userService.checkUserByName(username)) {
+      Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+
+      if (!kingdom.isActive()) {
+        //create a townhall with some gold and food
+        //create a farm and a mine
+        kingdom.setActive(true);
+        kingdomRepository.save(kingdom);
+      }
+    }
+  }
+
   public AuthenticationResponseDTO createAuthenticationResponseDTO(TokenDTO tokenDTO) {
     if (tokenDTO == null) return null;
     String username = JWTUtility.parseToken(tokenDTO.getToken());
