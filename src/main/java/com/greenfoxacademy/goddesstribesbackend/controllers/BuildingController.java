@@ -45,10 +45,19 @@ public class BuildingController {
         {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building type"));
     }
-    if (MockData.gold.getAmount() <= 250) {
+    if (MockData.gold.getAmount() < 250) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource"));
     }
-    return ResponseEntity.status(200).body(MockData.buildingDTO);
+    if (BuldingTypeENUM.FARM.toString().equalsIgnoreCase(buildingTypeDTO.getType())){
+      MockData.gold.setAmount(MockData.gold.getAmount() - 250);
+      return ResponseEntity.status(200).body(MockData.farm);
+    }
+    if (BuldingTypeENUM.MINE.toString().equalsIgnoreCase(buildingTypeDTO.getType())){
+      MockData.gold.setAmount(MockData.gold.getAmount() - 250);
+      return ResponseEntity.status(200).body(MockData.mine);
+    }
+    MockData.gold.setAmount(MockData.gold.getAmount() - 250);
+    return ResponseEntity.status(200).body(MockData.barrack);
   }
 
   @ApiImplicitParams({
@@ -61,8 +70,8 @@ public class BuildingController {
   produces = { "application/json" },
   consumes = { "application/json" })
   public ResponseEntity<Object> mockRenderBuilding (@PathVariable Long id){
-    if (MockData.buildingDTO.getId() == id){
-      return ResponseEntity.status(200).body(MockData.buildingDTO);
+    if (MockData.farm.getId() == id){
+      return ResponseEntity.status(200).body(MockData.farm);
     }
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
@@ -87,7 +96,7 @@ public class BuildingController {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));
     }
 
-    if (MockData.buildingDTO.getId() != id){
+    if (MockData.farm.getId() != id){
       return ResponseEntity.status(404).body(new ErrorMessage("Id not found!"));
     }
 
@@ -98,8 +107,8 @@ public class BuildingController {
     if (MockData.gold.getAmount()< 250){
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource!"));
     }
-    MockData.buildingDTO.setLevel(levelDTO.getLevel());
-    return ResponseEntity.status(200).body(MockData.buildingDTO);
+    MockData.farm.setLevel(levelDTO.getLevel());
+    return ResponseEntity.status(200).body(MockData.farm);
   }
 
 }

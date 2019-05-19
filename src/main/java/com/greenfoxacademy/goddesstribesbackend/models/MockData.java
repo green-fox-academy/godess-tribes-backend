@@ -9,17 +9,21 @@ import java.util.List;
 
 public class MockData {
 
-  public static BuildingDTO buildingDTO = new BuildingDTO(1L, BuldingTypeENUM.FARM, 1,
+  public static BuildingDTO farm = new BuildingDTO(2L, BuldingTypeENUM.FARM, 1,
+      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+  public static BuildingDTO mine = new BuildingDTO(3L, BuldingTypeENUM.MINE, 1,
+      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+  public static BuildingDTO barrack = new BuildingDTO(4L, BuldingTypeENUM.BARRACK, 1,
       LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
 
-  public static List<BuildingDTO> buildingList = new ArrayList<>(Arrays.asList(buildingDTO));
+  public static List<BuildingDTO> buildingList = new ArrayList<>(Arrays.asList(farm, mine, barrack));
 
   public static BuildingsDTO buildingsDTO = new BuildingsDTO(buildingList);
 
   public static LocationDTO locationDTO = new LocationDTO(15,15);
 
   public static ResourceDTO food = new ResourceDTO(ResourceTypeENUM.FOOD, 200, 10);
-  public static ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 250, 10);
+  public static ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 500, 10);
 
   public static List<ResourceDTO> resourceList = new ArrayList<>(Arrays.asList(food, gold));
   public static ResourcesDTO resourcesDTO = new ResourcesDTO(resourceList);
