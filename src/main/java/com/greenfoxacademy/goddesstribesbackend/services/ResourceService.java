@@ -1,5 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.repositories.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,16 @@ public class ResourceService {
   @Autowired
   public ResourceService(ResourceRepository resourceRepository) {
     this.resourceRepository = resourceRepository;
+  }
+
+  public Resource saveFoodAtStart(Townhall townhall) {
+    Resource food = new Resource(ResourceType.FOOD, 50, townhall);
+    return resourceRepository.save(food);
+  }
+
+  public Resource saveGoldAtStart(Townhall townhall) {
+    Resource gold = new Resource(ResourceType.GOLD, 500, townhall);
+    return resourceRepository.save(gold);
   }
 
 }
