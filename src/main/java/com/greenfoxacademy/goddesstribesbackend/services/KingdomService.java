@@ -3,6 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
@@ -14,11 +15,16 @@ public class KingdomService {
 
   private KingdomRepository kingdomRepository;
   private UserService userService;
+  private BuildingService buildingService;
+  private ResourceService resourceService;
 
   @Autowired
-  public KingdomService(KingdomRepository kingdomRepository, UserService userService) {
+  public KingdomService(KingdomRepository kingdomRepository, UserService userService,
+                        BuildingService buildingService, ResourceService resourceService) {
     this.kingdomRepository = kingdomRepository;
     this.userService = userService;
+    this.buildingService = buildingService;
+    this.resourceService = resourceService;
   }
 
   public Kingdom saveKingdom(String kingdomName, User user) {
@@ -40,8 +46,11 @@ public class KingdomService {
       Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
 
       if (!kingdom.isActive()) {
-        //create a townhall with some gold and food
-        //create a farm and a mine
+        Townhall townhall = buildingService.saveTownhall(kingdom);
+        resourceService.saveFoodAtStart(townhall);
+        resourceService.saveGoldAtStart(townhall);
+        buildingService.saveFarmAtStart(kingdom);
+        buildingService.saveMineAtStart(kingdom);
         kingdom.setActive(true);
         kingdomRepository.save(kingdom);
       }
