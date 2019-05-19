@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
+import io.swagger.annotations.ExampleProperty;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

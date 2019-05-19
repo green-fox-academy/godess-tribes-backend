@@ -46,7 +46,7 @@ public class SoldierController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class),
-      @ApiResponse(code = 404, message ="Id not found")})
+      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/soldiers/{id}")
   public ResponseEntity<Object> mockRenderSoldier(@PathVariable Long id) {
 
@@ -61,10 +61,10 @@ public class SoldierController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = SoldierDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): level!"),
-      @ApiResponse(code = 404, message ="Id not found"),
-      @ApiResponse(code = 406, message ="Invalid soldier level"),
-      @ApiResponse(code = 409, message ="Not enough resource")})
+      @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class),
+      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class),
+      @ApiResponse(code = 406, message ="Invalid soldier level", response = ErrorMessage.class),
+      @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
   @PutMapping(value = "/kingdom/soldiers/{id}",
   produces = { "application/json" },
   consumes = { "application/json" })

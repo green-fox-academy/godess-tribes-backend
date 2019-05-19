@@ -1,5 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
+import com.greenfoxacademy.goddesstribesbackend.models.MockData;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
@@ -8,6 +9,7 @@ import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ExampleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +30,11 @@ public class UserController {
 
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = RegisterResponseDTO.class),
-      @ApiResponse(code = 400, message ="Username and password are required."),
-      @ApiResponse(code = 400, message ="Username is required."),
-      @ApiResponse(code = 400, message ="Password is required."),
-      @ApiResponse(code = 400, message ="Password must be at least 8 characters"),
-      @ApiResponse(code = 409, message ="Username is already taken")})
+      @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Password must be at least 8 characters", response = ErrorMessage.class),
+      @ApiResponse(code = 409, message ="Username is already taken", response = ErrorMessage.class)})
   @PostMapping(value = "/register",
       produces = { "application/json" },
       consumes = { "application/json" })
@@ -64,10 +66,10 @@ public class UserController {
 
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = TokenMessage.class),
-      @ApiResponse(code = 400, message ="Username and password are required."),
-      @ApiResponse(code = 400, message ="Username is required."),
-      @ApiResponse(code = 400, message ="Password is required."),
-      @ApiResponse(code = 401, message ="Username or password is incorrect.")})
+      @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class),
+      @ApiResponse(code = 401, message ="Username or password is incorrect.", response = ErrorMessage.class)})
   @PostMapping(value = "/login",
       produces = { "application/json" },
       consumes = { "application/json" })
@@ -94,8 +96,8 @@ public class UserController {
 
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class),
-      @ApiResponse(code = 400, message ="No token provided."),
-      @ApiResponse(code = 400, message ="Invalid token.")})
+      @ApiResponse(code = 400, message ="No token provided.", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Invalid token.", response = ErrorMessage.class)})
   @PostMapping(value = "/auth",
       produces = { "application/json" },
       consumes = { "application/json" })
@@ -112,8 +114,8 @@ public class UserController {
 
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class),
-      @ApiResponse(code = 400, message ="No token provided"),
-      @ApiResponse(code = 400, message ="Invalid token")})
+      @ApiResponse(code = 400, message ="No token provided", response = ErrorMessage.class),
+      @ApiResponse(code = 400, message ="Invalid token", response = ErrorMessage.class)})
   @PostMapping(value = "/logout",
       produces = { "application/json" },
       consumes = { "application/json" })

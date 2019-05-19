@@ -29,9 +29,9 @@ public class BuildingController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): type!"),
-      @ApiResponse(code = 406, message ="Invalid building type"),
-      @ApiResponse(code = 409, message ="Not enough resource")})
+      @ApiResponse(code = 400, message ="Missing parameter(s): type!", response = ErrorMessage.class),
+      @ApiResponse(code = 406, message ="Invalid building type", response = ErrorMessage.class),
+      @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
   @PostMapping(value = "/kingdom/buildings",
   produces = { "application/json" },
   consumes = { "application/json" })
@@ -56,7 +56,7 @@ public class BuildingController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 409, message ="Id not found")})
+      @ApiResponse(code = 409, message ="Id not found", response = ErrorMessage.class)})
   @GetMapping(value = "/kingdom/buildings/{id}",
   produces = { "application/json" },
   consumes = { "application/json" })
@@ -72,10 +72,10 @@ public class BuildingController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): level!"),
-      @ApiResponse(code = 404, message ="Id not found"),
-      @ApiResponse(code = 406, message ="Invalid building level"),
-      @ApiResponse(code = 409, message ="Not enough resource")})
+      @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class),
+      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class),
+      @ApiResponse(code = 406, message ="Invalid building level", response = ErrorMessage.class),
+      @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
   @PutMapping(value = "/kingdom/buildings/{id}",
   produces = { "application/json" },
   consumes = { "application/json" })

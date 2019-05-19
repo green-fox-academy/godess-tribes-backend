@@ -1,7 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.greenfoxacademy.goddesstribesbackend.models.MockData;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.KingdomDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.KingdomNameDTO;
@@ -32,7 +31,7 @@ public class KingdomController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): name!")})
+      @ApiResponse(code = 400, message ="Missing parameter(s): name!", response = ErrorMessage.class)})
   @PutMapping(value = "/kingdom",
       produces = { "application/json" },
       consumes = { "application/json" })
@@ -52,7 +51,7 @@ public class KingdomController {
           required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {
       @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
-      @ApiResponse(code = 404, message ="Id not found")})
+      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
   @GetMapping(value = "/kingdom/{id}",
   produces = { "application/json" },
   consumes = { "application/json" })
