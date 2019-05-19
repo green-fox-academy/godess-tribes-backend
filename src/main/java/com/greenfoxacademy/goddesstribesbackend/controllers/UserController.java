@@ -61,7 +61,7 @@ public class UserController {
 
     User newUser = userService.saveUser(username, password);
     Kingdom newKingdom = kingdomService.saveKingdom(kingdomName, newUser);
-    return ResponseEntity.status(200).body(new RegisterResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getId()));
+    return ResponseEntity.status(200).body(new RegisterResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getKingdomName()));
   }
 
   @ApiResponses(value = {
