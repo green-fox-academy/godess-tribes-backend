@@ -1,12 +1,16 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
 public class ResourceDTO {
 
+  @ApiModelProperty(position = 1)
   private ResourceTypeENUM resourceTypeENUM;
+  @ApiModelProperty(position = 2)
   private int amount;
+  @ApiModelProperty(position = 3)
   private int generationRate;
 
   public ResourceDTO() {

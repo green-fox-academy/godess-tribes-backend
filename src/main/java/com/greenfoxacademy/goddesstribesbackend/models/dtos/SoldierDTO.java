@@ -1,15 +1,21 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 import java.time.LocalDateTime;
 
 @SwaggerDefinition
 public class SoldierDTO {
-    private Long id;
-    private int level;
-    private LocalDateTime startedAt;
-    private LocalDateTime finishedAt;
+
+  @ApiModelProperty(position = 1)
+  private Long id;
+  @ApiModelProperty(position = 2)
+  private int level;
+  @ApiModelProperty(position = 3)
+  private LocalDateTime startedAt;
+  @ApiModelProperty(position = 4)
+  private LocalDateTime finishedAt;
 
   public SoldierDTO() {
   }

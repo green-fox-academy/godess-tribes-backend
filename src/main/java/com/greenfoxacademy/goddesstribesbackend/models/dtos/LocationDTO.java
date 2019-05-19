@@ -1,10 +1,13 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
 public class LocationDTO {
+  @ApiModelProperty(position = 1)
   private int xCoord;
+  @ApiModelProperty(position = 2)
   private int yCoord;
 
   public LocationDTO() {

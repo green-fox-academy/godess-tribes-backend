@@ -1,5 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 import java.util.List;
@@ -7,12 +8,19 @@ import java.util.List;
 @SwaggerDefinition
 public class KingdomDTO {
 
+  @ApiModelProperty(position = 1)
   private Long id;
+  @ApiModelProperty(position = 2)
   private String kingdomName;
+  @ApiModelProperty(position = 3)
   private Long userId;
+  @ApiModelProperty(position = 4)
   private List<BuildingDTO> buildings;
+  @ApiModelProperty(position = 5)
   private List<ResourceDTO> resources;
+  @ApiModelProperty(position = 6)
   private List<SoldierDTO> soldiers;
+  @ApiModelProperty(position = 7)
   private LocationDTO location;
 
   public KingdomDTO() {

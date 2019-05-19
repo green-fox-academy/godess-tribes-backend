@@ -1,11 +1,14 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
 public class AuthenticationResponseDTO {
 
+  @ApiModelProperty(position = 1)
   private Long userId;
+  @ApiModelProperty(position = 2)
   private Long kingdomId;
 
   public AuthenticationResponseDTO(Long userId, Long kingdomId) {
