@@ -1,11 +1,9 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Soldier {
 
   public static final int CREATION_COST = 10;
