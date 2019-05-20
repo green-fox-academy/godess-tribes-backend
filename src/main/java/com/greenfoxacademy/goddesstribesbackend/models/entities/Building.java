@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 public abstract class Building {
 
   public static final int MAX_LEVEL = 3;
+  private static final int START_LEVEL = 1;
+  private static final int START_UPGRADING_COST = 100;
+  private static final int START_UPGRADING_TIME = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +32,9 @@ public abstract class Building {
   }
 
   public Building(Kingdom kingdom, LocalDateTime startedAt) {
-    level = 1;
-    upgradingCost = 100 * level;
-    upgradingTime = 1;
+    level = START_LEVEL;
+    upgradingCost = START_UPGRADING_COST;
+    upgradingTime = START_UPGRADING_TIME;
     this.startedAt = startedAt;
     this.kingdom = kingdom;
   }

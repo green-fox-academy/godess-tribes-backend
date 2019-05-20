@@ -19,7 +19,8 @@ public class BuildingService {
 
   public Townhall saveTownhall(Kingdom kingdom) {
     if (kingdom != null) {
-      return buildingRepository.save(new Townhall(kingdom));
+      Townhall townhall = new Townhall(kingdom);
+      return buildingRepository.save(townhall);
     }
     return null;
   }

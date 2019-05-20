@@ -18,12 +18,12 @@ public class ResourceService {
   }
 
   public Resource saveFoodAtStart(Townhall townhall) {
-    Resource food = new Resource(ResourceType.FOOD, 50, townhall);
+    Resource food = new Resource(ResourceType.FOOD, Townhall.START_FOOD_AMOUNT, townhall);
     return resourceRepository.save(food);
   }
 
   public Resource saveGoldAtStart(Townhall townhall) {
-    Resource gold = new Resource(ResourceType.GOLD, 500, townhall);
+    Resource gold = new Resource(ResourceType.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
     return resourceRepository.save(gold);
   }
 

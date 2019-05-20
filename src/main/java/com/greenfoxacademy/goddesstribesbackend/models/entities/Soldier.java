@@ -9,6 +9,8 @@ public class Soldier {
   public static final int CREATION_COST = 10;
   public static final int UPGRADING_COST = 5;
   public static final int NEEDED_TIME = 1;
+  private static final int START_LEVEL = 1;
+  private static final int START_CONSUMPTION_RATE = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +28,8 @@ public class Soldier {
   }
 
   public Soldier(Barrack barrack) {
-    level = 1;
-    consumptionRate = 1 * level;
+    level = START_LEVEL;
+    consumptionRate = START_CONSUMPTION_RATE;
     startedAt = LocalDateTime.now();
     finishedAt = startedAt.plusMinutes(NEEDED_TIME);
     this.barrack = barrack;
