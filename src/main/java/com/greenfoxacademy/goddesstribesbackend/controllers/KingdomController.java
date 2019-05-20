@@ -14,27 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class KingdomController {
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class)})
-  @GetMapping(value = "/kingdom",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = KingdomDTO.class)})
+  @GetMapping("/kingdom")
   public ResponseEntity<Object> findOwnKingdom() {
     return ResponseEntity.status(200).body(MockData.kingdomDTO);
   }
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): name!", response = ErrorMessage.class)})
-  @PutMapping(value = "/kingdom",
-      produces = { "application/json" },
-      consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = KingdomDTO.class), @ApiResponse(code = 400, message ="Missing parameter(s): name!", response = ErrorMessage.class)})
+  @PutMapping("/kingdom")
   public ResponseEntity<Object>mockChangeKingdomName(
             @RequestBody KingdomNameDTO kingdomNameDTO){
 
@@ -46,15 +35,9 @@ public class KingdomController {
     return ResponseEntity.status(200).body(MockData.kingdomDTO);
   }
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = KingdomDTO.class),
-      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
-  @GetMapping(value = "/kingdom/{id}",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = KingdomDTO.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
+  @GetMapping("/kingdom/{id}")
   public ResponseEntity<Object> mockRenderKingdom (@PathVariable Long id){
     if (MockData.kingdomDTO.getId() == id){
       return ResponseEntity.status(200).body(MockData.kingdomDTO);

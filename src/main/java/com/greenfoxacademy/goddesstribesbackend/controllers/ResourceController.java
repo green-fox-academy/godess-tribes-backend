@@ -14,14 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResourceController {
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = ResourcesDTO.class)})
-  @GetMapping(value = "/kingdom/resources",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = ResourcesDTO.class)})
+  @GetMapping("/kingdom/resources")
   public ResponseEntity<Object> mockListResources() {
     return ResponseEntity.status(200).body(MockData.resourcesDTO);
   }

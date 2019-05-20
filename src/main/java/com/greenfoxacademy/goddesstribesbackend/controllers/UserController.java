@@ -26,16 +26,8 @@ public class UserController {
     this.kingdomService = kingdomService;
   }
 
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = RegisterResponseDTO.class),
-      @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Password must be at least 8 characters", response = ErrorMessage.class),
-      @ApiResponse(code = 409, message ="Username is already taken", response = ErrorMessage.class)})
-  @PostMapping(value = "/register",
-      produces = { "application/json" },
-      consumes = { "application/json" })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = RegisterResponseDTO.class), @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Password must be at least 8 characters", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Username is already taken", response = ErrorMessage.class)})
+  @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
     String username = registerRequestDTO.getUsername();
     String password = registerRequestDTO.getPassword();
@@ -62,15 +54,8 @@ public class UserController {
     return ResponseEntity.status(200).body(new RegisterResponseDTO(newUser.getId(), newUser.getUsername(), newKingdom.getKingdomName()));
   }
 
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = TokenMessage.class),
-      @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class),
-      @ApiResponse(code = 401, message ="Username or password is incorrect.", response = ErrorMessage.class)})
-  @PostMapping(value = "/login",
-      produces = { "application/json" },
-      consumes = { "application/json" })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = TokenMessage.class), @ApiResponse(code = 400, message ="Username and password are required.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Username is required.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Password is required.", response = ErrorMessage.class), @ApiResponse(code = 401, message ="Username or password is incorrect.", response = ErrorMessage.class)})
+  @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
     String username = loginRequestDTO.getUsername();
     String password = loginRequestDTO.getPassword();
@@ -92,13 +77,8 @@ public class UserController {
     return ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
   }
 
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class),
-      @ApiResponse(code = 400, message ="No token provided.", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Invalid token.", response = ErrorMessage.class)})
-  @PostMapping(value = "/auth",
-      produces = { "application/json" },
-      consumes = { "application/json" })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class), @ApiResponse(code = 400, message ="No token provided.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Invalid token.", response = ErrorMessage.class)})
+  @PostMapping("/auth")
   public ResponseEntity<Object> authenticate(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
@@ -110,13 +90,8 @@ public class UserController {
     return ResponseEntity.status(200).body(kingdomService.createAuthenticationResponseDTO(tokenDTO));
   }
 
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class),
-      @ApiResponse(code = 400, message ="No token provided", response = ErrorMessage.class),
-      @ApiResponse(code = 400, message ="Invalid token", response = ErrorMessage.class)})
-  @PostMapping(value = "/logout",
-      produces = { "application/json" },
-      consumes = { "application/json" })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class), @ApiResponse(code = 400, message ="No token provided", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Invalid token", response = ErrorMessage.class)})
+  @PostMapping("/logout")
   public ResponseEntity<Object> mockLogout(@RequestBody TokenDTO tokenDTO) {
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));

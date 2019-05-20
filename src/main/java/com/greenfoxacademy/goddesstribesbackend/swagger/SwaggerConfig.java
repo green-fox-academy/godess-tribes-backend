@@ -5,11 +5,14 @@ import com.greenfoxacademy.goddesstribesbackend.security.WebSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -17,17 +20,17 @@ import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 @Configuration
 @EnableWebMvc
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
-  private WebSecurityConfig webSecurityConfig;
-
-  @Autowired
-  public SwaggerConfig(WebSecurityConfig webSecurityConfig) {
-    this.webSecurityConfig = webSecurityConfig;
-  }
+  private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES =
+      new HashSet<String>(Arrays.asList("application/json"));
 
   @Bean
   public Docket api() {
@@ -37,7 +40,9 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         .apis(RequestHandlerSelectors.any())
         .paths(PathSelectors.any())
         .build()
-        .securitySchemes(Lists.newArrayList(apiKey()));
+        .securitySchemes(Lists.newArrayList(apiKey()))
+        .produces(DEFAULT_PRODUCES_AND_CONSUMES)
+        .consumes(DEFAULT_PRODUCES_AND_CONSUMES);
   }
 
   private ApiKey apiKey() {

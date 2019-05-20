@@ -12,29 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BuildingController {
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
-  @GetMapping(value = "/kingdom/buildings",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
+  @GetMapping("/kingdom/buildings")
   public ResponseEntity<Object> mockListOfBuildings() {
     return ResponseEntity.status(200).body(MockData.buildingsDTO);
   }
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): type!", response = ErrorMessage.class),
-      @ApiResponse(code = 406, message ="Invalid building type", response = ErrorMessage.class),
-      @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
-  @PostMapping(value = "/kingdom/buildings",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),@ApiResponse(code = 400, message ="Missing parameter(s): type!", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid building type", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
+  @PostMapping("/kingdom/buildings")
   public ResponseEntity<Object> mockCreateABuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
     if (buildingTypeDTO.getType() == null || buildingTypeDTO.getType().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): type!"));
@@ -60,15 +47,9 @@ public class BuildingController {
     return ResponseEntity.status(200).body(MockData.barrack);
   }
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 409, message ="Id not found", response = ErrorMessage.class)})
-  @GetMapping(value = "/kingdom/buildings/{id}",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class), @ApiResponse(code = 409, message ="Id not found", response = ErrorMessage.class)})
+  @GetMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object> mockRenderBuilding (@PathVariable Long id){
     if (MockData.farm.getId() == id){
       return ResponseEntity.status(200).body(MockData.farm);
@@ -76,18 +57,9 @@ public class BuildingController {
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
-  @ApiImplicitParams({
-      @ApiImplicitParam(name = "token", value = "Authorization token",
-          required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),
-      @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class),
-      @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class),
-      @ApiResponse(code = 406, message ="Invalid building level", response = ErrorMessage.class),
-      @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
-  @PutMapping(value = "/kingdom/buildings/{id}",
-  produces = { "application/json" },
-  consumes = { "application/json" })
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class), @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid building level", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
+  @PutMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object>mockChangeBuildingLevel(
       @PathVariable Long id,
       @RequestBody LevelDTO levelDTO){
