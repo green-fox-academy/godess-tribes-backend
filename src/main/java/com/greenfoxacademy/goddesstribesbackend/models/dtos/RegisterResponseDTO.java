@@ -1,15 +1,22 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.SwaggerDefinition;
+
+@SwaggerDefinition
 public class RegisterResponseDTO {
 
+  @ApiModelProperty(position = 1)
   private Long userId;
+  @ApiModelProperty(position = 2)
   private String username;
-  private Long kingdomId;
+  @ApiModelProperty(position = 3)
+  private String kingdomName;
 
-  public RegisterResponseDTO(Long userId, String username, Long kingdomId) {
+  public RegisterResponseDTO(Long userId, String username, String kingdomName) {
     this.userId = userId;
     this.username = username;
-    this.kingdomId = kingdomId;
+    this.kingdomName = kingdomName;
   }
 
   public Long getUserId() {
@@ -28,12 +35,12 @@ public class RegisterResponseDTO {
     this.username = username;
   }
 
-  public Long getKingdomId() {
-    return kingdomId;
+  public String getKingdomName() {
+    return kingdomName;
   }
 
-  public void setKingdomId(Long kingdomId) {
-    this.kingdomId = kingdomId;
+  public void setKingdomName(String kingdomName) {
+    this.kingdomName = kingdomName;
   }
 
 }

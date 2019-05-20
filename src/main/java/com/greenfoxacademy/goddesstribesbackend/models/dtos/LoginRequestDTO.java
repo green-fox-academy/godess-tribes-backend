@@ -4,16 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
-public class RegisterRequestDTO {
+public class LoginRequestDTO {
 
   @ApiModelProperty(position = 1)
   private String username;
   @ApiModelProperty(position = 2)
   private String password;
-  @ApiModelProperty(position = 3)
-  private String kingdomName;
 
-  public RegisterRequestDTO() {
+  public LoginRequestDTO() {
   }
 
   public String getUsername() {
@@ -30,14 +28,6 @@ public class RegisterRequestDTO {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public String getKingdomName() {
-    return kingdomName;
-  }
-
-  public void setKingdomName(String kingdomName) {
-    this.kingdomName = kingdomName;
   }
 
 }
