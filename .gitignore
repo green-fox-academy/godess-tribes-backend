@@ -33,4 +33,4 @@ HELP.md
 gradlew
 *.bat
 settings.gradle
-application.properties.*
+application.properties
