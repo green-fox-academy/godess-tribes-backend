@@ -4,16 +4,16 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
-public class TokenMessage {
+public class StatusOkMessage {
 
   @ApiModelProperty(position = 1)
   private String status;
   @ApiModelProperty(position = 2)
-  private String token;
+  private String message;
 
-  public TokenMessage(String token) {
-    status = "ok";
-    this.token = token;
+  public StatusOkMessage(String message) {
+    status = "Ok";
+    this.message = message;
   }
 
   public String getStatus() {
@@ -24,12 +24,11 @@ public class TokenMessage {
     this.status = status;
   }
 
-  public String getToken() {
-    return token;
+  public String getMessage() {
+    return message;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setMessage(String message) {
+    this.message = message;
   }
-
 }
