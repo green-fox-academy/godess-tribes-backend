@@ -6,17 +6,17 @@ import java.time.LocalDateTime;
 @Entity
 public class Farm extends ProductionBuilding {
 
-  private static int productionRate = 10;
+  private static final int START_PRODUCTION_RATE = 10;
 
   public Farm() {
   }
 
   public Farm(Kingdom kingdom) {
-    super(kingdom, productionRate);
+    super(kingdom, START_PRODUCTION_RATE);
   }
 
   public Farm(Kingdom kingdom, LocalDateTime startedAt) {
-    super(kingdom, productionRate, startedAt);
+    super(kingdom, START_PRODUCTION_RATE, startedAt);
   }
 
 }

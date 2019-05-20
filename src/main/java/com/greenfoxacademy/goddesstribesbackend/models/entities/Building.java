@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 public abstract class Building {
 
-  public static final int MAXLEVEL = 3;
+  public static final int MAX_LEVEL = 3;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

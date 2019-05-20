@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 @Entity
 public class Townhall extends Building {
 
+  private static final int START_FOOD_CAPACITY = 1000;
+  private static final int START_GOLD_CAPACITY = 1000;
+
   private int foodCapacity;
   private int goldCapacity;
 
@@ -13,8 +16,8 @@ public class Townhall extends Building {
 
   public Townhall(Kingdom kingdom) {
     super(kingdom);
-    foodCapacity = 1000;
-    goldCapacity = 1000;
+    foodCapacity = START_FOOD_CAPACITY;
+    goldCapacity = START_GOLD_CAPACITY;
     setFinishedAt(getStartedAt());
   }
 

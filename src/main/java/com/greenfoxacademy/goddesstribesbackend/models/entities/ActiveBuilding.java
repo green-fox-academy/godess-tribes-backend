@@ -6,20 +6,20 @@ import java.time.LocalDateTime;
 @Entity
 public abstract class ActiveBuilding extends Building {
 
-  public static final int CREATIONCOST = 250;
-  public static final int CREATIONTIME = 2;
+  public static final int CREATION_COST = 250;
+  public static final int CREATION_TIME = 2;
 
   public ActiveBuilding() {
   }
 
   public ActiveBuilding(Kingdom kingdom) {
     super(kingdom);
-    setFinishedAt(getStartedAt().plusMinutes(CREATIONTIME));
+    setFinishedAt(getStartedAt().plusMinutes(CREATION_TIME));
   }
 
   public ActiveBuilding(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, startedAt);
-    setFinishedAt(startedAt.plusMinutes(CREATIONTIME));
+    setFinishedAt(startedAt.plusMinutes(CREATION_TIME));
   }
 
 }

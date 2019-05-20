@@ -26,7 +26,7 @@ public class BuildingService {
 
   public Farm saveFarmAtStart(Kingdom kingdom) {
     if (kingdom != null) {
-      Farm farm = new Farm(kingdom, LocalDateTime.now().minusMinutes(ActiveBuilding.CREATIONTIME));
+      Farm farm = new Farm(kingdom, LocalDateTime.now().minusMinutes(ActiveBuilding.CREATION_TIME));
       return buildingRepository.save(farm);
     }
     return null;
@@ -34,7 +34,7 @@ public class BuildingService {
 
   public Mine saveMineAtStart(Kingdom kingdom) {
     if (kingdom != null) {
-      Mine mine = new Mine(kingdom, LocalDateTime.now().minusMinutes(ActiveBuilding.CREATIONTIME));
+      Mine mine = new Mine(kingdom, LocalDateTime.now().minusMinutes(ActiveBuilding.CREATION_TIME));
       return buildingRepository.save(mine);
     }
     return null;
