@@ -36,15 +36,19 @@ public class UserController {
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
     }
+
     if (username == null || username.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username is required."));
     }
+
     if (password == null || password.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Password is required."));
     }
+
     if (userService.checkUserByName(username)) {
       return ResponseEntity.status(409).body(new ErrorMessage(username + " as username is already taken."));
     }
+
     if (!userService.checkPassword(password)) {
       return ResponseEntity.status(400).body(new ErrorMessage("Password must be at least 8 characters."));
     }
@@ -63,12 +67,15 @@ public class UserController {
     if ((username == null || username.isEmpty()) && (password == null || password.isEmpty())) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username and password are required."));
     }
+
     if (username == null || username.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Username is required."));
     }
+
     if (password == null || password.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Password is required."));
     }
+
     if (!userService.checkUserByNameAndPassword(username, password)) {
       return ResponseEntity.status(401).body(new ErrorMessage("Username or password is incorrect."));
     }
@@ -80,9 +87,11 @@ public class UserController {
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = AuthenticationResponseDTO.class), @ApiResponse(code = 400, message ="No token provided.", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Invalid token.", response = ErrorMessage.class)})
   @PostMapping("/auth")
   public ResponseEntity<Object> authenticate(@RequestBody TokenDTO tokenDTO) {
+
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
     }
+
     if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }
@@ -93,9 +102,11 @@ public class UserController {
   @ApiResponses(value = {@ApiResponse(code = 200, message ="Logged out successfully.", response = StatusOkMessage.class), @ApiResponse(code = 400, message ="No token provided", response = ErrorMessage.class), @ApiResponse(code = 400, message ="Invalid token", response = ErrorMessage.class)})
   @PostMapping("/logout")
   public ResponseEntity<Object> mockLogout(@RequestBody TokenDTO tokenDTO) {
+
     if (tokenDTO.getToken() == null || tokenDTO.getToken().isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
     }
+
     if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }

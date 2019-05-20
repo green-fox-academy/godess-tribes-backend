@@ -39,9 +39,11 @@ public class KingdomController {
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = KingdomDTO.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/{id}")
   public ResponseEntity<Object> mockRenderKingdom (@PathVariable Long id){
+
     if (MockData.kingdomDTO.getId() == id){
       return ResponseEntity.status(200).body(MockData.kingdomDTO);
     }
+
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 

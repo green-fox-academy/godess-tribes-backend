@@ -30,6 +30,7 @@ public class SoldierController {
     if (MockData.gold.getAmount() <= 10) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource"));
     }
+
     return ResponseEntity.status(200).body(MockData.soldierDTO);
 
   }
@@ -42,6 +43,7 @@ public class SoldierController {
     if (MockData.soldierDTO.getId() == id) {
       return ResponseEntity.status(200).body(MockData.soldierDTO);
     }
+
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 

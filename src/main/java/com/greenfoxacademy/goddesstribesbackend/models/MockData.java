@@ -9,6 +9,10 @@ import java.util.List;
 
 public class MockData {
 
+  public static final int COST_OF_NEW_BUILDING = 250;
+
+  public static BuildingDTO townhall = new BuildingDTO(1L, BuldingTypeENUM.TOWNHALL, 1,
+      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
   public static BuildingDTO farm = new BuildingDTO(2L, BuldingTypeENUM.FARM, 1,
       LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
   public static BuildingDTO mine = new BuildingDTO(3L, BuldingTypeENUM.MINE, 1,
