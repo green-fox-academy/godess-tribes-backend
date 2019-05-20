@@ -11,8 +11,8 @@ public class Kingdom {
 
   private String kingdomName;
 
-//  @OneToOne
-//  private Location location;
+  private int xCoord;
+  private int yCoord;
   private boolean active;
 
   @OneToOne(optional = false)
@@ -23,7 +23,8 @@ public class Kingdom {
 
   public Kingdom(String kingdomName, User user) {
     this.kingdomName = kingdomName;
-    //location = new Location(0, 0);
+    xCoord = 0;
+    yCoord = 0;
     active = false;
     this.user = user;
   }
@@ -44,13 +45,21 @@ public class Kingdom {
     this.kingdomName = kingdomName;
   }
 
-//  public Location getLocation() {
-//    return location;
-//  }
-//
-//  public void setLocation(Location location) {
-//    this.location = location;
-//  }
+  public int getxCoord() {
+    return xCoord;
+  }
+
+  public void setxCoord(int xCoord) {
+    this.xCoord = xCoord;
+  }
+
+  public int getyCoord() {
+    return yCoord;
+  }
+
+  public void setyCoord(int yCoord) {
+    this.yCoord = yCoord;
+  }
 
   public boolean isActive() {
     return active;
