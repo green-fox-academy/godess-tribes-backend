@@ -1,7 +1,5 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
-import com.greenfoxacademy.goddesstribesbackend.models.Location;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +10,9 @@ public class Kingdom {
   private Long id;
 
   private String kingdomName;
-  private Location location;
+
+//  @OneToOne
+//  private Location location;
   private boolean active;
 
   @OneToOne(optional = false)
@@ -23,7 +23,7 @@ public class Kingdom {
 
   public Kingdom(String kingdomName, User user) {
     this.kingdomName = kingdomName;
-    location = new Location(0, 0);
+    //location = new Location(0, 0);
     active = false;
     this.user = user;
   }
@@ -44,13 +44,13 @@ public class Kingdom {
     this.kingdomName = kingdomName;
   }
 
-  public Location getLocation() {
-    return location;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
-  }
+//  public Location getLocation() {
+//    return location;
+//  }
+//
+//  public void setLocation(Location location) {
+//    this.location = location;
+//  }
 
   public boolean isActive() {
     return active;
