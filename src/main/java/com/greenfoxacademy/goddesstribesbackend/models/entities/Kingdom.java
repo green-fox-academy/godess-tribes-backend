@@ -1,6 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Kingdom {
@@ -18,6 +20,10 @@ public class Kingdom {
   @OneToOne(optional = false)
   private User user;
 
+  @OneToMany(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "kingdomId")
+  private List<Building> buildings;
+
   public Kingdom() {
   }
 
@@ -27,6 +33,7 @@ public class Kingdom {
     yCoord = 0;
     active = false;
     this.user = user;
+    buildings = new ArrayList<>();
   }
 
   public Long getId() {
@@ -75,6 +82,14 @@ public class Kingdom {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public List<Building> getBuildings() {
+    return buildings;
+  }
+
+  public void setBuildings(List<Building> buildings) {
+    this.buildings = buildings;
   }
 
 }

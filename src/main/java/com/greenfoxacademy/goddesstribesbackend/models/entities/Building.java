@@ -22,6 +22,7 @@ public abstract class Building {
   private LocalDateTime finishedAt;
 
   @ManyToOne(optional = false)
+  @JoinColumn(name = "kingdomId")
   private Kingdom kingdom;
 
   public Building() {
