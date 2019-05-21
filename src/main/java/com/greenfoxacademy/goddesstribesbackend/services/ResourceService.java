@@ -26,14 +26,18 @@ public class ResourceService {
   }
 
   public Resource saveGoldAtStart(Townhall townhall) {
-    if (townhall != null){
+    if (townhall != null) {
       Resource gold = new Resource(ResourceType.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
       return resourceRepository.save(gold);
     }
     return null;
   }
 
-  public Resource findResourceByKingdomAndType(Long kingdomId, ResourceType type){
+  public Resource save(Resource resource) {
+    return resourceRepository.save(resource);
+  }
+
+  public Resource findResourceByKingdomAndType(Long kingdomId, ResourceType type) {
     return resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdomId, type).orElse(null);
   }
 

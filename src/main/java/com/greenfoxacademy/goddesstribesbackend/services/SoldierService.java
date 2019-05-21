@@ -17,13 +17,13 @@ public class SoldierService {
     this.soldierRepository = soldierRepository;
   }
 
-  public ArrayList<Soldier> findSoldiersByKingdom(Long kingdomId) {
+  public ArrayList<Soldier> findSoldiers(Long kingdomId) {
     return soldierRepository.findSoldiersByBarrack_Kingdom_Id(kingdomId);
   }
 
-  public int findConsumptionRateByKingdom(Long kingdomId) {
+  public int findFoodConsumptionRate(Long kingdomId) {
     int consumptionRate = 0;
-    ArrayList<Soldier> soldiers = findSoldiersByKingdom(kingdomId);
+    ArrayList<Soldier> soldiers = findSoldiers(kingdomId);
 
     for (Soldier soldier : soldiers) {
       consumptionRate += soldier.getConsumptionRate();

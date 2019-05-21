@@ -49,17 +49,17 @@ public class BuildingService {
     return null;
   }
 
-  public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
+  public ArrayList<Farm> findFarms(Long kingdomId) {
     return farmRepository.findFarmsByKingdom_Id(kingdomId);
   }
 
-  public ArrayList<Mine> findMinesByKingdom(Long kingdomId) {
+  public ArrayList<Mine> findMines(Long kingdomId) {
     return mineRepository.findMinesByKingdom_Id(kingdomId);
   }
 
-  public int findFoodProductionRateByKingdom(Long kingdomId) {
+  public int findFoodProductionRate(Long kingdomId) {
     int foodProductionRate = 0;
-    ArrayList<Farm> farms = findFarmsByKingdom(kingdomId);
+    ArrayList<Farm> farms = findFarms(kingdomId);
 
     for (Farm farm : farms) {
       foodProductionRate += farm.getProductionRate();
@@ -67,9 +67,9 @@ public class BuildingService {
     return foodProductionRate;
   }
 
-  public int findGoldProductionRateByKingdom(Long kingdomId) {
+  public int findGoldProductionRate(Long kingdomId) {
     int goldProductionRate = 0;
-    ArrayList<Mine> mines = findMinesByKingdom(kingdomId);
+    ArrayList<Mine> mines = findMines(kingdomId);
 
     for (Mine mine : mines) {
       goldProductionRate += mine.getProductionRate();
