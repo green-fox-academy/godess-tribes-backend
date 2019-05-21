@@ -57,4 +57,24 @@ public class BuildingService {
     return mineRepository.findMinesByKingdom_Id(kingdomId);
   }
 
+  public int findFoodProductionRateByKingdom(Long kingdomId) {
+    int foodProductionRate = 0;
+    ArrayList<Farm> farms = findFarmsByKingdom(kingdomId);
+
+    for (Farm farm : farms) {
+      foodProductionRate += farm.getProductionRate();
+    }
+    return foodProductionRate;
+  }
+
+  public int findGoldProductionRateByKingdom(Long kingdomId) {
+    int goldProductionRate = 0;
+    ArrayList<Mine> mines = findMinesByKingdom(kingdomId);
+
+    for (Mine mine : mines) {
+      goldProductionRate += mine.getProductionRate();
+    }
+    return goldProductionRate;
+  }
+
 }
