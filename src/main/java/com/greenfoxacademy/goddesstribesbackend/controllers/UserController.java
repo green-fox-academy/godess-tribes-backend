@@ -81,6 +81,7 @@ public class UserController {
     }
 
     userService.loginUser(username);
+    kingdomService.initKingdom(username);
     return ResponseEntity.status(200).body(new TokenMessage(JWTUtility.generateToken(username)));
   }
 
