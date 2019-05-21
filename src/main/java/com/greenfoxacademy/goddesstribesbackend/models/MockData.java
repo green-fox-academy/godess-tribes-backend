@@ -26,8 +26,8 @@ public class MockData {
 
   public static LocationDTO locationDTO = new LocationDTO(15,15);
 
-  public static ResourceDTO food = new ResourceDTO(ResourceTypeENUM.FOOD, 200, 10);
-  public static ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 500, 10);
+  public static ResourceDTO food = new ResourceDTO(ResourceTypeENUM.FOOD, 200, 10, LocalDateTime.now());
+  public static ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 500, 10, LocalDateTime.now());
 
   public static List<ResourceDTO> resourceList = new ArrayList<>(Arrays.asList(food, gold));
   public static ResourcesDTO resourcesDTO = new ResourcesDTO(resourceList);
