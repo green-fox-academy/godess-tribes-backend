@@ -2,21 +2,31 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.greenfoxacademy.goddesstribesbackend.models.MockData;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
+import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BuildingController {
 
+  private BuildingService buildingService;
+
+  @Autowired
+  public BuildingController(BuildingService buildingService) {
+    this.buildingService = buildingService;
+  }
+
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
   @GetMapping("/kingdom/buildings")
   public ResponseEntity<Object> mockListOfBuildings() {
-    return ResponseEntity.status(200).body(MockData.buildingsDTO);
+    BuildingsDTO buildingsDTO = buildingService.createBuildingsDTO();
+    return ResponseEntity.status(200).body(buildingsDTO);
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true, dataType = "string", paramType = "header") })
