@@ -93,7 +93,7 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
     }
 
-    if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
+    if (JWTUtility.parseTokenToRetrieveUsername(tokenDTO.getToken()) == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }
 
@@ -108,7 +108,7 @@ public class UserController {
       return ResponseEntity.status(400).body(new ErrorMessage("No token provided."));
     }
 
-    if (JWTUtility.parseToken(tokenDTO.getToken()) == null) {
+    if (JWTUtility.parseTokenToRetrieveUsername(tokenDTO.getToken()) == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Invalid token."));
     }
 

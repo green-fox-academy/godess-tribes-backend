@@ -5,6 +5,8 @@ import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingsDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuldingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.repositories.BuildingRepository;
+import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
+import com.greenfoxacademy.goddesstribesbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,14 @@ import java.util.Optional;
 public class BuildingService {
 
   private BuildingRepository buildingRepository;
+  private UserRepository userRepository;
+  private KingdomRepository kingdomRepository;
 
   @Autowired
-  public BuildingService(BuildingRepository buildingRepository) {
+  public BuildingService(BuildingRepository buildingRepository, UserRepository userRepository, KingdomRepository kingdomRepository) {
     this.buildingRepository = buildingRepository;
+    this.userRepository = userRepository;
+    this.kingdomRepository = kingdomRepository;
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
@@ -53,33 +59,42 @@ public class BuildingService {
    return buildingList;
   }
 
-  public BuildingsDTO createBuildingsDTO(){
+  public ArrayList<Building> findAllByKingdom(Kingdom kingdom){
+    ArrayList<Building> buildingList = new ArrayList<>();
+    buildingRepository.findAllByKingdom(kingdom).forEach(buildingList::add);
+    return buildingList;
+  }
+
+  public BuildingsDTO createBuildingsDTO(String username){
     BuildingsDTO buildingsDTO = new BuildingsDTO();
     List<BuildingDTO> buildingDTOList = new ArrayList<>();
-    ArrayList<Building> buildingList = findAll();
-    for (Building building: buildingList){
-     BuildingDTO  buildingDTO = new BuildingDTO();
-     buildingDTO.setId(building.getId());
+    if (kingdomRepository.findKingdomByUser_Username(username).isPresent()){
+      Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+      ArrayList<Building> buildingList = findAllByKingdom(kingdom);
+      for (Building building: buildingList){
+        BuildingDTO  buildingDTO = new BuildingDTO();
+        buildingDTO.setId(building.getId());
 
-     if (building instanceof Townhall){
-       buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.TOWNHALL);
-     }
+        if (building instanceof Townhall){
+          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.TOWNHALL);
+        }
 
-     if (building instanceof Mine){
-       buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.MINE);
-     }
+        if (building instanceof Mine){
+          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.MINE);
+        }
 
-     if (building instanceof Farm){
-       buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.FARM);
-     }
+        if (building instanceof Farm){
+          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.FARM);
+        }
 
-     if (building instanceof Barrack){
-       buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.BARRACK);
-     }
-     buildingDTO.setLevel(building.getLevel());
-     buildingDTO.setStartedAt(building.getStartedAt());
-     buildingDTO.setFinishedAt(building.getFinishedAt());
-     buildingDTOList.add(buildingDTO);
+        if (building instanceof Barrack){
+          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.BARRACK);
+        }
+        buildingDTO.setLevel(building.getLevel());
+        buildingDTO.setStartedAt(building.getStartedAt());
+        buildingDTO.setFinishedAt(building.getFinishedAt());
+        buildingDTOList.add(buildingDTO);
+      }
     }
     buildingsDTO.setBuildingDTOS(buildingDTOList);
     return buildingsDTO;

@@ -9,6 +9,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,8 +27,9 @@ public class BuildingController {
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
   @GetMapping("/kingdom/buildings")
-  public ResponseEntity<Object> mockListOfBuildings() {
-    BuildingsDTO buildingsDTO = buildingService.createBuildingsDTO();
+  public ResponseEntity<Object> mockListOfBuildings(@RequestHeader("Authorization") String token) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    BuildingsDTO buildingsDTO = buildingService.createBuildingsDTO(username);
     return ResponseEntity.status(200).body(buildingsDTO);
   }
 

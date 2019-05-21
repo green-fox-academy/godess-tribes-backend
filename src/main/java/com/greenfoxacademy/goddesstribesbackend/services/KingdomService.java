@@ -10,6 +10,10 @@ import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class KingdomService {
 
@@ -59,7 +63,7 @@ public class KingdomService {
 
   public AuthenticationResponseDTO createAuthenticationResponseDTO(TokenDTO tokenDTO) {
     if (tokenDTO == null) return null;
-    String username = JWTUtility.parseToken(tokenDTO.getToken());
+    String username = JWTUtility.parseTokenToRetrieveUsername(tokenDTO.getToken());
 
     if (username != null && userService.checkUserByName(username)) {
       User user = userService.findUserByName(username).get();
@@ -67,6 +71,10 @@ public class KingdomService {
       return new AuthenticationResponseDTO(user.getId(), kingdom.getId());
     }
     return null;
+  }
+
+  public Optional<Kingdom> findKingdomByUser_Username(String username){
+    return kingdomRepository.findKingdomByUser_Username(username);
   }
 
 }

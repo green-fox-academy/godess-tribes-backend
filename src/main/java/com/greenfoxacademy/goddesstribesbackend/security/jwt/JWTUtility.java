@@ -20,7 +20,7 @@ public class JWTUtility {
     return jwtToken;
   }
 
-  public static String parseToken(String jwtToken) {
+  public static String parseTokenToRetrieveUsername(String jwtToken) {
     if (jwtToken == null || jwtToken.isEmpty()) return null;
     try {
       String username = Jwts.parser()
@@ -38,7 +38,7 @@ public class JWTUtility {
     String token = request.getHeader(SecurityConstants.HEADER_STRING);
 
     if (token == null || token.isEmpty() || !token.startsWith(SecurityConstants.TOKEN_PREFIX)) return null;
-    String username = parseToken(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
+    String username = parseTokenToRetrieveUsername(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
 
     return username != null ? new UsernamePasswordAuthenticationToken(username, null, emptyList()) : null;
   }
