@@ -3,8 +3,6 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
-import com.greenfoxacademy.goddesstribesbackend.repositories.FarmRepository;
-import com.greenfoxacademy.goddesstribesbackend.repositories.MineRepository;
 import com.greenfoxacademy.goddesstribesbackend.repositories.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class ResourceService {
 
   private ResourceRepository resourceRepository;
-  private FarmRepository farmRepository;
-  private MineRepository mineRepository;
+//  private FarmRepository farmRepository;
+//  private MineRepository mineRepository;
 
   @Autowired
   public ResourceService(ResourceRepository resourceRepository) {

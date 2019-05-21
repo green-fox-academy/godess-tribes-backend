@@ -7,27 +7,30 @@ import io.swagger.annotations.SwaggerDefinition;
 public class ResourceDTO {
 
   @ApiModelProperty(position = 1)
-  private ResourceTypeENUM resourceTypeENUM;
+  private ResourceTypeENUM type;
   @ApiModelProperty(position = 2)
   private int amount;
   @ApiModelProperty(position = 3)
   private int generationRate;
+  @ApiModelProperty(position = 4)
+  private int updatedAt;
 
   public ResourceDTO() {
   }
 
-  public ResourceDTO(ResourceTypeENUM resourceTypeENUM, int amount, int generationRate) {
-    this.resourceTypeENUM = resourceTypeENUM;
+  public ResourceDTO(ResourceTypeENUM type, int amount, int generationRate, int updatedAt) {
+    this.type = type;
     this.amount = amount;
     this.generationRate = generationRate;
+    this.updatedAt = updatedAt;
   }
 
-  public ResourceTypeENUM getResourceTypeENUM() {
-    return resourceTypeENUM;
+  public ResourceTypeENUM getType() {
+    return type;
   }
 
-  public void setResourceTypeENUM(ResourceTypeENUM resourceTypeENUM) {
-    this.resourceTypeENUM = resourceTypeENUM;
+  public void setType(ResourceTypeENUM type) {
+    this.type = type;
   }
 
   public int getAmount() {
@@ -45,4 +48,13 @@ public class ResourceDTO {
   public void setGenerationRate(int generationRate) {
     this.generationRate = generationRate;
   }
+
+  public int getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(int updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
 }
