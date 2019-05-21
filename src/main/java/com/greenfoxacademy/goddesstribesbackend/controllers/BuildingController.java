@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("https://localhost:8080")
 @RestController
 public class BuildingController {
 
