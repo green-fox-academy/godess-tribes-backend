@@ -8,16 +8,18 @@ public abstract class Building {
 
   public static final int MAX_LEVEL = 3;
   private static final int START_LEVEL = 1;
-  private static final int START_UPGRADING_COST = 100;
-  private static final int START_UPGRADING_TIME = 1;
+  public static final int CREATION_COST = 250;
+  public static final int CREATION_TIME = 2;
+  private static final int START_UPGRADE_COST = 100;
+  private static final int START_UPGRADE_TIME = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private int level;
-  private int upgradingCost;
-  private int upgradingTime;
+  private int upgradeCost;
+  private int upgradeTime;
   private LocalDateTime startedAt;
   private LocalDateTime finishedAt;
 
@@ -34,9 +36,10 @@ public abstract class Building {
 
   public Building(Kingdom kingdom, LocalDateTime startedAt) {
     level = START_LEVEL;
-    upgradingCost = START_UPGRADING_COST;
-    upgradingTime = START_UPGRADING_TIME;
+    upgradeCost = START_UPGRADE_COST;
+    upgradeTime = START_UPGRADE_TIME;
     this.startedAt = startedAt;
+    finishedAt = startedAt.plusMinutes(CREATION_TIME);
     this.kingdom = kingdom;
   }
 
@@ -56,20 +59,20 @@ public abstract class Building {
     this.level = level;
   }
 
-  public int getUpgradingCost() {
-    return upgradingCost;
+  public int getUpgradeCost() {
+    return upgradeCost;
   }
 
-  public void setUpgradingCost(int upgradingCost) {
-    this.upgradingCost = upgradingCost;
+  public void setUpgradeCost(int upgradeCost) {
+    this.upgradeCost = upgradeCost;
   }
 
-  public int getUpgradingTime() {
-    return upgradingTime;
+  public int getUpgradeTime() {
+    return upgradeTime;
   }
 
-  public void setUpgradingTime(int upgradingTime) {
-    this.upgradingTime = upgradingTime;
+  public void setUpgradeTime(int upgradeTime) {
+    this.upgradeTime = upgradeTime;
   }
 
   public LocalDateTime getStartedAt() {

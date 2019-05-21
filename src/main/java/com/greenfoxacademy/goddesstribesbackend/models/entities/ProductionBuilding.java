@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
-public abstract class ProductionBuilding extends ActiveBuilding {
+public abstract class ProductionBuilding extends Building {
 
   private int productionRate;
 
@@ -12,8 +12,7 @@ public abstract class ProductionBuilding extends ActiveBuilding {
   }
 
   public ProductionBuilding(Kingdom kingdom, int productionRate) {
-    super(kingdom);
-    this.productionRate = productionRate;
+    this(kingdom, productionRate, LocalDateTime.now());
   }
 
   public ProductionBuilding(Kingdom kingdom, int productionRate, LocalDateTime startedAt) {
