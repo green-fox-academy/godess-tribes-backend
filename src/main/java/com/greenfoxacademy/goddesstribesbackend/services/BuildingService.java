@@ -2,19 +2,27 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.repositories.BuildingRepository;
+import com.greenfoxacademy.goddesstribesbackend.repositories.FarmRepository;
+import com.greenfoxacademy.goddesstribesbackend.repositories.MineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class BuildingService {
 
   private BuildingRepository buildingRepository;
+  private FarmRepository farmRepository;
+  private MineRepository mineRepository;
 
   @Autowired
-  public BuildingService(BuildingRepository buildingRepository) {
+  public BuildingService(BuildingRepository buildingRepository,
+                         FarmRepository farmRepository, MineRepository mineRepository) {
     this.buildingRepository = buildingRepository;
+    this.farmRepository = farmRepository;
+    this.mineRepository = mineRepository;
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
@@ -39,6 +47,14 @@ public class BuildingService {
       return buildingRepository.save(mine);
     }
     return null;
+  }
+
+  public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
+    return farmRepository.findFarmsByKingdom_Id(kingdomId);
+  }
+
+  public ArrayList<Mine> findMinesByKingdom(Long kingdomId) {
+    return mineRepository.findMinesByKingdom_Id(kingdomId);
   }
 
 }

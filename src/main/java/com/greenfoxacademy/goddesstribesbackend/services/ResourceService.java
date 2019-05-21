@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 public class ResourceService {
 
   private ResourceRepository resourceRepository;
-//  private FarmRepository farmRepository;
-//  private MineRepository mineRepository;
 
   @Autowired
   public ResourceService(ResourceRepository resourceRepository) {
@@ -33,6 +31,10 @@ public class ResourceService {
       return resourceRepository.save(gold);
     }
     return null;
+  }
+
+  public Resource findResourceByKingdomAndType(Long kingdomId, ResourceType type){
+    return resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdomId, type).orElse(null);
   }
 
 }
