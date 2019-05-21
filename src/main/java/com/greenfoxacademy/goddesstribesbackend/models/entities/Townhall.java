@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Entity
 public class Townhall extends Building {
@@ -17,10 +18,13 @@ public class Townhall extends Building {
   }
 
   public Townhall(Kingdom kingdom) {
-    super(kingdom);
+    this(kingdom, LocalDateTime.now());
+  }
+
+  public Townhall(Kingdom kingdom, LocalDateTime startedAt) {
+    super(kingdom, startedAt);
     foodCapacity = START_FOOD_CAPACITY;
     goldCapacity = START_GOLD_CAPACITY;
-    setFinishedAt(getStartedAt());
   }
 
   public int getFoodCapacity() {

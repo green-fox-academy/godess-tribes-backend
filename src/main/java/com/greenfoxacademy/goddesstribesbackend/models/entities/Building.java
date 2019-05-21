@@ -8,8 +8,10 @@ public abstract class Building {
 
   public static final int MAX_LEVEL = 3;
   private static final int START_LEVEL = 1;
-  private static final int START_UPGRADING_COST = 100;
-  private static final int START_UPGRADING_TIME = 1;
+  public static final int CREATION_COST = 250;
+  public static final int CREATION_TIME = 2;
+  private static final int START_UPGRADE_COST = 100;
+  private static final int START_UPGRADE_TIME = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +36,10 @@ public abstract class Building {
 
   public Building(Kingdom kingdom, LocalDateTime startedAt) {
     level = START_LEVEL;
-    upgradingCost = START_UPGRADING_COST;
-    upgradingTime = START_UPGRADING_TIME;
+    upgradingCost = START_UPGRADE_COST;
+    upgradingTime = START_UPGRADE_TIME;
     this.startedAt = startedAt;
+    finishedAt = startedAt.plusMinutes(CREATION_TIME);
     this.kingdom = kingdom;
   }
 
