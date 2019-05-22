@@ -40,7 +40,7 @@ public class ResourceService {
   }
 
   public ArrayList<Resource> findResourcesByKingdom(Long kingdomId) {
-    return findResourcesByKingdom(kingdomId);
+    return resourceRepository.findResourcesByTownhall_Kingdom_Id(kingdomId);
   }
 
   public Resource findResourceByKingdomAndType(Long kingdomId, ResourceType type) {

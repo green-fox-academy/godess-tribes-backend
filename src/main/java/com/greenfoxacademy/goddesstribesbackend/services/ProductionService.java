@@ -27,28 +27,24 @@ public class ProductionService {
   }
 
   public void updateResources(Long kingdomId) {
-    updateFoodResource(kingdomId);
-    updateGoldResource(kingdomId);
-  }
+    ArrayList<Resource> resources = resourceService.findResourcesByKingdom(kingdomId);
 
-  private void updateFoodResource(Long kingdomId) {
-    Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
-    int previousAmount = foodResource.getAmount();
-    int increment = (int) (foodGenerationRate(kingdomId) * duration(foodResource));
-    int currentAmount = previousAmount + increment;
-    foodResource.setAmount(currentAmount);
-    foodResource.setUpdateTime(LocalDateTime.now());
-    resourceService.save(foodResource);
-  }
+    for (Resource resource : resources) {
+      int previousAmount = resource.getAmount();
+      int generationRate = 0;
 
-  private void updateGoldResource(Long kingdomId) {
-    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
-    int previousAmount = goldResource.getAmount();
-    int increment = (int) (buildingService.findGoldProductionRate(kingdomId) * duration(goldResource));
-    int currentAmount = previousAmount + increment;
-    goldResource.setAmount(currentAmount);
-    goldResource.setUpdateTime(LocalDateTime.now());
-    resourceService.save(goldResource);
+      if (resource.getType().equals(ResourceType.FOOD)) {
+        generationRate = foodGenerationRate(kingdomId);
+
+      } else if (resource.getType().equals(ResourceType.GOLD)) {
+        generationRate = buildingService.findGoldProductionRate(kingdomId);
+      }
+
+      int currentAmount = previousAmount + (int) (generationRate * duration(resource) / 60.);
+      resource.setAmount(currentAmount);
+      resource.setUpdateTime(LocalDateTime.now());
+      resourceService.save(resource);
+    }
   }
 
   public int foodGenerationRate(Long kingdomId) {
@@ -60,7 +56,7 @@ public class ProductionService {
   private long duration(Resource resource) {
     LocalDateTime previousUpdateTime = resource.getUpdateTime();
     LocalDateTime now = LocalDateTime.now();
-    long duration = Duration.between(previousUpdateTime, now).toMinutes();
+    long duration = Duration.between(previousUpdateTime, now).getSeconds();
     return duration;
   }
 
