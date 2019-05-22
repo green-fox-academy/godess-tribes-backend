@@ -34,7 +34,7 @@ public class ProductionService {
       int generationRate = 0;
 
       if (resource.getType().equals(ResourceType.FOOD)) {
-        generationRate = foodGenerationRate(kingdomId);
+        generationRate = findNetFoodProductionRate(kingdomId);
 
       } else if (resource.getType().equals(ResourceType.GOLD)) {
         generationRate = buildingService.findGoldProductionRate(kingdomId);
@@ -47,7 +47,7 @@ public class ProductionService {
     }
   }
 
-  public int foodGenerationRate(Long kingdomId) {
+  public int findNetFoodProductionRate(Long kingdomId) {
     int foodProductionRate = buildingService.findFoodProductionRate(kingdomId);
     int foodConsumptionRate = soldierService.findFoodConsumptionRate(kingdomId);
     return foodProductionRate - foodConsumptionRate;
@@ -66,7 +66,7 @@ public class ProductionService {
     ArrayList<ResourceDTO> resourceDTOS = new ArrayList<>();
 
     Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
-    int foodGenerationRate = foodGenerationRate(kingdomId);
+    int foodGenerationRate = findNetFoodProductionRate(kingdomId);
     resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodGenerationRate, foodResource.getUpdateTime()));
 
     Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
