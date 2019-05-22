@@ -40,7 +40,7 @@ public class ProductionService {
         generationRate = buildingService.findGoldProductionRate(kingdomId);
       }
 
-      int currentAmount = previousAmount + (int) (generationRate * duration(resource) / 60.);
+      int currentAmount = previousAmount + (int) (generationRate * findDuration(resource) / 60.);
       resource.setAmount(currentAmount);
       resource.setUpdateTime(LocalDateTime.now());
       resourceService.save(resource);
@@ -53,7 +53,7 @@ public class ProductionService {
     return foodProductionRate - foodConsumptionRate;
   }
 
-  private long duration(Resource resource) {
+  private long findDuration(Resource resource) {
     LocalDateTime previousUpdateTime = resource.getUpdateTime();
     LocalDateTime now = LocalDateTime.now();
     long duration = Duration.between(previousUpdateTime, now).getSeconds();
