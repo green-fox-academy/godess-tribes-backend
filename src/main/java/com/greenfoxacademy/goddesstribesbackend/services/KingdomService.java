@@ -36,11 +36,9 @@ public class KingdomService {
       Kingdom newKingdom;
 
       if (kingdomName == null || kingdomName.isEmpty()) {
-        newKingdom = new Kingdom(user.getUsername() + "'s kingdom", user);
-      } else {
-        newKingdom = new Kingdom(kingdomName, user);
+        kingdomName = user.getUsername() + "'s kingdom";
       }
-      return kingdomRepository.save(newKingdom);
+      return kingdomRepository.save(new Kingdom(kingdomName, user));
     }
     return null;
   }
