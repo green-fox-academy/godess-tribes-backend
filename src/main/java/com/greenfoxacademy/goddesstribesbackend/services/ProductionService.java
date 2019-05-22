@@ -31,16 +31,19 @@ public class ProductionService {
 
     for (Resource resource : resources) {
       int previousAmount = resource.getAmount();
-      int generationRate = 0;
+      int currentAmount = 0;
 
       if (resource.getType().equals(ResourceType.FOOD)) {
-        generationRate = findNetFoodProductionRate(kingdomId);
+        currentAmount = previousAmount + (int) (findNetFoodProductionRate(kingdomId) * findDuration(resource) / 60.);
+        int maxFood = resource.getTownhall().getFoodCapacity();
+        currentAmount = currentAmount <= maxFood ? currentAmount : maxFood;
 
       } else if (resource.getType().equals(ResourceType.GOLD)) {
-        generationRate = buildingService.findGoldProductionRate(kingdomId);
+        currentAmount = previousAmount + (int) (buildingService.findGoldProductionRate(kingdomId) * findDuration(resource) / 60.);
+        int maxGold = resource.getTownhall().getGoldCapacity();
+        currentAmount = currentAmount <= maxGold ? currentAmount : maxGold;
       }
 
-      int currentAmount = previousAmount + (int) (generationRate * findDuration(resource) / 60.);
       resource.setAmount(currentAmount);
       resource.setUpdateTime(LocalDateTime.now());
       resourceService.save(resource);
