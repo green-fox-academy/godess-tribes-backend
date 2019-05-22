@@ -69,12 +69,12 @@ public class ProductionService {
     ArrayList<ResourceDTO> resourceDTOS = new ArrayList<>();
 
     Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
-    int foodGenerationRate = findNetFoodProductionRate(kingdomId);
-    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodGenerationRate));
+    int foodProdRate = findNetFoodProductionRate(kingdomId);
+    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodProdRate));
 
     Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
-    int goldGenerationRate = buildingService.findGoldProductionRate(kingdomId);
-    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate));
+    int goldProdRate = buildingService.findGoldProductionRate(kingdomId);
+    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldProdRate));
 
     return new ResourcesDTO(resourceDTOS);
   }
