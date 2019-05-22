@@ -3,8 +3,6 @@ package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
-import java.time.LocalDateTime;
-
 @SwaggerDefinition
 public class ResourceDTO {
 
@@ -14,17 +12,14 @@ public class ResourceDTO {
   private int amount;
   @ApiModelProperty(position = 3)
   private int generationRate;
-  @ApiModelProperty(position = 4)
-  private LocalDateTime updatedAt;
 
   public ResourceDTO() {
   }
 
-  public ResourceDTO(ResourceTypeENUM type, int amount, int generationRate, LocalDateTime updatedAt) {
+  public ResourceDTO(ResourceTypeENUM type, int amount, int generationRate) {
     this.type = type;
     this.amount = amount;
     this.generationRate = generationRate;
-    this.updatedAt = updatedAt;
   }
 
   public ResourceTypeENUM getType() {
@@ -49,14 +44,6 @@ public class ResourceDTO {
 
   public void setGenerationRate(int generationRate) {
     this.generationRate = generationRate;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
   }
 
 }
