@@ -27,6 +27,10 @@ public class KingdomService {
     this.resourceService = resourceService;
   }
 
+  public Kingdom findKingdomByUsername(String username) {
+    return kingdomRepository.findKingdomByUser_Username(username).orElse(null);
+  }
+
   public Kingdom saveKingdom(String kingdomName, User user) {
     if (user != null && userService.checkUserByName(user.getUsername())) {
       Kingdom newKingdom;

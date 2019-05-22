@@ -1,12 +1,16 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourcesDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class ProductionService {
@@ -33,6 +37,7 @@ public class ProductionService {
     int increment = (int) (foodGenerationRate(kingdomId) * duration(foodResource));
     int currentAmount = previousAmount + increment;
     foodResource.setAmount(currentAmount);
+    foodResource.setUpdateTime(LocalDateTime.now());
     resourceService.save(foodResource);
   }
 
@@ -42,6 +47,7 @@ public class ProductionService {
     int increment = (int) (buildingService.findGoldProductionRate(kingdomId) * duration(goldResource));
     int currentAmount = previousAmount + increment;
     goldResource.setAmount(currentAmount);
+    goldResource.setUpdateTime(LocalDateTime.now());
     resourceService.save(goldResource);
   }
 
@@ -56,6 +62,22 @@ public class ProductionService {
     LocalDateTime now = LocalDateTime.now();
     long duration = Duration.between(previousUpdateTime, now).toMinutes();
     return duration;
+  }
+
+  public ResourcesDTO createResourcesDTO(Long kingdomId) {
+    updateResources(kingdomId);
+
+    ArrayList<ResourceDTO> resourceDTOS = new ArrayList<>();
+
+    Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
+    int foodGenerationRate = foodGenerationRate(kingdomId);
+    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodGenerationRate, foodResource.getUpdateTime()));
+
+    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
+    int goldGenerationRate = buildingService.findGoldProductionRate(kingdomId);
+    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate, goldResource.getUpdateTime()));
+
+    return new ResourcesDTO(resourceDTOS);
   }
 
 }
