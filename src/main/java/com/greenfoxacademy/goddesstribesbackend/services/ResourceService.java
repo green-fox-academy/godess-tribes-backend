@@ -20,19 +20,13 @@ public class ResourceService {
   }
 
   public Resource saveFoodAtStart(Townhall townhall) {
-    if (townhall != null) {
-      Resource food = new Resource(ResourceType.FOOD, Townhall.START_FOOD_AMOUNT, townhall);
-      return resourceRepository.save(food);
-    }
-    return null;
+    Resource food = new Resource(ResourceType.FOOD, Townhall.START_FOOD_AMOUNT, townhall);
+    return resourceRepository.save(food);
   }
 
   public Resource saveGoldAtStart(Townhall townhall) {
-    if (townhall != null) {
-      Resource gold = new Resource(ResourceType.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
-      return resourceRepository.save(gold);
-    }
-    return null;
+    Resource gold = new Resource(ResourceType.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
+    return resourceRepository.save(gold);
   }
 
   public Resource save(Resource resource) {

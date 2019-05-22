@@ -26,27 +26,18 @@ public class BuildingService {
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
-    if (kingdom != null) {
-      Townhall townhall = new Townhall(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
-      return buildingRepository.save(townhall);
-    }
-    return null;
+    Townhall townhall = new Townhall(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
+    return buildingRepository.save(townhall);
   }
 
   public Farm saveFarmAtStart(Kingdom kingdom) {
-    if (kingdom != null) {
-      Farm farm = new Farm(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
-      return buildingRepository.save(farm);
-    }
-    return null;
+    Farm farm = new Farm(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
+    return buildingRepository.save(farm);
   }
 
   public Mine saveMineAtStart(Kingdom kingdom) {
-    if (kingdom != null) {
-      Mine mine = new Mine(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
-      return buildingRepository.save(mine);
-    }
-    return null;
+    Mine mine = new Mine(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
+    return buildingRepository.save(mine);
   }
 
   public ArrayList<Farm> findFarms(Long kingdomId) {
