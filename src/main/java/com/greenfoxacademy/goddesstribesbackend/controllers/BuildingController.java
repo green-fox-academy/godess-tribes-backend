@@ -25,9 +25,9 @@ public class BuildingController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingsDTO.class)})
   @GetMapping("/kingdom/buildings")
-  public ResponseEntity<Object> mockListOfBuildings(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<Object> ListOfBuildings() {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     BuildingsDTO buildingsDTO = buildingService.createBuildingsDTO(username);
     return ResponseEntity.status(200).body(buildingsDTO);

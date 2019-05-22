@@ -4,12 +4,12 @@ import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface BuildingRepository extends CrudRepository<Building, Long> {
 
-  @Override
-  Iterable<Building> findAll();
+  ArrayList<Building> findAll();
 
-  Iterable<Building> findAllByKingdom(Kingdom kingdom);
+  ArrayList<Building> findBuildingsByKingdom_Id(Long id);
 }
