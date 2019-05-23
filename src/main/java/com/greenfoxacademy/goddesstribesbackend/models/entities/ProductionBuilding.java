@@ -17,7 +17,7 @@ public abstract class ProductionBuilding extends Building {
 
   public ProductionBuilding(Kingdom kingdom, int productionRate, LocalDateTime startedAt) {
     super(kingdom, startedAt);
-    this.productionRate = productionRate;
+    this.productionRate =  productionRate;
   }
 
   public int getProductionRate() {
