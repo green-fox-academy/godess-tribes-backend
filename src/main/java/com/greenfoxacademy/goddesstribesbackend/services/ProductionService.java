@@ -4,6 +4,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourcesDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,10 @@ public class ProductionService {
     updateResources(kingdomId);
     Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
     return goldResource.getAmount();
+  }
+
+  public boolean isEnoughMoneyToCreateBuilding(Long kingdomId) {
+    return calculateGoldReserve(kingdomId) >= Building.CREATION_COST;
   }
 
   public ResourcesDTO createResourcesDTO(Long kingdomId) {

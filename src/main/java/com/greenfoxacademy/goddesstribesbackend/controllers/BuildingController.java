@@ -56,7 +56,7 @@ public class BuildingController {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building type"));
     }
 
-    if (productionService.calculateGoldReserve(kingdom.getId()) < Building.CREATION_COST) {
+    if (!productionService.isEnoughMoneyToCreateBuilding(kingdom.getId())) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource"));
     }
 
