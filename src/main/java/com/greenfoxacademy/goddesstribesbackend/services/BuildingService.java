@@ -85,6 +85,8 @@ public class BuildingService {
     if (!isValidBuildingType(type)) return null;
     Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceType.GOLD).orElse(null);
     if (goldResource == null) return null;
+    if (goldResource.getAmount() < Building.CREATION_COST) return null;
+
     Building building = null;
 
     if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
@@ -103,8 +105,13 @@ public class BuildingService {
   }
 
   public BuildingDTO createBuildingDTO(Building building){
-    //todo
-    return null;
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setId(building.getId());
+    //buildingDTO.setType(); TODO!
+    buildingDTO.setLevel(building.getLevel());
+    buildingDTO.setStartedAt(building.getStartedAt());
+    buildingDTO.setFinishedAt(building.getFinishedAt());
+    return buildingDTO;
   }
 
 }
