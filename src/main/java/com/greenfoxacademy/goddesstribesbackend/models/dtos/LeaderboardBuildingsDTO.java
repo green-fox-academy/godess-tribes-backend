@@ -7,7 +7,7 @@ import io.swagger.annotations.SwaggerDefinition;
 public class LeaderboardBuildingsDTO {
 
   @ApiModelProperty(position = 1)
-  private String KingdomName;
+  private String kingdomName;
   @ApiModelProperty(position = 2)
   private int buildings;
 
@@ -15,16 +15,16 @@ public class LeaderboardBuildingsDTO {
   }
 
   public LeaderboardBuildingsDTO(String kingdomName, int buildings) {
-    KingdomName = kingdomName;
+    this.kingdomName = kingdomName;
     this.buildings = buildings;
   }
 
   public String getKingdomName() {
-    return KingdomName;
+    return kingdomName;
   }
 
   public void setKingdomName(String kingdomName) {
-    KingdomName = kingdomName;
+    this.kingdomName = kingdomName;
   }
 
   public int getBuildings() {
