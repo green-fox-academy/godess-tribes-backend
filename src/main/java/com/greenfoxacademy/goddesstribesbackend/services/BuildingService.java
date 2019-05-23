@@ -2,7 +2,6 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingsDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.repositories.BuildingRepository;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
@@ -68,7 +67,7 @@ public class BuildingService {
       for (Building building: buildingList){
         BuildingDTO buildingDTO = new BuildingDTO();
         buildingDTO.setId(building.getId());
-        buildingDTO.setBuildingTypeENUM(building.getBuildingTypeENUM());
+        buildingDTO.setBuildingTypeENUM(building.getBuildingType());
         buildingDTO.setLevel(building.getLevel());
         buildingDTO.setStartedAt(building.getStartedAt());
         buildingDTO.setFinishedAt(building.getFinishedAt());

@@ -15,12 +15,12 @@ public class Farm extends ProductionBuilding {
 
   public Farm(Kingdom kingdom) {
     super(kingdom, START_PRODUCTION_RATE);
-    this.setBuildingTypeENUM(BuildingTypeENUM.FARM);
+    this.setBuildingType(BuildingTypeENUM.FARM);
   }
 
   public Farm(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, START_PRODUCTION_RATE, startedAt);
-    this.setBuildingTypeENUM(BuildingTypeENUM.FARM);
+    this.setBuildingType(BuildingTypeENUM.FARM);
   }
 
 }

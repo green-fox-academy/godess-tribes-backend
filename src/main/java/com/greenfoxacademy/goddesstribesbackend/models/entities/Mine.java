@@ -15,12 +15,12 @@ public class Mine extends ProductionBuilding {
 
   public Mine(Kingdom kingdom) {
     super(kingdom, START_PRODUCTION_RATE);
-    this.setBuildingTypeENUM(BuildingTypeENUM.MINE);
+    this.setBuildingType(BuildingTypeENUM.MINE);
   }
 
   public Mine(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, START_PRODUCTION_RATE, startedAt);
-    this.setBuildingTypeENUM(BuildingTypeENUM.MINE);
+    this.setBuildingType(BuildingTypeENUM.MINE);
   }
 
 }

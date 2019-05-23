@@ -21,14 +21,14 @@ public class Townhall extends Building {
 
   public Townhall(Kingdom kingdom) {
     this(kingdom, LocalDateTime.now());
-    this.setBuildingTypeENUM(BuildingTypeENUM.TOWNHALL);
+    this.setBuildingType(BuildingTypeENUM.TOWNHALL);
   }
 
   public Townhall(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, startedAt);
     foodCapacity = START_FOOD_CAPACITY;
     goldCapacity = START_GOLD_CAPACITY;
-    this.setBuildingTypeENUM(BuildingTypeENUM.TOWNHALL);
+    this.setBuildingType(BuildingTypeENUM.TOWNHALL);
   }
 
   public int getFoodCapacity() {
