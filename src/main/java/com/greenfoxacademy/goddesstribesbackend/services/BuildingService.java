@@ -54,7 +54,7 @@ public class BuildingService {
   public ArrayList<Building> findAll(){
     return buildingRepository.findAll();
   }
-  
+    
   public ArrayList<Building> findBuildingsByKingdomId(Long id){
     return buildingRepository.findBuildingsByKingdom_Id(id);
   }
