@@ -98,9 +98,7 @@ public class BuildingService {
         buildingDTO.setFinishedAt(building.getFinishedAt());
         buildingDTOList.add(buildingDTO);
       }
-      return new BuildingsDTO(buildingDTOList);
     }
-
     return new BuildingsDTO(buildingDTOList);
   }
 
