@@ -1,5 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeENUM;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -26,6 +29,8 @@ public abstract class Building {
   @ManyToOne(optional = false)
   @JoinColumn(name = "kingdomId")
   private Kingdom kingdom;
+
+  private BuildingTypeENUM buildingTypeENUM;
 
   public Building() {
   }
@@ -97,6 +102,14 @@ public abstract class Building {
 
   public void setKingdom(Kingdom kingdom) {
     this.kingdom = kingdom;
+  }
+
+  public BuildingTypeENUM getBuildingTypeENUM() {
+    return buildingTypeENUM;
+  }
+
+  public void setBuildingTypeENUM(BuildingTypeENUM buildingTypeENUM) {
+    this.buildingTypeENUM = buildingTypeENUM;
   }
 
 }
