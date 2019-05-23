@@ -11,5 +11,6 @@ public interface MineRepository extends CrudRepository<Mine, Long> {
 
   ArrayList<Mine> findAll();
 
-  ArrayList<Mine> findMinesByKingdom_Id(Long id);
+  ArrayList<Mine> findMinesByKingdom_Id(Long kingdomId);
+
 }

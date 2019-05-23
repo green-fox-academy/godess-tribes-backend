@@ -29,16 +29,18 @@ public class KingdomService {
     this.resourceService = resourceService;
   }
 
+  public Kingdom findKingdomByUsername(String username) {
+    return kingdomRepository.findKingdomByUser_Username(username).orElse(null);
+  }
+
   public Kingdom saveKingdom(String kingdomName, User user) {
     if (user != null && userService.checkUserByName(user.getUsername())) {
       Kingdom newKingdom;
 
       if (kingdomName == null || kingdomName.isEmpty()) {
-        newKingdom = new Kingdom(user.getUsername() + "'s kingdom", user);
-      } else {
-        newKingdom = new Kingdom(kingdomName, user);
+        kingdomName = user.getUsername() + "'s kingdom";
       }
-      return kingdomRepository.save(newKingdom);
+      return kingdomRepository.save(new Kingdom(kingdomName, user));
     }
     return null;
   }
