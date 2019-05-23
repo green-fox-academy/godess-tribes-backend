@@ -14,8 +14,7 @@ public class Farm extends ProductionBuilding {
   }
 
   public Farm(Kingdom kingdom) {
-    super(kingdom, START_PRODUCTION_RATE);
-    this.setBuildingType(BuildingTypeENUM.FARM);
+    this(kingdom, LocalDateTime.now());
   }
 
   public Farm(Kingdom kingdom, LocalDateTime startedAt) {

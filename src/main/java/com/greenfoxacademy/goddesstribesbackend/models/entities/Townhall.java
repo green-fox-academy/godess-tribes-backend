@@ -21,7 +21,6 @@ public class Townhall extends Building {
 
   public Townhall(Kingdom kingdom) {
     this(kingdom, LocalDateTime.now());
-    this.setBuildingType(BuildingTypeENUM.TOWNHALL);
   }
 
   public Townhall(Kingdom kingdom, LocalDateTime startedAt) {
