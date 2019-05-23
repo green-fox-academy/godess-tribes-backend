@@ -31,19 +31,20 @@ public class ProductionService {
 
     for (Resource resource : resources) {
       int previousAmount = resource.getAmount();
-      int currentAmount = 0;
+      int increment = 0;
+      int maxAmount = Integer.MAX_VALUE;
 
       if (resource.getType().equals(ResourceType.FOOD)) {
-        currentAmount = previousAmount + (int) (calculateNetFoodGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
-        int maxFood = resource.getTownhall().getFoodCapacity();
-        currentAmount = currentAmount <= maxFood ? currentAmount : maxFood;
+        increment = (int) (calculateNetFoodGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
+        maxAmount = resource.getTownhall().getFoodCapacity();
 
       } else if (resource.getType().equals(ResourceType.GOLD)) {
-        currentAmount = previousAmount + (int) (buildingService.calculateGoldGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
-        int maxGold = resource.getTownhall().getGoldCapacity();
-        currentAmount = currentAmount <= maxGold ? currentAmount : maxGold;
+        increment = (int) (buildingService.calculateGoldGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
+        maxAmount = resource.getTownhall().getGoldCapacity();
       }
 
+      int currentAmount = previousAmount + increment;
+      currentAmount = currentAmount <= maxAmount ? currentAmount : maxAmount;
       resource.setAmount(currentAmount);
       resource.setUpdateTime(LocalDateTime.now());
       resourceService.save(resource);
@@ -66,17 +67,17 @@ public class ProductionService {
   public ResourcesDTO createResourcesDTO(Long kingdomId) {
     updateResources(kingdomId);
 
-    ArrayList<ResourceDTO> resourceDTOS = new ArrayList<>();
+    ArrayList<ResourceDTO> resourceDTOs = new ArrayList<>();
 
     Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
     int foodNetGenerationRate = calculateNetFoodGenerationRate(kingdomId);
-    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodNetGenerationRate));
+    resourceDTOs.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodNetGenerationRate));
 
     Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
     int goldGenerationRate = buildingService.calculateGoldGenerationRate(kingdomId);
-    resourceDTOS.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate));
+    resourceDTOs.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate));
 
-    return new ResourcesDTO(resourceDTOS);
+    return new ResourcesDTO(resourceDTOs);
   }
 
 }
