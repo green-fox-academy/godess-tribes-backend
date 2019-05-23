@@ -21,7 +21,7 @@ public class SoldierService {
     return soldierRepository.findSoldiersByBarrack_Kingdom_Id(kingdomId);
   }
 
-  public int findFoodConsumptionRate(Long kingdomId) {
+  public int calculateFoodConsumptionRate(Long kingdomId) {
     int consumptionRate = 0;
     ArrayList<Soldier> soldiers = findSoldiers(kingdomId);
 

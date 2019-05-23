@@ -48,7 +48,7 @@ public class BuildingService {
     return mineRepository.findMinesByKingdom_Id(kingdomId);
   }
 
-  public int findFoodProductionRate(Long kingdomId) {
+  public int calculateFoodGenerationRate(Long kingdomId) {
     int foodProductionRate = 0;
     ArrayList<Farm> farms = findFarms(kingdomId);
 
@@ -58,7 +58,7 @@ public class BuildingService {
     return foodProductionRate;
   }
 
-  public int findGoldProductionRate(Long kingdomId) {
+  public int calculateGoldGenerationRate(Long kingdomId) {
     int goldProductionRate = 0;
     ArrayList<Mine> mines = findMines(kingdomId);
 
