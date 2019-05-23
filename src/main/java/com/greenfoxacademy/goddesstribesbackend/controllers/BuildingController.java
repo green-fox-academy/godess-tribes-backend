@@ -1,16 +1,37 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.greenfoxacademy.goddesstribesbackend.models.MockData;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.LevelDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
+import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
+import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BuildingController {
+
+  private KingdomService kingdomService;
+  private ProductionService productionService;
+  private BuildingService buildingService;
+
+  @Autowired
+  public BuildingController(KingdomService kingdomService, ProductionService productionService,
+                            BuildingService buildingService) {
+    this.productionService = productionService;
+    this.buildingService = buildingService;
+  }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
@@ -22,35 +43,25 @@ public class BuildingController {
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),@ApiResponse(code = 400, message ="Missing parameter(s): type!", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid building type", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
   @PostMapping("/kingdom/buildings")
-  public ResponseEntity<Object> mockCreateABuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
+  public ResponseEntity<Object> createBuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Kingdom kingdom = kingdomService.findKingdomByUsername(username);
+    String type = buildingTypeDTO.getType();
 
-    if (buildingTypeDTO.getType() == null || buildingTypeDTO.getType().isEmpty()) {
+    if (type == null || type.isEmpty()) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): type!"));
     }
 
-    if (!(BuldingTypeENUM.FARM.toString().equalsIgnoreCase(buildingTypeDTO.getType())) &&
-        !(BuldingTypeENUM.MINE.toString().equalsIgnoreCase(buildingTypeDTO.getType())) &&
-        !(BuldingTypeENUM.BARRACK.toString().equalsIgnoreCase(buildingTypeDTO.getType())) )
-        {
+    if (!buildingService.isValidBuildingType(type)) {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building type"));
     }
 
-    if (MockData.gold.getAmount() < MockData.COST_OF_NEW_BUILDING) {
+    if (productionService.calculateGoldReserve(kingdom.getId()) < Building.CREATION_COST) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource"));
     }
 
-    if (BuldingTypeENUM.FARM.toString().equalsIgnoreCase(buildingTypeDTO.getType())){
-      MockData.gold.setAmount(MockData.gold.getAmount() - 250);
-      return ResponseEntity.status(200).body(MockData.farm);
-    }
-
-    if (BuldingTypeENUM.MINE.toString().equalsIgnoreCase(buildingTypeDTO.getType())){
-      MockData.gold.setAmount(MockData.gold.getAmount() - 250);
-      return ResponseEntity.status(200).body(MockData.mine);
-    }
-
-    MockData.gold.setAmount(MockData.gold.getAmount() - 250);
-    return ResponseEntity.status(200).body(MockData.barrack);
+    Building building = buildingService.createBuilding(kingdom, type);
+    return ResponseEntity.status(200).body(buildingService.createBuildingDTO(building));
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })

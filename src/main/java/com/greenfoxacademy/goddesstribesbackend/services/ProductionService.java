@@ -2,7 +2,7 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourcesDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +62,12 @@ public class ProductionService {
     LocalDateTime now = LocalDateTime.now();
     long duration = Duration.between(previousUpdateTime, now).getSeconds();
     return duration;
+  }
+
+  public int calculateGoldReserve(Long kingdomId) {
+    updateResources(kingdomId);
+    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
+    return goldResource.getAmount();
   }
 
   public ResourcesDTO createResourcesDTO(Long kingdomId) {
