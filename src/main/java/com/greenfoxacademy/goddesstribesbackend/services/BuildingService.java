@@ -54,8 +54,8 @@ public class BuildingService {
   public ArrayList<Building> findAll(){
     return buildingRepository.findAll();
   }
-
-  public ArrayList<Building> findBuildingsByKingdom(Long id){
+  
+  public ArrayList<Building> findBuildingsByKingdomId(Long id){
     return buildingRepository.findBuildingsByKingdom_Id(id);
   }
 
@@ -63,7 +63,7 @@ public class BuildingService {
     List<BuildingDTO> buildingDTOList = new ArrayList<>();
     if (kingdomRepository.findKingdomByUser_Username(username).isPresent()){
       Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-      ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
+      ArrayList<Building> buildingList = findBuildingsByKingdomId(kingdom.getId());
       for (Building building: buildingList){
         BuildingDTO buildingDTO = new BuildingDTO();
         buildingDTO.setId(building.getId());
