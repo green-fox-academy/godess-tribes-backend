@@ -2,7 +2,6 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingsDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuldingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.repositories.BuildingRepository;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BuildingService {
@@ -67,29 +65,15 @@ public class BuildingService {
       Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
       ArrayList<Building> buildingList = findBuildingsByKingdom_Id(kingdom.getId());
       for (Building building: buildingList){
-        BuildingDTO  buildingDTO = new BuildingDTO();
+        BuildingDTO buildingDTO = new BuildingDTO();
         buildingDTO.setId(building.getId());
-
-        if (building instanceof Townhall){
-          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.TOWNHALL);
-        }
-
-        if (building instanceof Mine){
-          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.MINE);
-        }
-
-        if (building instanceof Farm){
-          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.FARM);
-        }
-
-        if (building instanceof Barrack){
-          buildingDTO.setBuldingTypeENUM(BuldingTypeENUM.BARRACK);
-        }
+        buildingDTO.setBuildingTypeENUM(building.getBuildingType());
         buildingDTO.setLevel(building.getLevel());
         buildingDTO.setStartedAt(building.getStartedAt());
         buildingDTO.setFinishedAt(building.getFinishedAt());
         buildingDTOList.add(buildingDTO);
       }
+      return new BuildingsDTO(buildingDTOList);
     }
 
     return new BuildingsDTO(buildingDTOList);

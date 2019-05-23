@@ -1,5 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeENUM;
+
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
@@ -13,10 +15,12 @@ public class Farm extends ProductionBuilding {
 
   public Farm(Kingdom kingdom) {
     super(kingdom, START_PRODUCTION_RATE);
+    this.setBuildingType(BuildingTypeENUM.FARM);
   }
 
   public Farm(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, START_PRODUCTION_RATE, startedAt);
+    this.setBuildingType(BuildingTypeENUM.FARM);
   }
 
 }
