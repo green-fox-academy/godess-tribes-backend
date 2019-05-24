@@ -73,8 +73,4 @@ public class KingdomService {
     return null;
   }
 
-  public Optional<Kingdom> findKingdomByUser_Username(String username){
-    return kingdomRepository.findKingdomByUser_Username(username);
-  }
-
 }

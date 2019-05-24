@@ -1,5 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 

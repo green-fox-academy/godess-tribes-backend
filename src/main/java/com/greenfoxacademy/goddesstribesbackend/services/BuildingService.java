@@ -48,17 +48,17 @@ public class BuildingService {
     return buildingRepository.save(mine);
   }
 
-  public ArrayList<Farm> findFarms(Long kingdomId) {
+  public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
     return farmRepository.findFarmsByKingdom_Id(kingdomId);
   }
 
-  public ArrayList<Mine> findMines(Long kingdomId) {
+  public ArrayList<Mine> findMinesByKingdom(Long kingdomId) {
     return mineRepository.findMinesByKingdom_Id(kingdomId);
   }
 
   public int calculateFoodGenerationRate(Long kingdomId) {
     int foodProductionRate = 0;
-    ArrayList<Farm> farms = findFarms(kingdomId);
+    ArrayList<Farm> farms = findFarmsByKingdom(kingdomId);
 
     for (Farm farm : farms) {
       foodProductionRate += farm.getProductionRate();
@@ -68,7 +68,7 @@ public class BuildingService {
 
   public int calculateGoldGenerationRate(Long kingdomId) {
     int goldProductionRate = 0;
-    ArrayList<Mine> mines = findMines(kingdomId);
+    ArrayList<Mine> mines = findMinesByKingdom(kingdomId);
 
     for (Mine mine : mines) {
       goldProductionRate += mine.getProductionRate();
@@ -80,15 +80,16 @@ public class BuildingService {
     return buildingRepository.findAll();
   }
 
-  public ArrayList<Building> findBuildingsByKingdomId(Long id){
-    return buildingRepository.findBuildingsByKingdom_Id(id);
+  public ArrayList<Building> findBuildingsByKingdom(Long kingdomId){
+    return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
+
   }
 
   public BuildingsDTO createBuildingsDTO(String username){
     List<BuildingDTO> buildingDTOList = new ArrayList<>();
     if (kingdomRepository.findKingdomByUser_Username(username).isPresent()){
       Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-      ArrayList<Building> buildingList = findBuildingsByKingdomId(kingdom.getId());
+      ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
       for (Building building: buildingList){
         BuildingDTO buildingDTO = new BuildingDTO();
         buildingDTO.setId(building.getId());
