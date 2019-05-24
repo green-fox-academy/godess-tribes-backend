@@ -43,4 +43,8 @@ public class MockData {
 
   public static TokenDTO tokenDTO = new TokenDTO();
 
+  public static LeaderboardSoldiersDTO leaderboardSoldiersDTO = new LeaderboardSoldiersDTO("Jancsika's kingdom", 20 );
+
+  public static LeaderboardBuildingsDTO leaderboardBuildingsDTO = new LeaderboardBuildingsDTO("Jancsika's kingdom", 3 );
+
 }

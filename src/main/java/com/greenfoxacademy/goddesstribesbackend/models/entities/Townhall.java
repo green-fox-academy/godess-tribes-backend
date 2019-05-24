@@ -1,5 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
+
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
@@ -25,6 +27,7 @@ public class Townhall extends Building {
     super(kingdom, startedAt);
     foodCapacity = START_FOOD_CAPACITY;
     goldCapacity = START_GOLD_CAPACITY;
+    this.setBuildingType(BuildingTypeENUM.TOWNHALL);
   }
 
   public int getFoodCapacity() {

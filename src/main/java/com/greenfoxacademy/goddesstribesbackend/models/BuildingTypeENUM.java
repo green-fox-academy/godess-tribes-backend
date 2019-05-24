@@ -4,8 +4,8 @@ import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
 public enum BuildingTypeENUM {
-  TOWNHALL,
   BARRACK,
+  TOWNHALL,
   FARM,
   MINE
 }

@@ -1,7 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;

@@ -11,7 +11,7 @@ public class BuildingDTO {
   @ApiModelProperty(position = 1)
   private Long id;
   @ApiModelProperty(position = 2)
-  private BuildingTypeENUM type;
+  private BuildingTypeENUM buildingTypeENUM;
   @ApiModelProperty(position = 3)
   private int level;
   @ApiModelProperty(position = 4)
@@ -22,9 +22,9 @@ public class BuildingDTO {
   public BuildingDTO() {
   }
 
-  public BuildingDTO(Long id, BuildingTypeENUM type, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
+  public BuildingDTO(Long id, BuildingTypeENUM buildingTypeENUM, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
     this.id = id;
-    this.type = type;
+    this.buildingTypeENUM = buildingTypeENUM;
     this.level = level;
     this.startedAt = startedAt;
     this.finishedAt = finishedAt;
@@ -38,12 +38,12 @@ public class BuildingDTO {
     this.id = id;
   }
 
-  public BuildingTypeENUM getType() {
-    return type;
+  public BuildingTypeENUM getBuildingTypeENUM() {
+    return buildingTypeENUM;
   }
 
-  public void setType(BuildingTypeENUM type) {
-    this.type = type;
+  public void setBuildingTypeENUM(BuildingTypeENUM buildingTypeENUM) {
+    this.buildingTypeENUM = buildingTypeENUM;
   }
 
   public int getLevel() {

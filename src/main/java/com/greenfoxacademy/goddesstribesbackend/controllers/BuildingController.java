@@ -10,6 +10,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiResponse;
@@ -35,10 +36,12 @@ public class BuildingController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingsDTO.class)})
   @GetMapping("/kingdom/buildings")
-  public ResponseEntity<Object> mockListOfBuildings() {
-    return ResponseEntity.status(200).body(MockData.buildingsDTO);
+  public ResponseEntity<Object> listOfBuildings() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    BuildingsDTO buildingsDTO = buildingService.createBuildingsDTO(username);
+    return ResponseEntity.status(200).body(buildingsDTO);
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
@@ -69,11 +72,9 @@ public class BuildingController {
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 409, message = "Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object> mockRenderBuilding(@PathVariable Long id) {
-
     if (MockData.farm.getId() == id) {
       return ResponseEntity.status(200).body(MockData.farm);
     }
-
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
