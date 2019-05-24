@@ -1,9 +1,9 @@
-package com.greenfoxacademy.goddesstribesbackend.models.dtos;
+package com.greenfoxacademy.goddesstribesbackend.models;
 
 import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
-public enum BuldingTypeENUM {
+public enum BuildingTypeENUM {
   BARRACK,
   TOWNHALL,
   FARM,

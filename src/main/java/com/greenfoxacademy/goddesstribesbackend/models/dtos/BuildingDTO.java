@@ -1,5 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
@@ -10,7 +11,7 @@ public class BuildingDTO {
   @ApiModelProperty(position = 1)
   private Long id;
   @ApiModelProperty(position = 2)
-  private BuldingTypeENUM buldingTypeENUM;
+  private BuildingTypeENUM buildingTypeENUM;
   @ApiModelProperty(position = 3)
   private int level;
   @ApiModelProperty(position = 4)
@@ -21,9 +22,9 @@ public class BuildingDTO {
   public BuildingDTO() {
   }
 
-  public BuildingDTO(Long id, BuldingTypeENUM buldingTypeENUM, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
+  public BuildingDTO(Long id, BuildingTypeENUM buildingTypeENUM, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
     this.id = id;
-    this.buldingTypeENUM = buldingTypeENUM;
+    this.buildingTypeENUM = buildingTypeENUM;
     this.level = level;
     this.startedAt = startedAt;
     this.finishedAt = finishedAt;
@@ -37,12 +38,12 @@ public class BuildingDTO {
     this.id = id;
   }
 
-  public BuldingTypeENUM getBuldingTypeENUM() {
-    return buldingTypeENUM;
+  public BuildingTypeENUM getBuildingTypeENUM() {
+    return buildingTypeENUM;
   }
 
-  public void setBuldingTypeENUM(BuldingTypeENUM buldingTypeENUM) {
-    this.buldingTypeENUM = buldingTypeENUM;
+  public void setBuildingTypeENUM(BuildingTypeENUM buildingTypeENUM) {
+    this.buildingTypeENUM = buildingTypeENUM;
   }
 
   public int getLevel() {

@@ -2,7 +2,7 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourcesDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
