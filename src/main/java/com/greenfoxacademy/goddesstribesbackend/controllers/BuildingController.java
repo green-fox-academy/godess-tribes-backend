@@ -29,21 +29,22 @@ public class BuildingController {
   @Autowired
   public BuildingController(KingdomService kingdomService, ProductionService productionService,
                             BuildingService buildingService) {
+    this.kingdomService = kingdomService;
     this.productionService = productionService;
     this.buildingService = buildingService;
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class)})
   @GetMapping("/kingdom/buildings")
   public ResponseEntity<Object> mockListOfBuildings() {
     return ResponseEntity.status(200).body(MockData.buildingsDTO);
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class),@ApiResponse(code = 400, message ="Missing parameter(s): type!", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid building type", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): type!", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building type", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PostMapping("/kingdom/buildings")
-  public ResponseEntity<Object> createBuilding (@RequestBody BuildingTypeDTO buildingTypeDTO) {
+  public ResponseEntity<Object> createBuilding(@RequestBody BuildingTypeDTO buildingTypeDTO) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     Kingdom kingdom = kingdomService.findKingdomByUsername(username);
     String type = buildingTypeDTO.getType();
@@ -64,38 +65,38 @@ public class BuildingController {
     return ResponseEntity.status(200).body(buildingService.createBuildingDTO(building));
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class), @ApiResponse(code = 409, message ="Id not found", response = ErrorMessage.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 409, message = "Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/buildings/{id}")
-  public ResponseEntity<Object> mockRenderBuilding (@PathVariable Long id){
+  public ResponseEntity<Object> mockRenderBuilding(@PathVariable Long id) {
 
-    if (MockData.farm.getId() == id){
+    if (MockData.farm.getId() == id) {
       return ResponseEntity.status(200).body(MockData.farm);
     }
 
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = BuildingDTO.class), @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid building level", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/buildings/{id}")
-  public ResponseEntity<Object>mockChangeBuildingLevel(
-      @PathVariable Long id,
-      @RequestBody LevelDTO levelDTO){
+  public ResponseEntity<Object> mockChangeBuildingLevel(
+          @PathVariable Long id,
+          @RequestBody LevelDTO levelDTO) {
 
-    if (levelDTO.getLevel() == null){
+    if (levelDTO.getLevel() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));
     }
 
-    if (MockData.farm.getId() != id){
+    if (MockData.farm.getId() != id) {
       return ResponseEntity.status(404).body(new ErrorMessage("Id not found!"));
     }
 
-    if (levelDTO.getLevel() > 3 || levelDTO.getLevel() < 1){
+    if (levelDTO.getLevel() > 3 || levelDTO.getLevel() < 1) {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level!"));
     }
 
-    if (MockData.gold.getAmount()< MockData.COST_OF_NEW_BUILDING){
+    if (MockData.gold.getAmount() < MockData.COST_OF_NEW_BUILDING) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource!"));
     }
 

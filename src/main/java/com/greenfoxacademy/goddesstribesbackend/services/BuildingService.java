@@ -35,7 +35,7 @@ public class BuildingService {
   public boolean isValidBuildingType(String type) {
     return type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString()) ||
             type.equalsIgnoreCase(BuildingTypeENUM.MINE.toString()) ||
-            type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString()) ;
+            type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString());
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
@@ -104,7 +104,7 @@ public class BuildingService {
     return building;
   }
 
-  public BuildingDTO createBuildingDTO(Building building){
+  public BuildingDTO createBuildingDTO(Building building) {
     BuildingDTO buildingDTO = new BuildingDTO();
     buildingDTO.setId(building.getId());
     //buildingDTO.setType(); TODO!

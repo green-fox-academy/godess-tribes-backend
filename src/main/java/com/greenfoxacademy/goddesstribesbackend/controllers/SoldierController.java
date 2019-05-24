@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SoldierController {
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = SoldierDTO.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = SoldierDTO.class)})
   @GetMapping("/kingdom/soldiers")
   public ResponseEntity<Object> mockListOfSoldiers() {
     return ResponseEntity.status(200).body(MockData.soldiersDTO);
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = SoldierDTO.class), @ApiResponse(code = 409, message ="Not enough resource")})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = SoldierDTO.class), @ApiResponse(code = 409, message = "Not enough resource")})
   @PostMapping("/kingdom/soldiers")
-  public ResponseEntity<Object> mockTrainANewSoldier () {
+  public ResponseEntity<Object> mockTrainANewSoldier() {
 
     if (MockData.gold.getAmount() <= 10) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource"));
@@ -35,8 +35,8 @@ public class SoldierController {
 
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = SoldierDTO.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = SoldierDTO.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/soldiers/{id}")
   public ResponseEntity<Object> mockRenderSoldier(@PathVariable Long id) {
 
@@ -47,24 +47,24 @@ public class SoldierController {
     return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = SoldierDTO.class), @ApiResponse(code = 400, message ="Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message ="Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message ="Invalid soldier level", response = ErrorMessage.class), @ApiResponse(code = 409, message ="Not enough resource", response = ErrorMessage.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = SoldierDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid soldier level", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/soldiers/{id}")
   public ResponseEntity<Object> mockChangeSoldierLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
 
-    if (levelDTO.getLevel() == null){
+    if (levelDTO.getLevel() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));
     }
 
-    if (MockData.soldierDTO.getId() != id){
+    if (MockData.soldierDTO.getId() != id) {
       return ResponseEntity.status(404).body(new ErrorMessage("Id not found!"));
     }
 
-    if (levelDTO.getLevel() > 3 || levelDTO.getLevel() < 1){
+    if (levelDTO.getLevel() > 3 || levelDTO.getLevel() < 1) {
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid soldier level!"));
     }
 
-    if (MockData.gold.getAmount()< 10){
+    if (MockData.gold.getAmount() < 10) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource!"));
     }
 
