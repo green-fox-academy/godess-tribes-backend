@@ -11,5 +11,5 @@ public interface TownhallRepository extends CrudRepository<Townhall, Long> {
 
   ArrayList<Townhall> findAll();
 
-  ArrayList<Townhall> findTownhallsByKingdom_Id(Long id);
+  ArrayList<Townhall> findTownhallsByKingdom_Id(Long kingdomId);
 }

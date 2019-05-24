@@ -1,6 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
