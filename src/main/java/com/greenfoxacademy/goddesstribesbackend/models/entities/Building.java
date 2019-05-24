@@ -19,6 +19,7 @@ public abstract class Building {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private BuildingTypeENUM buildingType;
   private int level;
   private int upgradeCost;
   private int upgradeTime;
@@ -28,8 +29,6 @@ public abstract class Building {
   @ManyToOne(optional = false)
   @JoinColumn(name = "kingdomId")
   private Kingdom kingdom;
-
-  private BuildingTypeENUM buildingType;
 
   public Building() {
   }
@@ -53,6 +52,14 @@ public abstract class Building {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public BuildingTypeENUM getBuildingType() {
+    return buildingType;
+  }
+
+  public void setBuildingType(BuildingTypeENUM buildingType) {
+    this.buildingType = buildingType;
   }
 
   public int getLevel() {
@@ -101,14 +108,6 @@ public abstract class Building {
 
   public void setKingdom(Kingdom kingdom) {
     this.kingdom = kingdom;
-  }
-
-  public BuildingTypeENUM getBuildingType() {
-    return buildingType;
-  }
-
-  public void setBuildingType(BuildingTypeENUM buildingType) {
-    this.buildingType = buildingType;
   }
 
 }

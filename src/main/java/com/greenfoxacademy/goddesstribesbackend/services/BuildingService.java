@@ -1,7 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
-import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingsDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
@@ -92,7 +92,7 @@ public class BuildingService {
 
   public Building createBuilding(Kingdom kingdom, String type) {
     if (!isValidBuildingType(type)) return null;
-    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceType.GOLD).orElse(null);
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).orElse(null);
     if (goldResource == null) return null;
     if (goldResource.getAmount() < Building.CREATION_COST) return null;
 

@@ -1,6 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
-import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class Resource {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private ResourceType type;
+  private ResourceTypeENUM type;
   private int amount;
   private LocalDateTime updateTime;
 
@@ -22,7 +22,7 @@ public class Resource {
   public Resource() {
   }
 
-  public Resource(ResourceType type, int amount, Townhall townhall) {
+  public Resource(ResourceTypeENUM type, int amount, Townhall townhall) {
     this.type = type;
     this.amount = amount;
     updateTime = LocalDateTime.now();
@@ -37,11 +37,11 @@ public class Resource {
     this.id = id;
   }
 
-  public ResourceType getType() {
+  public ResourceTypeENUM getType() {
     return type;
   }
 
-  public void setType(ResourceType type) {
+  public void setType(ResourceTypeENUM type) {
     this.type = type;
   }
 
