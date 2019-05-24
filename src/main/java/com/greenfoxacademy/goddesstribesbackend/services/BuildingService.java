@@ -54,7 +54,7 @@ public class BuildingService {
     return buildingRepository.save(mine);
   }
 
-  public ArrayList<Building> findAll() {
+  public ArrayList<Building> findAllBuildings() {
     return buildingRepository.findAll();
   }
 
@@ -91,12 +91,8 @@ public class BuildingService {
   }
 
   public Building createBuilding(Kingdom kingdom, String type) {
-    if (!isValidBuildingType(type)) return null;
-    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).orElse(null);
-    if (goldResource == null) return null;
-    if (goldResource.getAmount() < Building.CREATION_COST) return null;
-
-    Building building = null;
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
+    Building building;
 
     if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
       building = buildingRepository.save(new Farm(kingdom));
@@ -104,6 +100,8 @@ public class BuildingService {
       building = buildingRepository.save(new Mine(kingdom));
     } else if (type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString())) {
       building = buildingRepository.save(new Barrack(kingdom));
+    } else {
+      building = null;
     }
 
     int newGoldAmount = goldResource.getAmount() - Building.CREATION_COST;
