@@ -87,18 +87,16 @@ public class BuildingService {
 
   public BuildingsDTO createBuildingsDTO(String username){
     List<BuildingDTO> buildingDTOList = new ArrayList<>();
-    if (kingdomRepository.findKingdomByUser_Username(username).isPresent()){
-      Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-      ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
-      for (Building building: buildingList){
-        BuildingDTO buildingDTO = new BuildingDTO();
-        buildingDTO.setId(building.getId());
-        buildingDTO.setBuildingTypeENUM(building.getBuildingType());
-        buildingDTO.setLevel(building.getLevel());
-        buildingDTO.setStartedAt(building.getStartedAt());
-        buildingDTO.setFinishedAt(building.getFinishedAt());
-        buildingDTOList.add(buildingDTO);
-      }
+    Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+    ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
+    for (Building building: buildingList){
+      BuildingDTO buildingDTO = new BuildingDTO();
+      buildingDTO.setId(building.getId());
+      buildingDTO.setBuildingTypeENUM(building.getBuildingType());
+      buildingDTO.setLevel(building.getLevel());
+      buildingDTO.setStartedAt(building.getStartedAt());
+      buildingDTO.setFinishedAt(building.getFinishedAt());
+      buildingDTOList.add(buildingDTO);
     }
     return new BuildingsDTO(buildingDTOList);
   }
