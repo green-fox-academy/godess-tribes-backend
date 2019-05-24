@@ -3,22 +3,34 @@ package com.greenfoxacademy.goddesstribesbackend.services;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class KingdomService {
 
   private KingdomRepository kingdomRepository;
   private UserService userService;
+  private BuildingService buildingService;
+  private ResourceService resourceService;
 
   @Autowired
-  public KingdomService(KingdomRepository kingdomRepository, UserService userService) {
+  public KingdomService(KingdomRepository kingdomRepository, UserService userService,
+                        BuildingService buildingService, ResourceService resourceService) {
     this.kingdomRepository = kingdomRepository;
     this.userService = userService;
+    this.buildingService = buildingService;
+    this.resourceService = resourceService;
+  }
+
+  public Kingdom findKingdomByUsername(String username) {
+    return kingdomRepository.findKingdomByUser_Username(username).orElse(null);
   }
 
   public Kingdom saveKingdom(String kingdomName, User user) {
@@ -26,13 +38,27 @@ public class KingdomService {
       Kingdom newKingdom;
 
       if (kingdomName == null || kingdomName.isEmpty()) {
-        newKingdom = new Kingdom(user.getUsername() + "'s kingdom", user);
-      } else {
-        newKingdom = new Kingdom(kingdomName, user);
+        kingdomName = user.getUsername() + "'s kingdom";
       }
-      return kingdomRepository.save(newKingdom);
+      return kingdomRepository.save(new Kingdom(kingdomName, user));
     }
     return null;
+  }
+
+  public void initKingdom(String username) {
+    if (username != null && userService.checkUserByName(username)) {
+      Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+
+      if (!kingdom.isActive()) {
+        Townhall townhall = buildingService.saveTownhall(kingdom);
+        resourceService.saveFoodAtStart(townhall);
+        resourceService.saveGoldAtStart(townhall);
+        buildingService.saveFarmAtStart(kingdom);
+        buildingService.saveMineAtStart(kingdom);
+        kingdom.setActive(true);
+        kingdomRepository.save(kingdom);
+      }
+    }
   }
 
   public AuthenticationResponseDTO createAuthenticationResponseDTO(TokenDTO tokenDTO) {
@@ -45,6 +71,10 @@ public class KingdomService {
       return new AuthenticationResponseDTO(user.getId(), kingdom.getId());
     }
     return null;
+  }
+
+  public Optional<Kingdom> findKingdomByUser_Username(String username){
+    return kingdomRepository.findKingdomByUser_Username(username);
   }
 
 }
