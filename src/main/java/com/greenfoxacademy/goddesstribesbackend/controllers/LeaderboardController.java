@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@CrossOrigin
+@CrossOrigin(origins = "#{'${CORS_ALLOW_ORIGIN}'.split(',')}")
 @Controller
 public class LeaderboardController {
 

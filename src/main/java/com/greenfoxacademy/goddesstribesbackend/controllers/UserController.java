@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin("https://localhost:8080")
+@CrossOrigin(origins = "#{'${CORS_ALLOW_ORIGIN}'.split(',')}")
 @RestController
 public class UserController {
 
