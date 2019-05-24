@@ -11,6 +11,6 @@ public interface BarrackRepository extends CrudRepository<Barrack, Long> {
 
   ArrayList<Barrack> findAll();
 
-  ArrayList<Barrack> findBarracksByKingdom_Id(Long id);
+  ArrayList<Barrack> findBarracksByKingdom_Id(Long kingdomId);
 
 }

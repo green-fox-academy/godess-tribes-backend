@@ -1,4 +1,4 @@
-package com.greenfoxacademy.goddesstribesbackend.models.dtos;
+package com.greenfoxacademy.goddesstribesbackend.models;
 
 import io.swagger.annotations.SwaggerDefinition;
 
