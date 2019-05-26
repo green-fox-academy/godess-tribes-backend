@@ -6,11 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.ArrayList;
 
 public interface BuildingRepository extends CrudRepository<Building, Long> {
-
   ArrayList<Building> findAll();
-
   ArrayList<Building> findBuildingsByKingdom_Id(Long kingdomId);
-
   int countBuildingsByKingdom_Id(Long kingdomId);
-
 }
