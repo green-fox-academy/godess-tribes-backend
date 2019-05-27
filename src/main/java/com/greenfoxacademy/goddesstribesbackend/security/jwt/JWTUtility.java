@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 import static java.util.Collections.emptyList;
 
@@ -15,6 +16,7 @@ public class JWTUtility {
   public static String generateToken(String username) {
     String jwtToken = Jwts.builder()
             .setSubject(username)
+            .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
             .signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
             .compact();
     return jwtToken;
