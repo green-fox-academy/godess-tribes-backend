@@ -1,9 +1,9 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
-import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourcesDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,24 +27,29 @@ public class ProductionService {
   }
 
   public void updateResources(Long kingdomId) {
-    ArrayList<Resource> resources = resourceService.findResourcesByKingdom(kingdomId);
+    updateResource(kingdomId, ResourceTypeENUM.FOOD);
+    updateResource(kingdomId, ResourceTypeENUM.GOLD);
+  }
 
-    for (Resource resource : resources) {
+  public void updateResource(Long kingdomId, ResourceTypeENUM type) {
+    Resource resource = resourceService.findResourceByKingdomAndType(kingdomId, type);
+    if (resource != null) {
       int previousAmount = resource.getAmount();
       int increment = 0;
       int maxAmount = Integer.MAX_VALUE;
 
-      if (resource.getType().equals(ResourceType.FOOD)) {
+      if (type.equals(ResourceTypeENUM.FOOD)) {
         increment = (int) (calculateNetFoodGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
         maxAmount = resource.getTownhall().getFoodCapacity();
 
-      } else if (resource.getType().equals(ResourceType.GOLD)) {
+      } else if (type.equals(ResourceTypeENUM.GOLD)) {
         increment = (int) (buildingService.calculateGoldGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
         maxAmount = resource.getTownhall().getGoldCapacity();
       }
 
       int currentAmount = previousAmount + increment;
       currentAmount = currentAmount <= maxAmount ? currentAmount : maxAmount;
+
       resource.setAmount(currentAmount);
       resource.setUpdateTime(LocalDateTime.now());
       resourceService.save(resource);
@@ -64,20 +69,30 @@ public class ProductionService {
     return duration;
   }
 
+  public int calculateGoldReserve(Long kingdomId) {
+    updateResource(kingdomId, ResourceTypeENUM.GOLD);
+    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.GOLD);
+    return goldResource.getAmount();
+  }
+
+  public boolean isEnoughMoneyToCreateBuilding(Long kingdomId) {
+    return calculateGoldReserve(kingdomId) >= Building.CREATION_COST;
+  }
+
   public ResourcesDTO createResourcesDTO(Long kingdomId) {
     updateResources(kingdomId);
 
-    ArrayList<ResourceDTO> resourceDTOs = new ArrayList<>();
+    ArrayList<ResourceDTO> resourceDTOlist = new ArrayList<>();
 
-    Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.FOOD);
+    Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.FOOD);
     int foodNetGenerationRate = calculateNetFoodGenerationRate(kingdomId);
-    resourceDTOs.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodNetGenerationRate));
+    resourceDTOlist.add(new ResourceDTO(ResourceTypeENUM.FOOD, foodResource.getAmount(), foodNetGenerationRate));
 
-    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceType.GOLD);
+    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.GOLD);
     int goldGenerationRate = buildingService.calculateGoldGenerationRate(kingdomId);
-    resourceDTOs.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate));
+    resourceDTOlist.add(new ResourceDTO(ResourceTypeENUM.GOLD, goldResource.getAmount(), goldGenerationRate));
 
-    return new ResourcesDTO(resourceDTOs);
+    return new ResourcesDTO(resourceDTOlist);
   }
 
 }

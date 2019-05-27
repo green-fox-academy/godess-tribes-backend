@@ -1,6 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
-import com.greenfoxacademy.goddesstribesbackend.models.ResourceType;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.repositories.ResourceRepository;
@@ -20,12 +20,12 @@ public class ResourceService {
   }
 
   public Resource saveFoodAtStart(Townhall townhall) {
-    Resource food = new Resource(ResourceType.FOOD, Townhall.START_FOOD_AMOUNT, townhall);
+    Resource food = new Resource(ResourceTypeENUM.FOOD, Townhall.START_FOOD_AMOUNT, townhall);
     return resourceRepository.save(food);
   }
 
   public Resource saveGoldAtStart(Townhall townhall) {
-    Resource gold = new Resource(ResourceType.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
+    Resource gold = new Resource(ResourceTypeENUM.GOLD, Townhall.START_GOLD_AMOUNT, townhall);
     return resourceRepository.save(gold);
   }
 
@@ -37,7 +37,7 @@ public class ResourceService {
     return resourceRepository.findResourcesByTownhall_Kingdom_Id(kingdomId);
   }
 
-  public Resource findResourceByKingdomAndType(Long kingdomId, ResourceType type) {
+  public Resource findResourceByKingdomAndType(Long kingdomId, ResourceTypeENUM type) {
     return resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdomId, type).orElse(null);
   }
 

@@ -26,8 +26,8 @@ public class ResourceController {
     this.productionService = productionService;
   }
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = ResourcesDTO.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = ResourcesDTO.class)})
   @GetMapping("/kingdom/resources")
   public ResponseEntity<Object> listResources() {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();

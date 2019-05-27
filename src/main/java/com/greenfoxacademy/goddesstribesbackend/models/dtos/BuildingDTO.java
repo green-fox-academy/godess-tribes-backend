@@ -69,4 +69,5 @@ public class BuildingDTO {
   public void setFinishedAt(LocalDateTime finishedAt) {
     this.finishedAt = finishedAt;
   }
+
 }

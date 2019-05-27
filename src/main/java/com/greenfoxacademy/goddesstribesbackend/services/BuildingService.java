@@ -1,13 +1,11 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingsDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
-import com.greenfoxacademy.goddesstribesbackend.repositories.BuildingRepository;
-import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
-import com.greenfoxacademy.goddesstribesbackend.repositories.UserRepository;
-import com.greenfoxacademy.goddesstribesbackend.repositories.FarmRepository;
-import com.greenfoxacademy.goddesstribesbackend.repositories.MineRepository;
+import com.greenfoxacademy.goddesstribesbackend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +16,30 @@ import java.util.List;
 @Service
 public class BuildingService {
 
+  private KingdomRepository kingdomRepository;
   private BuildingRepository buildingRepository;
   private FarmRepository farmRepository;
   private MineRepository mineRepository;
-  private UserRepository userRepository;
-  private KingdomRepository kingdomRepository;
+  private ResourceRepository resourceRepository;
 
   @Autowired
-  public BuildingService(BuildingRepository buildingRepository, FarmRepository farmRepository, MineRepository mineRepository, UserRepository userRepository, KingdomRepository kingdomRepository) {
+  public BuildingService(KingdomRepository kingdomRepository, BuildingRepository buildingRepository,
+                         FarmRepository farmRepository, MineRepository mineRepository,
+                         ResourceRepository resourceRepository) {
+    this.kingdomRepository = kingdomRepository;
     this.buildingRepository = buildingRepository;
     this.farmRepository = farmRepository;
     this.mineRepository = mineRepository;
-    this.userRepository = userRepository;
-    this.kingdomRepository = kingdomRepository;
+    this.resourceRepository = resourceRepository;
+  }
+
+  public boolean isValidBuildingType(String type) {
+    for (BuildingTypeENUM buildingTypeENUM : BuildingTypeENUM.values()) {
+      if (buildingTypeENUM.name().equalsIgnoreCase(type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
@@ -46,6 +55,14 @@ public class BuildingService {
   public Mine saveMineAtStart(Kingdom kingdom) {
     Mine mine = new Mine(kingdom, LocalDateTime.now().minusMinutes(Building.CREATION_TIME));
     return buildingRepository.save(mine);
+  }
+
+  public ArrayList<Building> findAllBuildings() {
+    return buildingRepository.findAll();
+  }
+
+  public ArrayList<Building> findBuildingsByKingdom(Long kingdomId) {
+    return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
   }
 
   public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
@@ -76,20 +93,43 @@ public class BuildingService {
     return goldProductionRate;
   }
 
-  public ArrayList<Building> findAll(){
-    return buildingRepository.findAll();
+  public Building createBuilding(Kingdom kingdom, String type) {
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
+    Building building;
+
+    if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
+      building = buildingRepository.save(new Farm(kingdom));
+    } else if (type.equalsIgnoreCase(BuildingTypeENUM.MINE.toString())) {
+      building = buildingRepository.save(new Mine(kingdom));
+    } else if (type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString())) {
+      building = buildingRepository.save(new Barrack(kingdom));
+    } else {
+      building = null;
+    }
+
+    int newGoldAmount = goldResource.getAmount() - Building.CREATION_COST;
+    goldResource.setAmount(newGoldAmount);
+    goldResource.setUpdateTime(LocalDateTime.now());
+    resourceRepository.save(goldResource);
+    return building;
   }
 
-  public ArrayList<Building> findBuildingsByKingdom(Long kingdomId){
-    return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
-
+  public BuildingDTO createBuildingDTO(Building building) {
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setId(building.getId());
+    buildingDTO.setBuildingTypeENUM(building.getBuildingType());
+    buildingDTO.setLevel(building.getLevel());
+    buildingDTO.setStartedAt(building.getStartedAt());
+    buildingDTO.setFinishedAt(building.getFinishedAt());
+    return buildingDTO;
   }
 
-  public BuildingsDTO createBuildingsDTO(String username){
+  public BuildingsDTO createBuildingsDTO(String username) {
     List<BuildingDTO> buildingDTOList = new ArrayList<>();
     Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
     ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
-    for (Building building: buildingList){
+
+    for (Building building : buildingList) {
       BuildingDTO buildingDTO = new BuildingDTO();
       buildingDTO.setId(building.getId());
       buildingDTO.setBuildingTypeENUM(building.getBuildingType());
