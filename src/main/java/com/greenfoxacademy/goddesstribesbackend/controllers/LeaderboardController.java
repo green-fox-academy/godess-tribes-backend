@@ -25,7 +25,6 @@ public class LeaderboardController {
     this.leaderboardService = leaderboardService;
   }
 
-
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = LeaderboardBuildingsDTO.class)})
   @GetMapping("/leaderboard/buildings")
@@ -34,13 +33,11 @@ public class LeaderboardController {
     return ResponseEntity.status(200).body(leaderboardByBuildingsDTO);
   }
 
-
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
   @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = LeaderboardSoldiersDTO.class)})
   @GetMapping("/leaderboard/soldiers")
   public ResponseEntity<Object> leaderboardOfSoldiers(){
   LeaderboardBySoldiersDTO leaderboardBySoldiersDTO = leaderboardService.createLeaderboardBySoldiers();
     return ResponseEntity.status(200).body(leaderboardBySoldiersDTO);
-        }
-
-        }
+  }
+  }
