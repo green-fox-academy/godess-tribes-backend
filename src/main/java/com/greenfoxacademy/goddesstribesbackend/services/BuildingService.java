@@ -34,9 +34,12 @@ public class BuildingService {
   }
 
   public boolean isValidBuildingType(String type) {
-    return type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString()) ||
-            type.equalsIgnoreCase(BuildingTypeENUM.MINE.toString()) ||
-            type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString());
+    for (BuildingTypeENUM buildingTypeENUM : BuildingTypeENUM.values()) {
+      if (buildingTypeENUM.name().equalsIgnoreCase(type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
