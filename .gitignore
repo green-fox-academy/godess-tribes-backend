@@ -29,8 +29,3 @@ HELP.md
 ### VS Code ###
 .vscode/
 
-*.jar
-gradlew
-*.bat
-settings.gradle
-application.properties
