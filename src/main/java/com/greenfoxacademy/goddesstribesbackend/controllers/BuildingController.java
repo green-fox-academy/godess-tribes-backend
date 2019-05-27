@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "#{'${CORS_ALLOW_ORIGIN}'.split(',')}")
 @RestController
 public class BuildingController {
 

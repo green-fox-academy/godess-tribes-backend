@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "#{'${CORS_ALLOW_ORIGIN}'.split(',')}")
 @RestController
 public class SoldierController {
 

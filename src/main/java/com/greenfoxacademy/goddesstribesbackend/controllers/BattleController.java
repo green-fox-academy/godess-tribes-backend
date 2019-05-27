@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "#{'${CORS_ALLOW_ORIGIN}'.split(',')}")
 @RestController
 public class BattleController {
 
