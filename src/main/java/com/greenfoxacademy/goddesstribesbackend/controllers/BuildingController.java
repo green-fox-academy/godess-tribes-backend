@@ -77,7 +77,7 @@ public class BuildingController {
     Building building = buildingService.findBuildingByKingdomAndBuildingId(kingdom.getId(), buidingId);
 
     if (building == null) {
-      return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
+      return ResponseEntity.status(404).body(new ErrorMessage("Building with this id not found"));
     }
     return ResponseEntity.status(200).body(buildingService.createBuildingDTO(building));
   }
