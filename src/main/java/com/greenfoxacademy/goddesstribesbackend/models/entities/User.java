@@ -1,9 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.models.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -16,6 +13,8 @@ public class User {
   private String password;
   private int points;
   private boolean loggedIn;
+  @OneToOne(mappedBy = "user")
+  private Kingdom kingdom;
 
   public User() {
   }
@@ -25,7 +24,7 @@ public class User {
     this.password = password;
     this.points = 0;
     this.loggedIn = false;
-   }
+  }
 
   public Long getId() {
     return id;
@@ -67,4 +66,11 @@ public class User {
     this.loggedIn = loggedIn;
   }
 
+  public Kingdom getKingdom() {
+    return kingdom;
+  }
+
+  public void setKingdom(Kingdom kingdom) {
+    this.kingdom = kingdom;
+  }
 }

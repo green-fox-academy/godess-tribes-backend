@@ -17,6 +17,7 @@ public class Resource {
   private LocalDateTime updateTime;
 
   @ManyToOne(optional = false)
+  @JoinColumn(name = "townhallId")
   private Townhall townhall;
 
   public Resource() {

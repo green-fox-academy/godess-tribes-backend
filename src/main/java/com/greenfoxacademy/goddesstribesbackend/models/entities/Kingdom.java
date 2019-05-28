@@ -18,6 +18,7 @@ public class Kingdom {
   private boolean active;
 
   @OneToOne(optional = false)
+  @JoinColumn(name = "userId")
   private User user;
 
   @OneToMany(mappedBy = "kingdom" , cascade = CascadeType.PERSIST)

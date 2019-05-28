@@ -3,7 +3,9 @@ package com.greenfoxacademy.goddesstribesbackend.models.entities;
 import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Townhall extends Building {
@@ -15,6 +17,8 @@ public class Townhall extends Building {
 
   private int foodCapacity;
   private int goldCapacity;
+  @OneToMany(mappedBy = "townhall")
+  private List<Resource> resources;
 
   public Townhall() {
   }

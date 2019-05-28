@@ -22,6 +22,7 @@ public class Soldier {
   private LocalDateTime finishedAt;
 
   @ManyToOne(optional = false)
+  @JoinColumn(name = "barrackId")
   private Barrack barrack;
 
   public Soldier() {
