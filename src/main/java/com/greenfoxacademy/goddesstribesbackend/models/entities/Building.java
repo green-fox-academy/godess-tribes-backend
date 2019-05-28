@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "buildings")
 public abstract class Building {
 
   public static final int MAX_LEVEL = 3;

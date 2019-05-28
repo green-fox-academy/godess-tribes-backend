@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "soldiers")
 public class Soldier {
 
   private static final int START_LEVEL = 1;

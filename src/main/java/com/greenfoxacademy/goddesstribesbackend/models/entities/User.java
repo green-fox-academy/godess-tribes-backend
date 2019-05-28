@@ -3,6 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.models.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
   @Id
