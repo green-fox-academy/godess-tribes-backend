@@ -20,8 +20,7 @@ public class Kingdom {
   @OneToOne(optional = false)
   private User user;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "kingdomId")
+  @OneToMany(mappedBy = "kingdom" , cascade = CascadeType.PERSIST)
   private List<Building> buildings;
 
   public Kingdom() {
