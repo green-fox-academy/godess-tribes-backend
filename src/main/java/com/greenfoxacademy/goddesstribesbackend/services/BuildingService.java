@@ -65,6 +65,10 @@ public class BuildingService {
     return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
   }
 
+  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId){
+    return buildingRepository.findBuildingByKingdom_IdAndId(kingdomId, buildingId).orElse(null);
+  }
+
   public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
     return farmRepository.findFarmsByKingdom_Id(kingdomId);
   }
