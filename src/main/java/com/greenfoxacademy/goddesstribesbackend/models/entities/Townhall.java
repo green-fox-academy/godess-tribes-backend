@@ -27,7 +27,7 @@ public class Townhall extends Building {
     super(kingdom, startedAt);
     foodCapacity = START_FOOD_CAPACITY;
     goldCapacity = START_GOLD_CAPACITY;
-    this.setBuildingType(BuildingTypeENUM.TOWNHALL);
+    this.setType(BuildingTypeENUM.TOWNHALL);
   }
 
   public int getFoodCapacity() {
