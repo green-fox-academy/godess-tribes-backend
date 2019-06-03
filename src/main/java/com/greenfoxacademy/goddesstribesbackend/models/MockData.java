@@ -2,6 +2,7 @@ package com.greenfoxacademy.goddesstribesbackend.models;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,13 +13,13 @@ public class MockData {
   public static final int COST_OF_NEW_BUILDING = 250;
 
   public static BuildingDTO townhall = new BuildingDTO(1L, BuildingTypeENUM.TOWNHALL, 1,
-      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+      Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusMinutes(1L)));;
   public static BuildingDTO farm = new BuildingDTO(2L, BuildingTypeENUM.FARM, 1,
-      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+      Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusMinutes(1L)));
   public static BuildingDTO mine = new BuildingDTO(3L, BuildingTypeENUM.MINE, 1,
-      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+      Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusMinutes(1L)));
   public static BuildingDTO barrack = new BuildingDTO(4L, BuildingTypeENUM.BARRACK, 1,
-      LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+      Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusMinutes(1L)));
 
   public static List<BuildingDTO> buildingList = new ArrayList<>(Arrays.asList(farm, mine, barrack));
 
@@ -32,7 +33,7 @@ public class MockData {
   public static List<ResourceDTO> resourceList = new ArrayList<>(Arrays.asList(food, gold));
   public static ResourcesDTO resourcesDTO = new ResourcesDTO(resourceList);
 
-  public static SoldierDTO soldierDTO = new SoldierDTO(1L, 1, LocalDateTime.now(), LocalDateTime.now().plusMinutes(1L));
+  public static SoldierDTO soldierDTO = new SoldierDTO(1L, 1, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusMinutes(1L)));
 
   public static List<SoldierDTO> soldierList = new ArrayList<>(Arrays.asList(soldierDTO));
   public static SoldiersDTO soldiersDTO = new SoldiersDTO(soldierList);
