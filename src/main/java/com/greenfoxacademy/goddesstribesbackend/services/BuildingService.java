@@ -21,16 +21,18 @@ public class BuildingService {
   private FarmRepository farmRepository;
   private MineRepository mineRepository;
   private ResourceRepository resourceRepository;
+  private TownhallRepository townhallRepository;
 
   @Autowired
   public BuildingService(KingdomRepository kingdomRepository, BuildingRepository buildingRepository,
                          FarmRepository farmRepository, MineRepository mineRepository,
-                         ResourceRepository resourceRepository) {
+                         ResourceRepository resourceRepository, TownhallRepository townhallRepository) {
     this.kingdomRepository = kingdomRepository;
     this.buildingRepository = buildingRepository;
     this.farmRepository = farmRepository;
     this.mineRepository = mineRepository;
     this.resourceRepository = resourceRepository;
+    this.townhallRepository = townhallRepository;
   }
 
   public boolean isValidBuildingType(String type) {
@@ -143,6 +145,15 @@ public class BuildingService {
       buildingDTOList.add(buildingDTO);
     }
     return new BuildingsDTO(buildingDTOList);
+  }
+
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId){
+
+    if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
+    Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
+
+    if (upgradeLevelAsked > townhallLevel) return false;
+    return true;
   }
 
 }

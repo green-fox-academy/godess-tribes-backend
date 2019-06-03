@@ -7,6 +7,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.LevelDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
@@ -83,20 +84,23 @@ public class BuildingController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level: must be less than or equal with townhall level!", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/buildings/{id}")
-  public ResponseEntity<Object> mockChangeBuildingLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
+  public ResponseEntity<Object> changeBuildingLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Kingdom kingdom = kingdomService.findKingdomByUsername(username);
+    Building buildingToUpgrade = buildingService.findBuildingByKingdomAndBuildingId(kingdom.getId(), id);
 
     if (levelDTO.getLevel() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));
     }
 
-    if (MockData.farm.getId() != id) {
+    if (buildingToUpgrade == null) {
       return ResponseEntity.status(404).body(new ErrorMessage("Id not found!"));
     }
 
-    if (levelDTO.getLevel() > 3 || levelDTO.getLevel() < 1) {
-      return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level!"));
+    if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId())){
+      return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level: must be less than or equal with townhall level!"));
     }
 
     if (MockData.gold.getAmount() < MockData.COST_OF_NEW_BUILDING) {
