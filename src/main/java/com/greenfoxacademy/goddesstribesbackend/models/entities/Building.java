@@ -12,8 +12,8 @@ public abstract class Building {
   private static final int START_LEVEL = 1;
   public static final int CREATION_COST = 250;
   public static final int CREATION_TIME = 2;
-  public static final int START_UPGRADE_COST = 100;
-  public static final int START_UPGRADE_TIME = 1;
+  private static final int START_UPGRADE_COST = 100;
+  private static final int START_UPGRADE_TIME = 1;
   public static final int UPGRADE_COST_PER_LEVEL = 100;
 
   @Id
