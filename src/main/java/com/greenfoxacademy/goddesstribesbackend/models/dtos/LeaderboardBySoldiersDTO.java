@@ -19,4 +19,5 @@ public class LeaderboardBySoldiersDTO {
   public void setLeaderboard(List<LeaderboardSoldiersDTO> leaderboard) {
     this.leaderboard = leaderboard;
   }
+
 }

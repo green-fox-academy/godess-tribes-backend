@@ -27,4 +27,5 @@ public class BuildingsDTO {
   public void setBuildingDTOS(List<BuildingDTO> buildingDTOS) {
     this.buildingDTOS = buildingDTOS;
   }
+
 }

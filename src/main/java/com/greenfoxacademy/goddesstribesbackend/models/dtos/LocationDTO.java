@@ -33,4 +33,5 @@ public class LocationDTO {
   public void setyCoord(int yCoord) {
     this.yCoord = yCoord;
   }
+
 }

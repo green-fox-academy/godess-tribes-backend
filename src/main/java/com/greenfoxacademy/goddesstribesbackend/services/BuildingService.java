@@ -121,7 +121,7 @@ public class BuildingService {
   public BuildingDTO createBuildingDTO(Building building) {
     BuildingDTO buildingDTO = new BuildingDTO();
     buildingDTO.setId(building.getId());
-    buildingDTO.setBuildingTypeENUM(building.getType());
+    buildingDTO.setType(building.getType());
     buildingDTO.setLevel(building.getLevel());
     buildingDTO.setStartedAt(building.getStartedAt());
     buildingDTO.setFinishedAt(building.getFinishedAt());
@@ -136,7 +136,7 @@ public class BuildingService {
     for (Building building : buildingList) {
       BuildingDTO buildingDTO = new BuildingDTO();
       buildingDTO.setId(building.getId());
-      buildingDTO.setBuildingTypeENUM(building.getType());
+      buildingDTO.setType(building.getType());
       buildingDTO.setLevel(building.getLevel());
       buildingDTO.setStartedAt(building.getStartedAt());
       buildingDTO.setFinishedAt(building.getFinishedAt());
