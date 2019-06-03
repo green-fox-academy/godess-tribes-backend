@@ -1,17 +1,13 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
-import com.greenfoxacademy.goddesstribesbackend.models.MockData;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.LevelDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
-import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiResponse;
@@ -84,7 +80,7 @@ public class BuildingController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level: must be less than or equal with townhall level!", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level:can upgrade only 1 grade at a time, must be less than or equal with townhall level!", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object> changeBuildingLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -99,16 +95,21 @@ public class BuildingController {
       return ResponseEntity.status(404).body(new ErrorMessage("Id not found!"));
     }
 
-    if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId())){
-      return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level: must be less than or equal with townhall level!"));
+    if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId(), buildingToUpgrade.getBuildingType())){
+      return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level: can upgrade only 1 grade at a time, and other buildings level must be less than or equal with townhall level!"));
     }
 
-    if (MockData.gold.getAmount() < MockData.COST_OF_NEW_BUILDING) {
+    if (!productionService.isEnoughMoneyToUpgradeBuilding(kingdom.getId(), id)) {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource!"));
     }
 
-    MockData.farm.setLevel(levelDTO.getLevel());
-    return ResponseEntity.status(200).body(MockData.farm);
+    if (buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.TOWNHALL)){
+      Townhall upgradedTownhall = buildingService.upgradeTownhall(kingdom.getId(), id, levelDTO.getLevel());
+      return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedTownhall));
+    }
+
+    Building upgradedBuilding = buildingService.upgradeBuilding(kingdom.getId(), id, levelDTO.getLevel());
+    return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedBuilding));
   }
 
 }

@@ -147,13 +147,46 @@ public class BuildingService {
     return new BuildingsDTO(buildingDTOList);
   }
 
-  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId){
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
+    if (upgradeLevelAsked == currentLevel) return false;
+
     Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
 
-    if (upgradeLevelAsked > townhallLevel) return false;
+    if (!type.equals(BuildingTypeENUM.TOWNHALL)){
+      if (upgradeLevelAsked > townhallLevel) return false;
+    }
+
+    if (upgradeLevelAsked - currentLevel > 1) return false;
+
     return true;
+  }
+
+  public Building upgradeBuilding(Long kingdomId, Long buildingId, Integer upgradeLevel) {
+    Building buildingToUpgrade = findBuildingByKingdomAndBuildingId(kingdomId, buildingId);
+
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdomId, ResourceTypeENUM.GOLD).get();
+    int newGoldAmount = goldResource.getAmount() - buildingToUpgrade.getUpgradeCost();
+    goldResource.setAmount(newGoldAmount);
+    goldResource.setUpdateTime(LocalDateTime.now());
+    resourceRepository.save(goldResource);
+
+    buildingToUpgrade.setLevel(upgradeLevel);
+    buildingToUpgrade.setUpgradeCost(Building.UPGRADE_COST_PER_LEVEL * buildingToUpgrade.getLevel());
+    buildingRepository.save(buildingToUpgrade);
+
+    return buildingToUpgrade;
+  }
+
+  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel){
+    upgradeBuilding(kingdomId, buildingId, upgradeLevel);
+
+    Townhall townhallToUpgrade = townhallRepository.findById(buildingId).get();
+    townhallToUpgrade.setFoodCapacity(Townhall.FOOD_CAPACITY_PER_LEVEL * townhallToUpgrade.getLevel());
+    townhallToUpgrade.setGoldCapacity(Townhall.GOLD_CAPACITY_PER_LEVEL * townhallToUpgrade.getLevel());
+    townhallRepository.save(townhallToUpgrade);
+    return townhallToUpgrade;
   }
 
 }
