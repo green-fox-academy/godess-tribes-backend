@@ -97,20 +97,25 @@ public class BuildingService {
     return goldProductionRate;
   }
 
-  public Building createBuilding(Kingdom kingdom, String type) {
+  public Building createBuilding(Kingdom kingdom, String type) throws Exception {
     Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
     Building building;
 
-    if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
-      building = buildingRepository.save(new Farm(kingdom));
-    } else if (type.equalsIgnoreCase(BuildingTypeENUM.MINE.toString())) {
-      building = buildingRepository.save(new Mine(kingdom));
-    } else if (type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString())) {
-      building = buildingRepository.save(new Barrack(kingdom));
-    } else {
+    for (BuildingTypeENUM buildingTypeENUM : BuildingTypeENUM.values()) {
+      if (type.equalsIgnoreCase(buildingTypeENUM.name())) {
+        try {
+          if (Class.forName(buildingTypeENUM.name()).isLocalClass()){
+
+          }
+          building = Class.forName(buildingTypeENUM.name()).newInstance();
+        } catch (ClassNotFoundException e) {
+          building = null;
+        }
+      }
       building = null;
     }
 
+    buildingRepository.save(building);
     int newGoldAmount = goldResource.getAmount() - Building.CREATION_COST;
     goldResource.setAmount(newGoldAmount);
     goldResource.setUpdateTime(LocalDateTime.now());
