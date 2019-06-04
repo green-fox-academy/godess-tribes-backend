@@ -15,6 +15,7 @@ public abstract class Building {
   private static final int START_UPGRADE_COST = 100;
   private static final int START_UPGRADE_TIME = 1;
   public static final int UPGRADE_COST_PER_LEVEL = 100;
+  public static final int UPGRADE_TIME = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

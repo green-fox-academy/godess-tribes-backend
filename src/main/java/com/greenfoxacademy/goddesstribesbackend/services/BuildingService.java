@@ -174,6 +174,8 @@ public class BuildingService {
 
     buildingToUpgrade.setLevel(upgradeLevel);
     buildingToUpgrade.setUpgradeCost(Building.UPGRADE_COST_PER_LEVEL * buildingToUpgrade.getLevel());
+    buildingToUpgrade.setStartedAt(LocalDateTime.now());
+    buildingToUpgrade.setFinishedAt(LocalDateTime.now().plusMinutes(Building.UPGRADE_TIME));
     buildingRepository.save(buildingToUpgrade);
 
     return buildingToUpgrade;
