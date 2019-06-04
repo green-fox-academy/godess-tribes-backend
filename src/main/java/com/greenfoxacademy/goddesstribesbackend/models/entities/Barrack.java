@@ -12,7 +12,7 @@ public class Barrack extends Building {
 
   public Barrack(Kingdom kingdom) {
     super(kingdom);
-    this.setBuildingType(BuildingTypeENUM.BARRACK);
+    this.setType(BuildingTypeENUM.BARRACK);
   }
 
 }

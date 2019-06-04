@@ -58,4 +58,5 @@ public class SoldierDTO {
   public void setFinishedAt(LocalDateTime finishedAt) {
     this.finishedAt = finishedAt;
   }
+
 }

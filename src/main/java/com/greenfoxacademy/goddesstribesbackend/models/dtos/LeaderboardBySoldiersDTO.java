@@ -3,6 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.models.dtos;
 import java.util.List;
 
 public class LeaderboardBySoldiersDTO {
+
   private List<LeaderboardSoldiersDTO> leaderboard;
 
   public LeaderboardBySoldiersDTO() {
@@ -19,4 +20,5 @@ public class LeaderboardBySoldiersDTO {
   public void setLeaderboard(List<LeaderboardSoldiersDTO> leaderboard) {
     this.leaderboard = leaderboard;
   }
+
 }
