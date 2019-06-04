@@ -35,9 +35,8 @@ public class ResourceControllerTest {
 
   @Test
   public void listResourcesShouldReturnUnauthorized_when_noTokenGiven() throws Exception {
-
     mockMvc.perform(get("/kingdom/resources"))
-            .andExpect(status().is(401));
+            .andExpect(status().isUnauthorized());
 
   }
 
