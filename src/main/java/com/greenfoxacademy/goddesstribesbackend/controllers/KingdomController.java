@@ -44,7 +44,6 @@ public class KingdomController {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <name>!"));
     }
 
-//    MockData.kingdomDTO.setKingdomName(kingdomNameDTO.getName());
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     Kingdom kingdom = kingdomService.findKingdomByUsername(username);
     Kingdom renamedKingdom = kingdomService.renameKingdom(kingdomNameDTO.getName(), kingdom);
