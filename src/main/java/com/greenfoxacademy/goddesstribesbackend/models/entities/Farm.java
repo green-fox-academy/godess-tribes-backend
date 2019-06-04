@@ -19,7 +19,7 @@ public class Farm extends ProductionBuilding {
 
   public Farm(Kingdom kingdom, LocalDateTime startedAt) {
     super(kingdom, START_PRODUCTION_RATE, startedAt);
-    this.setBuildingType(BuildingTypeENUM.FARM);
+    this.setType(BuildingTypeENUM.FARM);
   }
 
 }

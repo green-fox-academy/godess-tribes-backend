@@ -5,14 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @SwaggerDefinition
 public class BuildingDTO {
+
   @ApiModelProperty(position = 1)
   private Long id;
   @ApiModelProperty(position = 2)
-  private BuildingTypeENUM buildingTypeENUM;
+  private BuildingTypeENUM type;
   @ApiModelProperty(position = 3)
   private int level;
   @ApiModelProperty(position = 4)
@@ -23,9 +23,9 @@ public class BuildingDTO {
   public BuildingDTO() {
   }
 
-  public BuildingDTO(Long id, BuildingTypeENUM buildingTypeENUM, int level, Timestamp startedAt, Timestamp finishedAt) {
+  public BuildingDTO(Long id, BuildingTypeENUM type, int level, Timestamp startedAt, Timestamp finishedAt) {
     this.id = id;
-    this.buildingTypeENUM = buildingTypeENUM;
+    this.type = type;
     this.level = level;
     this.startedAt = startedAt;
     this.finishedAt = finishedAt;
@@ -39,12 +39,12 @@ public class BuildingDTO {
     this.id = id;
   }
 
-  public BuildingTypeENUM getBuildingTypeENUM() {
-    return buildingTypeENUM;
+  public BuildingTypeENUM getType() {
+    return type;
   }
 
-  public void setBuildingTypeENUM(BuildingTypeENUM buildingTypeENUM) {
-    this.buildingTypeENUM = buildingTypeENUM;
+  public void setType(BuildingTypeENUM type) {
+    this.type = type;
   }
 
   public int getLevel() {
