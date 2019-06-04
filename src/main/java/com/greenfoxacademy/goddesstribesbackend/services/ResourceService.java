@@ -1,6 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.ResourceTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.ResourceDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Resource;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.repositories.ResourceRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ResourceService {

@@ -138,4 +138,14 @@ public class BuildingService {
     return new BuildingsDTO(buildingDTOList);
   }
 
+  public List<BuildingDTO> createBuildingDTOList(Kingdom kingdom){
+    ArrayList<Building> buildings = buildingRepository.findBuildingsByKingdom_Id(kingdom.getId());
+    ArrayList<BuildingDTO> listOfBuildings = new ArrayList<>();
+
+    for (Building building:buildings){
+      BuildingDTO buildingDTO = new BuildingDTO(building.getId(),building.getBuildingType(), building.getLevel(), building.getStartedAt(), building.getFinishedAt());
+      listOfBuildings.add(buildingDTO);
+    }
+    return listOfBuildings;
+  }
 }

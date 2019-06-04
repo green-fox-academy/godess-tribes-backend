@@ -20,27 +20,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LeaderboardController {
 
   private LeaderboardService leaderboardService;
+
   @Autowired
   public LeaderboardController(LeaderboardService leaderboardService) {
     this.leaderboardService = leaderboardService;
   }
 
-
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = LeaderboardBuildingsDTO.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = LeaderboardBuildingsDTO.class)})
   @GetMapping("/leaderboard/buildings")
-  public ResponseEntity<Object>leaderboardOfBuildings(){
+  public ResponseEntity<Object> leaderboardOfBuildings() {
     LeaderboardByBuildingsDTO leaderboardByBuildingsDTO = leaderboardService.createLeaderboardByBuildings();
     return ResponseEntity.status(200).body(leaderboardByBuildingsDTO);
   }
 
-
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header") })
-  @ApiResponses(value = {@ApiResponse(code = 200, message ="OK", response = LeaderboardSoldiersDTO.class)})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = LeaderboardSoldiersDTO.class)})
   @GetMapping("/leaderboard/soldiers")
-  public ResponseEntity<Object> leaderboardOfSoldiers(){
-  LeaderboardBySoldiersDTO leaderboardBySoldiersDTO = leaderboardService.createLeaderboardBySoldiers();
+  public ResponseEntity<Object> leaderboardOfSoldiers() {
+    LeaderboardBySoldiersDTO leaderboardBySoldiersDTO = leaderboardService.createLeaderboardBySoldiers();
     return ResponseEntity.status(200).body(leaderboardBySoldiersDTO);
-        }
-
-        }
+  }
+}
