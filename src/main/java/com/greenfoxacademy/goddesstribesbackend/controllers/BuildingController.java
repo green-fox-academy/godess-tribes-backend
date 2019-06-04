@@ -71,19 +71,21 @@ public class BuildingController {
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 409, message = "Id not found", response = ErrorMessage.class)})
   @GetMapping("/kingdom/buildings/{id}")
-  public ResponseEntity<Object> mockRenderBuilding(@PathVariable Long id) {
-    if (MockData.farm.getId() == id) {
-      return ResponseEntity.status(200).body(MockData.farm);
+  public ResponseEntity<Object> findBuilding(@PathVariable(name = "id") Long buidingId) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Kingdom kingdom = kingdomService.findKingdomByUsername(username);
+    Building building = buildingService.findBuildingByKingdomAndBuildingId(kingdom.getId(), buidingId);
+
+    if (building == null) {
+      return ResponseEntity.status(404).body(new ErrorMessage("Building with this id not found"));
     }
-    return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
+    return ResponseEntity.status(200).body(buildingService.createBuildingDTO(building));
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/buildings/{id}")
-  public ResponseEntity<Object> mockChangeBuildingLevel(
-          @PathVariable Long id,
-          @RequestBody LevelDTO levelDTO) {
+  public ResponseEntity<Object> mockChangeBuildingLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
 
     if (levelDTO.getLevel() == null) {
       return ResponseEntity.status(400).body(new ErrorMessage("Missing parameter(s): <level>!"));

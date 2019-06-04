@@ -8,10 +8,6 @@ import java.util.ArrayList;
 
 @Repository
 public interface FarmRepository extends CrudRepository<Farm, Long> {
-
-
   ArrayList<Farm> findAll();
-
   ArrayList<Farm> findFarmsByKingdom_Id(Long kingdomId);
-
 }

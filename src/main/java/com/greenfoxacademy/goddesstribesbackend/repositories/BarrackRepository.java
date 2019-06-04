@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 @Repository
 public interface BarrackRepository extends CrudRepository<Barrack, Long> {
-
   ArrayList<Barrack> findAll();
-
   ArrayList<Barrack> findBarracksByKingdom_Id(Long kingdomId);
-
 }

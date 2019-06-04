@@ -34,9 +34,12 @@ public class BuildingService {
   }
 
   public boolean isValidBuildingType(String type) {
-    return type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString()) ||
-            type.equalsIgnoreCase(BuildingTypeENUM.MINE.toString()) ||
-            type.equalsIgnoreCase(BuildingTypeENUM.BARRACK.toString());
+    for (BuildingTypeENUM buildingTypeENUM : BuildingTypeENUM.values()) {
+      if (buildingTypeENUM.name().equalsIgnoreCase(type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Townhall saveTownhall(Kingdom kingdom) {
@@ -60,6 +63,10 @@ public class BuildingService {
 
   public ArrayList<Building> findBuildingsByKingdom(Long kingdomId) {
     return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
+  }
+
+  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId){
+    return buildingRepository.findBuildingByKingdom_IdAndId(kingdomId, buildingId).orElse(null);
   }
 
   public ArrayList<Farm> findFarmsByKingdom(Long kingdomId) {
@@ -114,7 +121,7 @@ public class BuildingService {
   public BuildingDTO createBuildingDTO(Building building) {
     BuildingDTO buildingDTO = new BuildingDTO();
     buildingDTO.setId(building.getId());
-    buildingDTO.setBuildingTypeENUM(building.getBuildingType());
+    buildingDTO.setType(building.getType());
     buildingDTO.setLevel(building.getLevel());
     buildingDTO.setStartedAt(building.getStartedAt());
     buildingDTO.setFinishedAt(building.getFinishedAt());
@@ -129,7 +136,7 @@ public class BuildingService {
     for (Building building : buildingList) {
       BuildingDTO buildingDTO = new BuildingDTO();
       buildingDTO.setId(building.getId());
-      buildingDTO.setBuildingTypeENUM(building.getBuildingType());
+      buildingDTO.setType(building.getType());
       buildingDTO.setLevel(building.getLevel());
       buildingDTO.setStartedAt(building.getStartedAt());
       buildingDTO.setFinishedAt(building.getFinishedAt());

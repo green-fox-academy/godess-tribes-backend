@@ -26,40 +26,33 @@ public class ProductionService {
     this.soldierService = soldierService;
   }
 
-  public void updateResources(Long kingdomId){
-    updateFoodResource(kingdomId);
-    updateGoldResource(kingdomId);
+  public void updateResources(Long kingdomId) {
+    updateResource(kingdomId, ResourceTypeENUM.FOOD);
+    updateResource(kingdomId, ResourceTypeENUM.GOLD);
   }
 
-  public void updateFoodResource(Long kingdomId) {
-    Resource foodResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.FOOD);
+  public void updateResource(Long kingdomId, ResourceTypeENUM type) {
+    Resource resource = resourceService.findResourceByKingdomAndType(kingdomId, type);
+    if (resource != null) {
+      int previousAmount = resource.getAmount();
+      int increment = 0;
+      int maxAmount = Integer.MAX_VALUE;
 
-    if (foodResource != null) {
-      int previousAmount = foodResource.getAmount();
-      int increment = (int) (calculateNetFoodGenerationRate(kingdomId) * calculateDuration(foodResource) / 60.);
-      int maxAmount = foodResource.getTownhall().getFoodCapacity();
+      if (type.equals(ResourceTypeENUM.FOOD)) {
+        increment = (int) (calculateNetFoodGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
+        maxAmount = resource.getTownhall().getFoodCapacity();
+
+      } else if (type.equals(ResourceTypeENUM.GOLD)) {
+        increment = (int) (buildingService.calculateGoldGenerationRate(kingdomId) * calculateDuration(resource) / 60.);
+        maxAmount = resource.getTownhall().getGoldCapacity();
+      }
+
       int currentAmount = previousAmount + increment;
       currentAmount = currentAmount <= maxAmount ? currentAmount : maxAmount;
 
-      foodResource.setAmount(currentAmount);
-      foodResource.setUpdateTime(LocalDateTime.now());
-      resourceService.save(foodResource);
-    }
-  }
-
-  public void updateGoldResource(Long kingdomId) {
-    Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.GOLD);
-
-    if (goldResource != null) {
-      int previousAmount = goldResource.getAmount();
-      int increment = (int) (buildingService.calculateGoldGenerationRate(kingdomId) * calculateDuration(goldResource) / 60.);
-      int maxAmount = goldResource.getTownhall().getGoldCapacity();
-      int currentAmount = previousAmount + increment;
-      currentAmount = currentAmount <= maxAmount ? currentAmount : maxAmount;
-
-      goldResource.setAmount(currentAmount);
-      goldResource.setUpdateTime(LocalDateTime.now());
-      resourceService.save(goldResource);
+      resource.setAmount(currentAmount);
+      resource.setUpdateTime(LocalDateTime.now());
+      resourceService.save(resource);
     }
   }
 
@@ -77,7 +70,7 @@ public class ProductionService {
   }
 
   public int calculateGoldReserve(Long kingdomId) {
-    updateGoldResource(kingdomId);
+    updateResource(kingdomId, ResourceTypeENUM.GOLD);
     Resource goldResource = resourceService.findResourceByKingdomAndType(kingdomId, ResourceTypeENUM.GOLD);
     return goldResource.getAmount();
   }

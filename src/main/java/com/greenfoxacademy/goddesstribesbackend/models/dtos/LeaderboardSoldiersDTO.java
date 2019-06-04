@@ -34,4 +34,5 @@ public class LeaderboardSoldiersDTO {
   public void setSoldiers(int soldiers) {
     this.soldiers = soldiers;
   }
+
 }
