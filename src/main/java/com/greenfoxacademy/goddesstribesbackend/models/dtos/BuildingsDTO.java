@@ -17,7 +17,7 @@ public class BuildingsDTO {
     this.buildings = buildings;
   }
 
-  public void add(BuildingDTO buildingDTO){
+  public void add(BuildingDTO buildingDTO) {
     buildings.add(buildingDTO);
   }
 
