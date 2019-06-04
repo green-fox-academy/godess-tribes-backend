@@ -19,7 +19,7 @@ public abstract class Building {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private BuildingTypeENUM buildingType;
+  private BuildingTypeENUM type;
   private int level;
   private int upgradeCost;
   private int upgradeTime;
@@ -54,12 +54,12 @@ public abstract class Building {
     this.id = id;
   }
 
-  public BuildingTypeENUM getBuildingType() {
-    return buildingType;
+  public BuildingTypeENUM getType() {
+    return type;
   }
 
-  public void setBuildingType(BuildingTypeENUM buildingType) {
-    this.buildingType = buildingType;
+  public void setType(BuildingTypeENUM type) {
+    this.type = type;
   }
 
   public int getLevel() {
