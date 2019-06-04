@@ -124,8 +124,8 @@ public class BuildingService {
     buildingDTO.setId(building.getId());
     buildingDTO.setBuildingTypeENUM(building.getBuildingType());
     buildingDTO.setLevel(building.getLevel());
-    Timestamp statedAt = Timestamp.valueOf(building.getStartedAt());
-    buildingDTO.setStartedAt(statedAt);
+    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+    buildingDTO.setStartedAt(startedAt);
     Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
     buildingDTO.setFinishedAt(finishedAt);
     return buildingDTO;
