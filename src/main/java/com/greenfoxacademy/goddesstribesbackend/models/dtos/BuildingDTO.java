@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @SwaggerDefinition
 public class BuildingDTO {
+
   @ApiModelProperty(position = 1)
   private Long id;
   @ApiModelProperty(position = 2)

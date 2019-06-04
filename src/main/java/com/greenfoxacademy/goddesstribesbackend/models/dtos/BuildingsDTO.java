@@ -7,6 +7,7 @@ import java.util.List;
 
 @SwaggerDefinition
 public class BuildingsDTO {
+
   private List<BuildingDTO> buildings;
 
   public BuildingsDTO() {

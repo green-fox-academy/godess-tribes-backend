@@ -5,6 +5,7 @@ import io.swagger.annotations.SwaggerDefinition;
 
 @SwaggerDefinition
 public class LocationDTO {
+
   @ApiModelProperty(position = 1)
   private int xCoord;
   @ApiModelProperty(position = 2)
