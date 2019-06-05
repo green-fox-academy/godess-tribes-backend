@@ -93,6 +93,7 @@ public class BuildingController {
       return ResponseEntity.status(404).body(new ErrorMessage("No building with such id found in your kingdom!"));
     }
 
+
     if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId(), buildingToUpgrade.getType())){
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level: can upgrade only 1 grade at a time, and other buildings level must be less than or equal with townhall level!"));
     }

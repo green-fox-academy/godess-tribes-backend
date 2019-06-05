@@ -9,6 +9,7 @@ import com.greenfoxacademy.goddesstribesbackend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,8 +129,10 @@ public class BuildingService {
     buildingDTO.setId(building.getId());
     buildingDTO.setType(building.getType());
     buildingDTO.setLevel(building.getLevel());
-    buildingDTO.setStartedAt(building.getStartedAt());
-    buildingDTO.setFinishedAt(building.getFinishedAt());
+    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+    buildingDTO.setStartedAt(startedAt);
+    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
+    buildingDTO.setFinishedAt(finishedAt);
     return buildingDTO;
   }
 
@@ -143,19 +146,21 @@ public class BuildingService {
       buildingDTO.setId(building.getId());
       buildingDTO.setType(building.getType());
       buildingDTO.setLevel(building.getLevel());
-      buildingDTO.setStartedAt(building.getStartedAt());
-      buildingDTO.setFinishedAt(building.getFinishedAt());
+      Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+      buildingDTO.setStartedAt(startedAt);
+      Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
+      buildingDTO.setFinishedAt(finishedAt);
       buildingDTOList.add(buildingDTO);
     }
     return new BuildingsDTO(buildingDTOList);
   }
 
-  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long id, BuildingTypeENUM type){
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
     if (upgradeLevelAsked == currentLevel) return false;
 
-    Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
+    Integer townhallLevel = townhallRepository.findById(id).get().getLevel();
 
     if (!type.equals(BuildingTypeENUM.TOWNHALL)){
       if (upgradeLevelAsked > townhallLevel) return false;

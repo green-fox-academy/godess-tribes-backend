@@ -4,7 +4,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.SwaggerDefinition;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @SwaggerDefinition
 public class BuildingDTO {
@@ -16,14 +16,14 @@ public class BuildingDTO {
   @ApiModelProperty(position = 3)
   private int level;
   @ApiModelProperty(position = 4)
-  private LocalDateTime startedAt;
+  private Timestamp startedAt;
   @ApiModelProperty(position = 5)
-  private LocalDateTime finishedAt;
+  private Timestamp finishedAt;
 
   public BuildingDTO() {
   }
 
-  public BuildingDTO(Long id, BuildingTypeENUM type, int level, LocalDateTime startedAt, LocalDateTime finishedAt) {
+  public BuildingDTO(Long id, BuildingTypeENUM type, int level, Timestamp startedAt, Timestamp finishedAt) {
     this.id = id;
     this.type = type;
     this.level = level;
@@ -55,19 +55,19 @@ public class BuildingDTO {
     this.level = level;
   }
 
-  public LocalDateTime getStartedAt() {
+  public Timestamp getStartedAt() {
     return startedAt;
   }
 
-  public void setStartedAt(LocalDateTime startedAt) {
+  public void setStartedAt(Timestamp startedAt) {
     this.startedAt = startedAt;
   }
 
-  public LocalDateTime getFinishedAt() {
+  public Timestamp getFinishedAt() {
     return finishedAt;
   }
 
-  public void setFinishedAt(LocalDateTime finishedAt) {
+  public void setFinishedAt(Timestamp finishedAt) {
     this.finishedAt = finishedAt;
   }
 
