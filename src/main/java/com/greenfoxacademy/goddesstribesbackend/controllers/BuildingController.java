@@ -2,9 +2,7 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.*;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
@@ -106,6 +104,11 @@ public class BuildingController {
     if (buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.TOWNHALL)){
       Townhall upgradedTownhall = buildingService.upgradeTownhall(kingdom.getId(), id, levelDTO.getLevel());
       return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedTownhall));
+    }
+
+    if (buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.MINE) || buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.FARM)){
+      ProductionBuilding upgradedProductionBuilding = buildingService.upgradeProductionBuilding(kingdom.getId(), id, levelDTO.getLevel());
+      return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedProductionBuilding));
     }
 
     Building upgradedBuilding = buildingService.upgradeBuilding(kingdom.getId(), id, levelDTO.getLevel());

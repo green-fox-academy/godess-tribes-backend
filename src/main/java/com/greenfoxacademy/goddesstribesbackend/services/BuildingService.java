@@ -22,17 +22,20 @@ public class BuildingService {
   private MineRepository mineRepository;
   private ResourceRepository resourceRepository;
   private TownhallRepository townhallRepository;
+  private ProductionBuildingRepository productionBuildingRepository;
 
   @Autowired
   public BuildingService(KingdomRepository kingdomRepository, BuildingRepository buildingRepository,
                          FarmRepository farmRepository, MineRepository mineRepository,
-                         ResourceRepository resourceRepository, TownhallRepository townhallRepository) {
+                         ResourceRepository resourceRepository, TownhallRepository townhallRepository,
+                         ProductionBuildingRepository productionBuildingRepository) {
     this.kingdomRepository = kingdomRepository;
     this.buildingRepository = buildingRepository;
     this.farmRepository = farmRepository;
     this.mineRepository = mineRepository;
     this.resourceRepository = resourceRepository;
     this.townhallRepository = townhallRepository;
+    this.productionBuildingRepository = productionBuildingRepository;
   }
 
   public boolean isValidBuildingType(String type) {
@@ -189,6 +192,15 @@ public class BuildingService {
     townhallToUpgrade.setGoldCapacity(Townhall.GOLD_CAPACITY_PER_LEVEL * townhallToUpgrade.getLevel());
     townhallRepository.save(townhallToUpgrade);
     return townhallToUpgrade;
+  }
+
+  public ProductionBuilding upgradeProductionBuilding(Long kingdomId, Long buildingId, Integer upgradeLevel) {
+    upgradeBuilding(kingdomId, buildingId, upgradeLevel);
+
+    ProductionBuilding prodBuildingToUpgrade = productionBuildingRepository.findById(buildingId).get();
+    prodBuildingToUpgrade.setProductionRate(ProductionBuilding.PROD_RATE_PER_LEVEL * prodBuildingToUpgrade.getLevel());
+    productionBuildingRepository.save(prodBuildingToUpgrade);
+    return prodBuildingToUpgrade;
   }
 
 }
