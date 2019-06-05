@@ -25,7 +25,6 @@ public class KingdomController {
     this.kingdomService = kingdomService;
   }
 
-
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true, dataType = "string", paramType = "header")})
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class)})
   @GetMapping("/kingdom")
