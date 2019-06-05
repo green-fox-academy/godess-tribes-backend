@@ -12,6 +12,8 @@ public class Townhall extends Building {
   public static int START_GOLD_AMOUNT = 100;
   private static final int START_FOOD_CAPACITY = 1000;
   private static final int START_GOLD_CAPACITY = 1000;
+  public static final int GOLD_CAPACITY_PER_LEVEL = 1000;
+  public static final int FOOD_CAPACITY_PER_LEVEL = 1000;
 
   private int foodCapacity;
   private int goldCapacity;
