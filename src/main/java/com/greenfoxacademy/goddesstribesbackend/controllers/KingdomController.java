@@ -18,7 +18,6 @@ public class KingdomController {
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class)})
   @GetMapping("/kingdom")
   public ResponseEntity<Object> findOwnKingdom() {
-
     return ResponseEntity.status(200).body(MockData.kingdomDTO);
   }
 
