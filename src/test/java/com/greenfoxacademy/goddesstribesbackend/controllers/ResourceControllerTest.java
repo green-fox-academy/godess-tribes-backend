@@ -38,9 +38,7 @@ public class ResourceControllerTest {
   private static String jwtToken;
   private static User user;
   private static Kingdom kingdom;
-  private static MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-          MediaType.APPLICATION_JSON.getSubtype(),
-          Charset.forName("utf8"));
+  private static MediaType contentType;
 
   @Autowired
   private MockMvc mockMvc;
@@ -50,10 +48,6 @@ public class ResourceControllerTest {
   @MockBean
   private ProductionService productionService;
 
-//  private String obtainJWTToken(String username, String password) {
-//    return JWTUtility.generateToken(username);
-//  }
-
   @BeforeClass
   public static void init() {
     username = "Juliska";
@@ -61,6 +55,9 @@ public class ResourceControllerTest {
     jwtToken = JWTUtility.generateToken(username);
     user = new User(username, password);
     kingdom = new Kingdom(username + "s kingdom", user);
+    contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+                                MediaType.APPLICATION_JSON.getSubtype(),
+                                Charset.forName("utf8"));
   }
 
   @Test
@@ -71,12 +68,6 @@ public class ResourceControllerTest {
 
   @Test
   public void listResourcesShouldReturnProperResult_when_tokenIsGiven() throws Exception {
-//    String username = "Juliska";
-//    String password = "jancsi123";
-//    String jwtToken = obtainJWTToken(username, password);
-//    User user = new User(username, password);
-//    Kingdom kingdom = new Kingdom(username + "s kingdom", user);
-
     ResourceDTO food = new ResourceDTO(ResourceTypeENUM.FOOD, 200, 10);
     ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 500, 20);
     List<ResourceDTO> resourceList = new ArrayList<>(Arrays.asList(food, gold));
