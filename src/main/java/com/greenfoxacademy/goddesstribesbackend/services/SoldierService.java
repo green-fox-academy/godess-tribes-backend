@@ -1,11 +1,13 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.SoldierDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Soldier;
 import com.greenfoxacademy.goddesstribesbackend.repositories.SoldierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SoldierService {
@@ -31,4 +33,14 @@ public class SoldierService {
     return consumptionRate;
   }
 
+  public List<SoldierDTO> createSoldierDTOList(Long kingdomId) {
+    ArrayList<Soldier> soldiers = soldierRepository.findSoldiersByBarrack_Kingdom_Id(kingdomId);
+    ArrayList<SoldierDTO> listOfSoldiers = new ArrayList<>();
+
+    for (Soldier soldier : soldiers) {
+      SoldierDTO soldierDTO = new SoldierDTO(soldier.getId(), soldier.getLevel(), soldier.getStartedAt(), soldier.getFinishedAt());
+      listOfSoldiers.add(soldierDTO);
+    }
+    return listOfSoldiers;
+  }
 }

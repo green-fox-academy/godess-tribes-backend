@@ -1,6 +1,8 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.KingdomDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.LocationDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
@@ -17,14 +19,18 @@ public class KingdomService {
   private UserService userService;
   private BuildingService buildingService;
   private ResourceService resourceService;
+  private SoldierService soldierService;
+  private ProductionService productionService;
 
   @Autowired
   public KingdomService(KingdomRepository kingdomRepository, UserService userService,
-                        BuildingService buildingService, ResourceService resourceService) {
+                        BuildingService buildingService, ResourceService resourceService, SoldierService soldierService, ProductionService productionService) {
     this.kingdomRepository = kingdomRepository;
     this.userService = userService;
     this.buildingService = buildingService;
     this.resourceService = resourceService;
+    this.soldierService = soldierService;
+    this.productionService = productionService;
   }
 
   public Kingdom findKingdomByUsername(String username) {
@@ -69,6 +75,23 @@ public class KingdomService {
       return new AuthenticationResponseDTO(user.getId(), kingdom.getId());
     }
     return null;
+  }
+
+  public KingdomDTO createKingdomDTO(Kingdom kingdom) {
+    KingdomDTO kingdomDTO = new KingdomDTO();
+    kingdomDTO.setId(kingdom.getId());
+    kingdomDTO.setKingdomName(kingdom.getKingdomName());
+    kingdomDTO.setUserId(kingdom.getUser().getId());
+    kingdomDTO.setLocation(new LocationDTO(kingdom.getxCoord(),kingdom.getyCoord()));
+    kingdomDTO.setSoldiers(soldierService.createSoldierDTOList(kingdom.getId()));
+    kingdomDTO.setBuildings(buildingService.createBuildingDTOList(kingdom));
+    kingdomDTO.setResources(productionService.createResourcesDTO(kingdom.getId()).getResources());
+    return kingdomDTO;
+  }
+
+  public Kingdom renameKingdom(String name, Kingdom kingdom) {
+    kingdom.setKingdomName(name);
+    return kingdomRepository.save(kingdom);
   }
 
 }
