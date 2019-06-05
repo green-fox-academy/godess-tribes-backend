@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductionBuildingRepository extends CrudRepository<ProductionBuilding, Long> {
   ArrayList<ProductionBuilding> findAll();
-  ArrayList<ProductionBuilding> findTownhallsByKingdom_Id(Long kingdomId);
   Optional<ProductionBuilding> findById(Long productionBuildingId);
 }
