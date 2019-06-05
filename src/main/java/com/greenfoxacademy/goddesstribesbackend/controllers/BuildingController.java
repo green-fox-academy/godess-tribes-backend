@@ -93,7 +93,8 @@ public class BuildingController {
       return ResponseEntity.status(404).body(new ErrorMessage("No building with such id found in your kingdom!"));
     }
 
-    if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), id, buildingToUpgrade.getBuildingType())){
+
+    if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId(), buildingToUpgrade.getType())){
       return ResponseEntity.status(406).body(new ErrorMessage("Invalid building level: can upgrade only 1 grade at a time, and other buildings level must be less than or equal with townhall level!"));
     }
 
@@ -101,12 +102,12 @@ public class BuildingController {
       return ResponseEntity.status(409).body(new ErrorMessage("Not enough resource!"));
     }
 
-    if (buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.TOWNHALL)){
+    if (buildingToUpgrade.getType().equals(BuildingTypeENUM.TOWNHALL)){
       Townhall upgradedTownhall = buildingService.upgradeTownhall(kingdom.getId(), id, levelDTO.getLevel());
       return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedTownhall));
     }
 
-    if (buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.MINE) || buildingToUpgrade.getBuildingType().equals(BuildingTypeENUM.FARM)){
+    if (buildingToUpgrade.getType().equals(BuildingTypeENUM.MINE) || buildingToUpgrade.getType().equals(BuildingTypeENUM.FARM)){
       ProductionBuilding upgradedProductionBuilding = buildingService.upgradeProductionBuilding(kingdom.getId(), id, levelDTO.getLevel());
       return ResponseEntity.status(200).body(buildingService.createBuildingDTO(upgradedProductionBuilding));
     }
