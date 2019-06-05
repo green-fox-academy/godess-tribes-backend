@@ -64,7 +64,7 @@ public class BuildingController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 409, message = "Id not found", response = ErrorMessage.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 409, message = "No building with such id found in your kingdom!", response = ErrorMessage.class)})
   @GetMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object> findBuilding(@PathVariable(name = "id") Long buidingId) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,13 +72,13 @@ public class BuildingController {
     Building building = buildingService.findBuildingByKingdomAndBuildingId(kingdom.getId(), buidingId);
 
     if (building == null) {
-      return ResponseEntity.status(404).body(new ErrorMessage("Building with this id not found"));
+      return ResponseEntity.status(404).body(new ErrorMessage("No building with such id found in your kingdom!"));
     }
     return ResponseEntity.status(200).body(buildingService.createBuildingDTO(building));
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "No building with such id is found in your kingdom!", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level:can upgrade only 1 grade at a time, must be less than or equal with townhall level!", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = BuildingDTO.class), @ApiResponse(code = 400, message = "Missing parameter(s): level!", response = ErrorMessage.class), @ApiResponse(code = 404, message = "No building with such id found in your kingdom!", response = ErrorMessage.class), @ApiResponse(code = 406, message = "Invalid building level:can upgrade only 1 grade at a time, must be less than or equal with townhall level!", response = ErrorMessage.class), @ApiResponse(code = 409, message = "Not enough resource", response = ErrorMessage.class)})
   @PutMapping("/kingdom/buildings/{id}")
   public ResponseEntity<Object> changeBuildingLevel(@PathVariable Long id, @RequestBody LevelDTO levelDTO) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -90,7 +90,7 @@ public class BuildingController {
     }
 
     if (buildingToUpgrade == null) {
-      return ResponseEntity.status(404).body(new ErrorMessage("No building with such id is found in your kingdom!"));
+      return ResponseEntity.status(404).body(new ErrorMessage("No building with such id found in your kingdom!"));
     }
 
     if (!buildingService.isValidLevel(levelDTO.getLevel(), buildingToUpgrade.getLevel(), kingdom.getId(), buildingToUpgrade.getBuildingType())){
