@@ -8,6 +8,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ResourceController.class)
 public class ResourceControllerTest {
 
-  private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+  private static String username;
+  private static String password;
+  private static String jwtToken;
+  private static User user;
+  private static Kingdom kingdom;
+  private static MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
           MediaType.APPLICATION_JSON.getSubtype(),
           Charset.forName("utf8"));
 
@@ -44,8 +50,17 @@ public class ResourceControllerTest {
   @MockBean
   private ProductionService productionService;
 
-  private String obtainJWTToken(String username, String password) {
-    return JWTUtility.generateToken(username);
+//  private String obtainJWTToken(String username, String password) {
+//    return JWTUtility.generateToken(username);
+//  }
+
+  @BeforeClass
+  public static void init() {
+    username = "Juliska";
+    password = "jancsi123";
+    jwtToken = JWTUtility.generateToken(username);
+    user = new User(username, password);
+    kingdom = new Kingdom(username + "s kingdom", user);
   }
 
   @Test
@@ -56,12 +71,12 @@ public class ResourceControllerTest {
 
   @Test
   public void listResourcesShouldReturnProperResult_when_tokenIsGiven() throws Exception {
-    String username = "Juliska";
-    String password = "jancsi123";
+//    String username = "Juliska";
+//    String password = "jancsi123";
+//    String jwtToken = obtainJWTToken(username, password);
+//    User user = new User(username, password);
+//    Kingdom kingdom = new Kingdom(username + "s kingdom", user);
 
-    String jwtToken = obtainJWTToken(username, password);
-    User user = new User(username, password);
-    Kingdom kingdom = new Kingdom(username + "s kingdom", user);
     ResourceDTO food = new ResourceDTO(ResourceTypeENUM.FOOD, 200, 10);
     ResourceDTO gold = new ResourceDTO(ResourceTypeENUM.GOLD, 500, 20);
     List<ResourceDTO> resourceList = new ArrayList<>(Arrays.asList(food, gold));
