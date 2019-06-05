@@ -79,6 +79,11 @@ public class ProductionService {
     return calculateGoldReserve(kingdomId) >= Building.CREATION_COST;
   }
 
+  public boolean isEnoughMoneyToUpgradeBuilding(Long kingdomId, Long buildingId) {
+    Building building = buildingService.findBuildingByKingdomAndBuildingId(kingdomId, buildingId);
+    return calculateGoldReserve(kingdomId) >= building.getUpgradeCost();
+  }
+
   public ResourcesDTO createResourcesDTO(Long kingdomId) {
     updateResources(kingdomId);
 

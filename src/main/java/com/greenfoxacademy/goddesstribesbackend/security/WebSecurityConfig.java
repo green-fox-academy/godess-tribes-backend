@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
   @Bean
-  public RestAuthenticationEntryPoint restAuthenticationEntryPoint (){
+  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
     return new RestAuthenticationEntryPoint();
   }
 
