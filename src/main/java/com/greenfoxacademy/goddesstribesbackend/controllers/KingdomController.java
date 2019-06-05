@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class KingdomController {
 
-  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+  @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token",required = true,  dataType = "string", paramType = "header")})
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class)})
   @GetMapping("/kingdom")
   public ResponseEntity<Object> findOwnKingdom() {

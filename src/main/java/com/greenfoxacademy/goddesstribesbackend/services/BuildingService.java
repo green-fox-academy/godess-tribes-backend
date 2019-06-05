@@ -21,16 +21,21 @@ public class BuildingService {
   private FarmRepository farmRepository;
   private MineRepository mineRepository;
   private ResourceRepository resourceRepository;
+  private TownhallRepository townhallRepository;
+  private ProductionBuildingRepository productionBuildingRepository;
 
   @Autowired
   public BuildingService(KingdomRepository kingdomRepository, BuildingRepository buildingRepository,
                          FarmRepository farmRepository, MineRepository mineRepository,
-                         ResourceRepository resourceRepository) {
+                         ResourceRepository resourceRepository, TownhallRepository townhallRepository,
+                         ProductionBuildingRepository productionBuildingRepository) {
     this.kingdomRepository = kingdomRepository;
     this.buildingRepository = buildingRepository;
     this.farmRepository = farmRepository;
     this.mineRepository = mineRepository;
     this.resourceRepository = resourceRepository;
+    this.townhallRepository = townhallRepository;
+    this.productionBuildingRepository = productionBuildingRepository;
   }
 
   public boolean isValidBuildingType(String type) {
@@ -143,6 +148,59 @@ public class BuildingService {
       buildingDTOList.add(buildingDTO);
     }
     return new BuildingsDTO(buildingDTOList);
+  }
+
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
+
+    if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
+    if (upgradeLevelAsked == currentLevel) return false;
+
+    Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
+
+    if (!type.equals(BuildingTypeENUM.TOWNHALL)){
+      if (upgradeLevelAsked > townhallLevel) return false;
+    }
+
+    if (upgradeLevelAsked - currentLevel > 1) return false;
+
+    return true;
+  }
+
+  public Building upgradeBuilding(Long kingdomId, Long buildingId, Integer upgradeLevel) {
+    Building buildingToUpgrade = findBuildingByKingdomAndBuildingId(kingdomId, buildingId);
+
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdomId, ResourceTypeENUM.GOLD).get();
+    int newGoldAmount = goldResource.getAmount() - buildingToUpgrade.getUpgradeCost();
+    goldResource.setAmount(newGoldAmount);
+    goldResource.setUpdateTime(LocalDateTime.now());
+    resourceRepository.save(goldResource);
+
+    buildingToUpgrade.setLevel(upgradeLevel);
+    buildingToUpgrade.setUpgradeCost(Building.UPGRADE_COST_PER_LEVEL * buildingToUpgrade.getLevel());
+    buildingToUpgrade.setStartedAt(LocalDateTime.now());
+    buildingToUpgrade.setFinishedAt(LocalDateTime.now().plusMinutes(Building.UPGRADE_TIME));
+    buildingRepository.save(buildingToUpgrade);
+
+    return buildingToUpgrade;
+  }
+
+  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel){
+    upgradeBuilding(kingdomId, buildingId, upgradeLevel);
+
+    Townhall townhallToUpgrade = townhallRepository.findById(buildingId).get();
+    townhallToUpgrade.setFoodCapacity(Townhall.FOOD_CAPACITY_PER_LEVEL * townhallToUpgrade.getLevel());
+    townhallToUpgrade.setGoldCapacity(Townhall.GOLD_CAPACITY_PER_LEVEL * townhallToUpgrade.getLevel());
+    townhallRepository.save(townhallToUpgrade);
+    return townhallToUpgrade;
+  }
+
+  public ProductionBuilding upgradeProductionBuilding(Long kingdomId, Long buildingId, Integer upgradeLevel) {
+    upgradeBuilding(kingdomId, buildingId, upgradeLevel);
+
+    ProductionBuilding prodBuildingToUpgrade = productionBuildingRepository.findById(buildingId).get();
+    prodBuildingToUpgrade.setProductionRate(ProductionBuilding.PROD_RATE_PER_LEVEL * prodBuildingToUpgrade.getLevel());
+    productionBuildingRepository.save(prodBuildingToUpgrade);
+    return prodBuildingToUpgrade;
   }
 
 }

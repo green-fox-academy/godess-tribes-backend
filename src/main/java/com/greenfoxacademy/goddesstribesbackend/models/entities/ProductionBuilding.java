@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 @Entity
 public abstract class ProductionBuilding extends Building {
 
+  public static final int PROD_RATE_PER_LEVEL = 10;
+
   private int productionRate;
 
   public ProductionBuilding() {
