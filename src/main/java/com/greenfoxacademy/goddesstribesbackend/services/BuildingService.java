@@ -124,44 +124,6 @@ public class BuildingService {
     return building;
   }
 
-  public BuildingDTO createBuildingDTO(Building building) {
-    BuildingDTO buildingDTO = new BuildingDTO();
-
-    buildingDTO.setId(building.getId());
-    buildingDTO.setType(building.getType());
-
-    int buildingLevel = building.getLevel();
-    if (LocalDateTime.now().isBefore(building.getFinishedAt())) {
-      buildingLevel -= 1;
-    }
-    buildingDTO.setLevel(buildingLevel);
-
-    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
-    buildingDTO.setStartedAt(startedAt);
-    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
-    buildingDTO.setFinishedAt(finishedAt);
-    return buildingDTO;
-  }
-
-  public BuildingsDTO createBuildingsDTO(String username) {
-    List<BuildingDTO> buildingDTOList = new ArrayList<>();
-    Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-    ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
-
-    for (Building building : buildingList) {
-      BuildingDTO buildingDTO = new BuildingDTO();
-      buildingDTO.setId(building.getId());
-      buildingDTO.setType(building.getType());
-      buildingDTO.setLevel(building.getLevel());
-      Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
-      buildingDTO.setStartedAt(startedAt);
-      Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
-      buildingDTO.setFinishedAt(finishedAt);
-      buildingDTOList.add(buildingDTO);
-    }
-    return new BuildingsDTO(buildingDTOList);
-  }
-
   public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type) {
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
@@ -213,6 +175,36 @@ public class BuildingService {
     prodBuildingToUpgrade.setProductionRate(ProductionBuilding.PROD_RATE_PER_LEVEL * prodBuildingToUpgrade.getLevel());
     productionBuildingRepository.save(prodBuildingToUpgrade);
     return prodBuildingToUpgrade;
+  }
+
+  public BuildingDTO createBuildingDTO(Building building) {
+    BuildingDTO buildingDTO = new BuildingDTO();
+
+    buildingDTO.setId(building.getId());
+    buildingDTO.setType(building.getType());
+
+    int buildingLevel = building.getLevel();
+    if (LocalDateTime.now().isBefore(building.getFinishedAt())) {
+      buildingLevel -= 1;
+    }
+    buildingDTO.setLevel(buildingLevel);
+
+    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+    buildingDTO.setStartedAt(startedAt);
+    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
+    buildingDTO.setFinishedAt(finishedAt);
+    return buildingDTO;
+  }
+
+  public BuildingsDTO createBuildingsDTO(String username) {
+    List<BuildingDTO> buildingDTOList = new ArrayList<>();
+    Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+    ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
+
+    for (Building building : buildingList) {
+      buildingDTOList.add(createBuildingDTO(building));
+    }
+    return new BuildingsDTO(buildingDTOList);
   }
 
 }
