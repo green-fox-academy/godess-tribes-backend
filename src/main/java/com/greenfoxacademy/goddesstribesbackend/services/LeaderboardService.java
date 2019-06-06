@@ -31,6 +31,7 @@ public class LeaderboardService {
   public LeaderboardByBuildingsDTO createLeaderboardByBuildings() {
     List<LeaderboardBuildingsDTO> leaderboardBuildingsDTOList = new ArrayList<>();
     ArrayList<Kingdom> kingdomList = kingdomRepository.findAll();
+
     for (Kingdom kingdom : kingdomList) {
       LeaderboardBuildingsDTO leaderboardBuildingsDTO = new LeaderboardBuildingsDTO();
       leaderboardBuildingsDTO.setKingdomName(kingdom.getKingdomName());
@@ -43,6 +44,7 @@ public class LeaderboardService {
   public LeaderboardBySoldiersDTO createLeaderboardBySoldiers() {
     List<LeaderboardSoldiersDTO> leaderboardBySoldiersDTOList = new ArrayList<>();
     ArrayList<Kingdom> kingdomList = kingdomRepository.findAll();
+
     for (Kingdom kingdom : kingdomList) {
       LeaderboardSoldiersDTO leaderboardSoldiersDTO = new LeaderboardSoldiersDTO();
       leaderboardSoldiersDTO.setKingdomName(kingdom.getKingdomName());
@@ -51,4 +53,5 @@ public class LeaderboardService {
     }
     return new LeaderboardBySoldiersDTO(leaderboardBySoldiersDTOList);
   }
+
 }
