@@ -44,4 +44,5 @@ public class SoldierService {
     }
     return listOfSoldiers;
   }
+
 }

@@ -71,7 +71,7 @@ public class BuildingService {
     return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
   }
 
-  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId){
+  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId) {
     return buildingRepository.findBuildingByKingdom_IdAndId(kingdomId, buildingId).orElse(null);
   }
 
@@ -155,14 +155,14 @@ public class BuildingService {
     return new BuildingsDTO(buildingDTOList);
   }
 
-  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type) {
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
     if (upgradeLevelAsked == currentLevel) return false;
 
     Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
 
-    if (!type.equals(BuildingTypeENUM.TOWNHALL)){
+    if (!type.equals(BuildingTypeENUM.TOWNHALL)) {
       if (upgradeLevelAsked > townhallLevel) return false;
     }
 
@@ -189,7 +189,7 @@ public class BuildingService {
     return buildingToUpgrade;
   }
 
-  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel){
+  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel) {
     upgradeBuilding(kingdomId, buildingId, upgradeLevel);
 
     Townhall townhallToUpgrade = townhallRepository.findById(buildingId).get();
