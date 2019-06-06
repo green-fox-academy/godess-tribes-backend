@@ -126,9 +126,16 @@ public class BuildingService {
 
   public BuildingDTO createBuildingDTO(Building building) {
     BuildingDTO buildingDTO = new BuildingDTO();
+
     buildingDTO.setId(building.getId());
     buildingDTO.setType(building.getType());
-    buildingDTO.setLevel(building.getLevel());
+
+    int buildingLevel = building.getLevel();
+    if (LocalDateTime.now().isBefore(building.getFinishedAt())) {
+      buildingLevel -= 1;
+    }
+    buildingDTO.setLevel(buildingLevel);
+
     Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
     buildingDTO.setStartedAt(startedAt);
     Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
