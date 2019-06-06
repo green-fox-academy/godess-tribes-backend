@@ -104,7 +104,6 @@ public class BuildingService {
   }
 
   public Building createBuilding(Kingdom kingdom, String type) {
-    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
     Building building;
 
     if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
@@ -117,10 +116,12 @@ public class BuildingService {
       building = null;
     }
 
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
     int newGoldAmount = goldResource.getAmount() - Building.CREATION_COST;
     goldResource.setAmount(newGoldAmount);
     goldResource.setUpdateTime(LocalDateTime.now());
     resourceRepository.save(goldResource);
+
     return building;
   }
 
