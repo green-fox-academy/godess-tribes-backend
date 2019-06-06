@@ -62,6 +62,24 @@ public class UserControllerTest {
   }
 
   @Test
+  public void registerShouldReturnErrorMessage_when_UserAndPasswordAreEmptyString() throws Exception {
+    RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
+    registerRequestDTO.setUsername("");
+    registerRequestDTO.setPassword("");
+    String registerRequestDTOJson = objectMapper.writeValueAsString(registerRequestDTO);
+
+    String expectedErrorMessage = "Username and password are required.";
+
+    mockMvc.perform(post("/register")
+            .contentType(contentType)
+            .content(registerRequestDTOJson))
+            .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
   public void registerShouldReturnErrorMessage_when_noUserIsGiven() throws Exception {
     RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
     registerRequestDTO.setPassword("jancsi123");
