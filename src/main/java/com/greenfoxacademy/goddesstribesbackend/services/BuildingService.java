@@ -155,12 +155,12 @@ public class BuildingService {
     return new BuildingsDTO(buildingDTOList);
   }
 
-  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long id, BuildingTypeENUM type){
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
     if (upgradeLevelAsked == currentLevel) return false;
 
-    Integer townhallLevel = townhallRepository.findById(id).get().getLevel();
+    Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
 
     if (!type.equals(BuildingTypeENUM.TOWNHALL)){
       if (upgradeLevelAsked > townhallLevel) return false;

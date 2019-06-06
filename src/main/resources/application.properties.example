@@ -1,7 +1,7 @@
 spring.datasource.url=${TGB_APP_DB_URL}
 spring.datasource.username=${TGB_APP_DB_USERNAME}
 spring.datasource.password=${TGB_APP_DB_PASSWORD}
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.properties.hibernate.dialect=${TGB_APP_HIB_DIAL}
 spring.logging.level.org.hibernate.SQL=debug
 spring.jpa.show-sql=true
