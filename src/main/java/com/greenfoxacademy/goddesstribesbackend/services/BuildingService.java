@@ -88,7 +88,11 @@ public class BuildingService {
     ArrayList<Farm> farms = findFarmsByKingdom(kingdomId);
 
     for (Farm farm : farms) {
-      foodProductionRate += farm.getProductionRate();
+      int farmProductionRate = farm.getProductionRate();
+      if (LocalDateTime.now().isBefore(farm.getFinishedAt())) {
+        farmProductionRate -= ProductionBuilding.PROD_RATE_PER_LEVEL;
+      }
+      foodProductionRate += farmProductionRate;
     }
     return foodProductionRate;
   }
@@ -98,7 +102,11 @@ public class BuildingService {
     ArrayList<Mine> mines = findMinesByKingdom(kingdomId);
 
     for (Mine mine : mines) {
-      goldProductionRate += mine.getProductionRate();
+      int mineProductionRate = mine.getProductionRate();
+      if (LocalDateTime.now().isBefore(mine.getFinishedAt())) {
+        mineProductionRate -= ProductionBuilding.PROD_RATE_PER_LEVEL;
+      }
+      goldProductionRate += mineProductionRate;
     }
     return goldProductionRate;
   }
