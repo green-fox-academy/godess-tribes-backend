@@ -16,11 +16,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-//
-//  @Bean
-//  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
-//    return new RestAuthenticationEntryPoint();
-//  }
+
+  @Bean
+  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+    return new RestAuthenticationEntryPoint();
+  }
 
   private static final String[] AUTH_WHITELIST = {
       // -- swagger ui
