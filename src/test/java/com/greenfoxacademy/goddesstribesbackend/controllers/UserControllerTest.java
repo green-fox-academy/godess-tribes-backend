@@ -17,10 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.Charset;
 
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
@@ -144,6 +144,27 @@ public class UserControllerTest {
             .contentType(contentType)
             .content(registerRequestDTOJson))
             .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void registerShouldReturnErrorMessage_when_UsernameIsTaken() throws Exception {
+    RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
+    String username = "Juliska";
+    registerRequestDTO.setUsername(username);
+    registerRequestDTO.setPassword("jancsi123");
+    String registerRequestDTOJson = objectMapper.writeValueAsString(registerRequestDTO);
+
+    String expectedErrorMessage = username + " as username is already taken.";
+
+    when(userServiceMock.checkUserByName(any())).thenReturn(true);
+
+    mockMvc.perform(post("/register")
+            .contentType(contentType)
+            .content(registerRequestDTOJson))
+            .andExpect(status().is(409))
             .andExpect(content().contentType(contentType))
             .andExpect(jsonPath("$.status", is("error")))
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
