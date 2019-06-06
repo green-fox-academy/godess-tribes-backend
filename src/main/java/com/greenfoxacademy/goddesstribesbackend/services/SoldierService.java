@@ -6,6 +6,7 @@ import com.greenfoxacademy.goddesstribesbackend.repositories.SoldierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class SoldierService {
     ArrayList<SoldierDTO> listOfSoldiers = new ArrayList<>();
 
     for (Soldier soldier : soldiers) {
-      SoldierDTO soldierDTO = new SoldierDTO(soldier.getId(), soldier.getLevel(), soldier.getStartedAt(), soldier.getFinishedAt());
+      SoldierDTO soldierDTO = new SoldierDTO(soldier.getId(), soldier.getLevel(), Timestamp.valueOf(soldier.getStartedAt()), Timestamp.valueOf(soldier.getFinishedAt()));
       listOfSoldiers.add(soldierDTO);
     }
     return listOfSoldiers;
