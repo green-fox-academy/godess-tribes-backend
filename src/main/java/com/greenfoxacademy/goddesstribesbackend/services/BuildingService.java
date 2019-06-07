@@ -71,7 +71,7 @@ public class BuildingService {
     return buildingRepository.findBuildingsByKingdom_Id(kingdomId);
   }
 
-  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId){
+  public Building findBuildingByKingdomAndBuildingId(Long kingdomId, Long buildingId) {
     return buildingRepository.findBuildingByKingdom_IdAndId(kingdomId, buildingId).orElse(null);
   }
 
@@ -88,7 +88,11 @@ public class BuildingService {
     ArrayList<Farm> farms = findFarmsByKingdom(kingdomId);
 
     for (Farm farm : farms) {
-      foodProductionRate += farm.getProductionRate();
+      int farmProductionRate = farm.getProductionRate();
+      if (LocalDateTime.now().isBefore(farm.getFinishedAt())) {
+        farmProductionRate -= ProductionBuilding.PROD_RATE_PER_LEVEL;
+      }
+      foodProductionRate += farmProductionRate;
     }
     return foodProductionRate;
   }
@@ -98,13 +102,16 @@ public class BuildingService {
     ArrayList<Mine> mines = findMinesByKingdom(kingdomId);
 
     for (Mine mine : mines) {
-      goldProductionRate += mine.getProductionRate();
+      int mineProductionRate = mine.getProductionRate();
+      if (LocalDateTime.now().isBefore(mine.getFinishedAt())) {
+        mineProductionRate -= ProductionBuilding.PROD_RATE_PER_LEVEL;
+      }
+      goldProductionRate += mineProductionRate;
     }
     return goldProductionRate;
   }
 
   public Building createBuilding(Kingdom kingdom, String type) {
-    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
     Building building;
 
     if (type.equalsIgnoreCase(BuildingTypeENUM.FARM.toString())) {
@@ -117,52 +124,23 @@ public class BuildingService {
       building = null;
     }
 
+    Resource goldResource = resourceRepository.findResourceByTownhall_Kingdom_IdAndType(kingdom.getId(), ResourceTypeENUM.GOLD).get();
     int newGoldAmount = goldResource.getAmount() - Building.CREATION_COST;
     goldResource.setAmount(newGoldAmount);
     goldResource.setUpdateTime(LocalDateTime.now());
     resourceRepository.save(goldResource);
+
     return building;
   }
 
-  public BuildingDTO createBuildingDTO(Building building) {
-    BuildingDTO buildingDTO = new BuildingDTO();
-    buildingDTO.setId(building.getId());
-    buildingDTO.setType(building.getType());
-    buildingDTO.setLevel(building.getLevel());
-    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
-    buildingDTO.setStartedAt(startedAt);
-    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
-    buildingDTO.setFinishedAt(finishedAt);
-    return buildingDTO;
-  }
-
-  public BuildingsDTO createBuildingsDTO(String username) {
-    List<BuildingDTO> buildingDTOList = new ArrayList<>();
-    Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
-    ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
-
-    for (Building building : buildingList) {
-      BuildingDTO buildingDTO = new BuildingDTO();
-      buildingDTO.setId(building.getId());
-      buildingDTO.setType(building.getType());
-      buildingDTO.setLevel(building.getLevel());
-      Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
-      buildingDTO.setStartedAt(startedAt);
-      Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
-      buildingDTO.setFinishedAt(finishedAt);
-      buildingDTOList.add(buildingDTO);
-    }
-    return new BuildingsDTO(buildingDTOList);
-  }
-
-  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type){
+  public boolean isValidLevel(Integer upgradeLevelAsked, Integer currentLevel, Long kingdomId, BuildingTypeENUM type) {
 
     if (upgradeLevelAsked == null || upgradeLevelAsked < 1 || upgradeLevelAsked > 3) return false;
     if (upgradeLevelAsked == currentLevel) return false;
 
     Integer townhallLevel = townhallRepository.findTownhallsByKingdom_Id(kingdomId).get(0).getLevel();
 
-    if (!type.equals(BuildingTypeENUM.TOWNHALL)){
+    if (!type.equals(BuildingTypeENUM.TOWNHALL)) {
       if (upgradeLevelAsked > townhallLevel) return false;
     }
 
@@ -189,7 +167,7 @@ public class BuildingService {
     return buildingToUpgrade;
   }
 
-  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel){
+  public Townhall upgradeTownhall(Long kingdomId, Long buildingId, Integer upgradeLevel) {
     upgradeBuilding(kingdomId, buildingId, upgradeLevel);
 
     Townhall townhallToUpgrade = townhallRepository.findById(buildingId).get();
@@ -206,6 +184,36 @@ public class BuildingService {
     prodBuildingToUpgrade.setProductionRate(ProductionBuilding.PROD_RATE_PER_LEVEL * prodBuildingToUpgrade.getLevel());
     productionBuildingRepository.save(prodBuildingToUpgrade);
     return prodBuildingToUpgrade;
+  }
+
+  public BuildingDTO createBuildingDTO(Building building) {
+    BuildingDTO buildingDTO = new BuildingDTO();
+
+    buildingDTO.setId(building.getId());
+    buildingDTO.setType(building.getType());
+
+    int buildingLevel = building.getLevel();
+    if (LocalDateTime.now().isBefore(building.getFinishedAt())) {
+      buildingLevel -= 1;
+    }
+    buildingDTO.setLevel(buildingLevel);
+
+    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+    buildingDTO.setStartedAt(startedAt);
+    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
+    buildingDTO.setFinishedAt(finishedAt);
+    return buildingDTO;
+  }
+
+  public BuildingsDTO createBuildingsDTO(String username) {
+    List<BuildingDTO> buildingDTOList = new ArrayList<>();
+    Kingdom kingdom = kingdomRepository.findKingdomByUser_Username(username).get();
+    ArrayList<Building> buildingList = findBuildingsByKingdom(kingdom.getId());
+
+    for (Building building : buildingList) {
+      buildingDTOList.add(createBuildingDTO(building));
+    }
+    return new BuildingsDTO(buildingDTOList);
   }
 
 }

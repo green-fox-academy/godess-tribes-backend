@@ -8,6 +8,7 @@ public class Soldier {
 
   private static final int START_LEVEL = 1;
   private static final int START_CONSUMPTION_RATE = 1;
+  public static final int CONSUMPTION_RATE_PER_LEVEL = 1;
   public static final int CREATION_COST = 10;
   public static final int UPGRADING_COST = 5;
   public static final int NEEDED_TIME = 1;

@@ -56,8 +56,8 @@ public class ResourceControllerTest {
     user = new User(username, password);
     kingdom = new Kingdom(username + "s kingdom", user);
     contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-                                MediaType.APPLICATION_JSON.getSubtype(),
-                                Charset.forName("utf8"));
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
   }
 
   @Test
