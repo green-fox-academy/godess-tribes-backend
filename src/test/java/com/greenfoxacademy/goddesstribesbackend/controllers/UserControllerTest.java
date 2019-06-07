@@ -200,7 +200,7 @@ public class UserControllerTest {
     String kingdomName = "Tündérország";
     int userId = 10;
     User user = new User();
-    user.setId((long)userId);
+    user.setId((long) userId);
     user.setUsername(username);
     user.setPassword(password);
     Kingdom kingdom = new Kingdom(kingdomName, user);
