@@ -47,20 +47,20 @@ public class LeaderboardControllerTest {
   private LeaderboardService leaderboardService;
 
   @BeforeClass
-  public static void init(){
+  public static void init() {
     String username = "Agi";
     String password = "lujzi123";
     jwtToken = JWTUtility.generateToken(username);
     User user = new User(username, password);
     contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-        MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8"));
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
   }
 
   @Test
   public void buildingListSholudReturnUnauthorizedIfNoTokenGiven() throws Exception {
     mockMvc.perform(get("/leaderboard/buildings"))
-        .andExpect(status().isUnauthorized());
+            .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -71,17 +71,17 @@ public class LeaderboardControllerTest {
     when(leaderboardService.createLeaderboardByBuildings()).thenReturn(leaderboardByBuildingsDTO);
 
     mockMvc.perform(get("/leaderboard/buildings")
-        .header("Authorization", "Bearer " + jwtToken))
-        .andExpect(status().is(200))
-        .andExpect(content().contentType(contentType))
-        .andExpect(jsonPath("$.leaderboard[0].kingdomName", is("Agi's kingdom")))
-        .andExpect(jsonPath("$.leaderboard[0].buildings", is(3)));
+            .header("Authorization", "Bearer " + jwtToken))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.leaderboard[0].kingdomName", is("Agi's kingdom")))
+            .andExpect(jsonPath("$.leaderboard[0].buildings", is(3)));
   }
 
   @Test
   public void solidierListSholudReturnUnauthorizedIfNoTokenGiven() throws Exception {
     mockMvc.perform(get("/leaderboard/soldiers"))
-        .andExpect(status().isUnauthorized());
+            .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -92,11 +92,11 @@ public class LeaderboardControllerTest {
     when(leaderboardService.createLeaderboardBySoldiers()).thenReturn(leaderboardBySoldiersDTO);
 
     mockMvc.perform(get("/leaderboard/soldiers")
-        .header("Authorization", "Bearer " + jwtToken))
-        .andExpect(status().is(200))
-        .andExpect(content().contentType(contentType))
-        .andExpect(jsonPath("$.leaderboard[0].kingdomName", is("Agi's kingdom")))
-        .andExpect(jsonPath("$.leaderboard[0].soldiers", is(5)));
+            .header("Authorization", "Bearer " + jwtToken))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.leaderboard[0].kingdomName", is("Agi's kingdom")))
+            .andExpect(jsonPath("$.leaderboard[0].soldiers", is(5)));
   }
 
 }
