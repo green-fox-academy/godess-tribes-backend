@@ -13,6 +13,9 @@ public class RegisterResponseDTO {
   @ApiModelProperty(position = 3)
   private String kingdomName;
 
+  public RegisterResponseDTO() {
+  }
+
   public RegisterResponseDTO(Long userId, String username, String kingdomName) {
     this.userId = userId;
     this.username = username;

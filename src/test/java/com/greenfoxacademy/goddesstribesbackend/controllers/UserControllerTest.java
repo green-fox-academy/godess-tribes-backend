@@ -2,6 +2,8 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.RegisterRequestDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
 import org.junit.BeforeClass;
@@ -179,6 +181,7 @@ public class UserControllerTest {
 
     String expectedErrorMessage = "Password must be at least 8 characters.";
 
+    when(userServiceMock.checkUserByName(any())).thenReturn(false);
     when(userServiceMock.checkPassword(any())).thenReturn(false);
 
     mockMvc.perform(post("/register")
@@ -188,6 +191,38 @@ public class UserControllerTest {
             .andExpect(content().contentType(contentType))
             .andExpect(jsonPath("$.status", is("error")))
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void registerShouldReturnProperResult_when_UsernameAndPasswordAreCorrect() throws Exception {
+    String username = "Juliska";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    int userId = 10;
+    User user = new User();
+    user.setId((long)userId);
+    user.setUsername(username);
+    user.setPassword(password);
+    Kingdom kingdom = new Kingdom(kingdomName, user);
+
+    RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
+    registerRequestDTO.setUsername(username);
+    registerRequestDTO.setPassword(password);
+    String registerRequestDTOJson = objectMapper.writeValueAsString(registerRequestDTO);
+
+    when(userServiceMock.checkUserByName(any())).thenReturn(false);
+    when(userServiceMock.checkPassword(any())).thenReturn(true);
+    when(userServiceMock.saveUser(any(), any())).thenReturn(user);
+    when(kingdomServiceMock.saveKingdom(any(), any())).thenReturn(kingdom);
+
+    mockMvc.perform(post("/register")
+            .contentType(contentType)
+            .content(registerRequestDTOJson))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.userId", is(userId)))
+            .andExpect(jsonPath("$.username", is(username)))
+            .andExpect(jsonPath("$.kingdomName", is(kingdomName)));
   }
 
 }
