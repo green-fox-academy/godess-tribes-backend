@@ -1,6 +1,5 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
-import com.greenfoxacademy.goddesstribesbackend.models.MockData;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.ErrorMessage;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.KingdomDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.KingdomNameDTO;
@@ -51,15 +50,16 @@ public class KingdomController {
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class), @ApiResponse(code = 404, message = "Id not found", response = ErrorMessage.class)})
+  @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class), @ApiResponse(code = 404, message = "No kingdom with such id found!", response = ErrorMessage.class)})
   @GetMapping("/kingdom/{id}")
-  public ResponseEntity<Object> mockRenderKingdom(@PathVariable Long id) {
+  public ResponseEntity<Object> findKingdom(@PathVariable(name = "id") Long kingdomId) {
+    Kingdom kingdom = kingdomService.findKingdomById(kingdomId);
 
-    if (MockData.kingdomDTO.getId() == id) {
-      return ResponseEntity.status(200).body(MockData.kingdomDTO);
+    if (kingdom == null) {
+      return ResponseEntity.status(404).body(new ErrorMessage("No kingdom with such id found!"));
     }
 
-    return ResponseEntity.status(404).body(new ErrorMessage("Id not found"));
+    return ResponseEntity.status(200).body(kingdomService.createKingdomDTO(kingdom));
   }
 
 }
