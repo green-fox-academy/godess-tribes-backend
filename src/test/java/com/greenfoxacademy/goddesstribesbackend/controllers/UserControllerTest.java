@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.LoginRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.RegisterRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
@@ -223,6 +224,22 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.userId", is(userId)))
             .andExpect(jsonPath("$.username", is(username)))
             .andExpect(jsonPath("$.kingdomName", is(kingdomName)));
+  }
+
+  @Test
+  public void loginShouldReturnErrorMessage_when_noUsernameAndPasswordIsGiven() throws Exception {
+    LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+    String loginRequestDTOJson = objectMapper.writeValueAsString(loginRequestDTO);
+
+    String expectedErrorMessage = "Username and password are required.";
+
+    mockMvc.perform(post("/login")
+            .contentType(contentType)
+            .content(loginRequestDTOJson))
+            .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
   }
 
 }
