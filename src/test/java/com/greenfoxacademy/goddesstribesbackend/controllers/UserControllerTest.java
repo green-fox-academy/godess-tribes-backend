@@ -294,4 +294,22 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
   }
 
+  @Test
+  public void loginShouldReturnErrorMessage_when_EmptyPasswordIsGiven() throws Exception {
+    LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+    loginRequestDTO.setUsername("Juliska");
+    loginRequestDTO.setPassword("");
+    String loginRequestDTOJson = objectMapper.writeValueAsString(loginRequestDTO);
+
+    String expectedErrorMessage = "Password is required.";
+
+    mockMvc.perform(post("/register")
+            .contentType(contentType)
+            .content(loginRequestDTOJson))
+            .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
 }
