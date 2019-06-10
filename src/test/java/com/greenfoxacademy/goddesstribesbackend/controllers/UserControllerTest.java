@@ -250,7 +250,7 @@ public class UserControllerTest {
 
     String expectedErrorMessage = "Username is required.";
 
-    mockMvc.perform(post("/register")
+    mockMvc.perform(post("/login")
             .contentType(contentType)
             .content(loginRequestDTOJson))
             .andExpect(status().is(400))
@@ -268,7 +268,7 @@ public class UserControllerTest {
 
     String expectedErrorMessage = "Username is required.";
 
-    mockMvc.perform(post("/register")
+    mockMvc.perform(post("/login")
             .contentType(contentType)
             .content(loginRequestDTOJson))
             .andExpect(status().is(400))
@@ -285,7 +285,7 @@ public class UserControllerTest {
 
     String expectedErrorMessage = "Password is required.";
 
-    mockMvc.perform(post("/register")
+    mockMvc.perform(post("/login")
             .contentType(contentType)
             .content(loginRequestDTOJson))
             .andExpect(status().is(400))
@@ -303,7 +303,7 @@ public class UserControllerTest {
 
     String expectedErrorMessage = "Password is required.";
 
-    mockMvc.perform(post("/register")
+    mockMvc.perform(post("/login")
             .contentType(contentType)
             .content(loginRequestDTOJson))
             .andExpect(status().is(400))
