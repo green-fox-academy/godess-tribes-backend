@@ -5,6 +5,7 @@ import com.greenfoxacademy.goddesstribesbackend.models.dtos.LoginRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.RegisterRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
+import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
 import com.greenfoxacademy.goddesstribesbackend.services.UserService;
 import org.junit.BeforeClass;
@@ -330,6 +331,30 @@ public class UserControllerTest {
             .andExpect(content().contentType(contentType))
             .andExpect(jsonPath("$.status", is("error")))
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void loginShouldReturnProperResult_when_UsernameAndPasswordAreCorrect() throws Exception {
+    String username = "Juliska";
+    String password = "jancsi123";
+    String expectedJwtToken = JWTUtility.generateToken(username);
+
+    LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+    loginRequestDTO.setUsername(username);
+    loginRequestDTO.setPassword(password);
+    String loginRequestDTOJson = objectMapper.writeValueAsString(loginRequestDTO);
+
+    when(userServiceMock.checkUserByNameAndPassword(any(), any())).thenReturn(true);
+    userServiceMock.loginUser(any());
+    kingdomServiceMock.initKingdom(any());
+
+    mockMvc.perform(post("/login")
+            .contentType(contentType)
+            .content(loginRequestDTOJson))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("ok")))
+            .andExpect(jsonPath("$.token", is(expectedJwtToken)));
   }
 
 }
