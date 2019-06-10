@@ -374,4 +374,21 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
   }
 
+  @Test
+  public void authenticateShouldReturnErrorMessage_when_EmptyTokenIsGiven() throws Exception {
+    TokenDTO tokenDTO = new TokenDTO();
+    tokenDTO.setToken("");
+    String tokenDTOJson = objectMapper.writeValueAsString(tokenDTO);
+
+    String expectedErrorMessage = "No token provided.";
+
+    mockMvc.perform(post("/auth")
+            .contentType(contentType)
+            .content(tokenDTOJson))
+            .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
 }
