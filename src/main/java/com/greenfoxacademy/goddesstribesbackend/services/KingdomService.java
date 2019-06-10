@@ -79,13 +79,15 @@ public class KingdomService {
 
   public KingdomDTO createKingdomDTO(Kingdom kingdom) {
     KingdomDTO kingdomDTO = new KingdomDTO();
+
     kingdomDTO.setId(kingdom.getId());
     kingdomDTO.setKingdomName(kingdom.getKingdomName());
     kingdomDTO.setUserId(kingdom.getUser().getId());
-    kingdomDTO.setLocation(new LocationDTO(kingdom.getxCoord(), kingdom.getyCoord()));
-    kingdomDTO.setSoldiers(soldierService.createSoldierDTOList(kingdom.getId()));
     kingdomDTO.setBuildings(buildingService.createBuildingsDTO(kingdom.getUser().getUsername()).getBuildings());
     kingdomDTO.setResources(productionService.createResourcesDTO(kingdom.getId()).getResources());
+    kingdomDTO.setSoldiers(soldierService.createSoldierDTOList(kingdom.getId()));
+    kingdomDTO.setLocation(new LocationDTO(kingdom.getxCoord(), kingdom.getyCoord()));
+
     return kingdomDTO;
   }
 

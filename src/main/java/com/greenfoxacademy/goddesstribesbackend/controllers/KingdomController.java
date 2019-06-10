@@ -29,7 +29,10 @@ public class KingdomController {
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = KingdomDTO.class)})
   @GetMapping("/kingdom")
   public ResponseEntity<Object> findOwnKingdom() {
-    return ResponseEntity.status(200).body(MockData.kingdomDTO);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Kingdom kingdom = kingdomService.findKingdomByUsername(username);
+
+    return ResponseEntity.status(200).body(kingdomService.createKingdomDTO(kingdom));
   }
 
   @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
