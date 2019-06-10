@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.AuthenticationResponseDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.LoginRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.RegisterRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
@@ -201,6 +202,7 @@ public class UserControllerTest {
     String username = "Juliska";
     String password = "jancsi123";
     String kingdomName = "Tündérország";
+
     int userId = 10;
     User user = new User();
     user.setId((long) userId);
@@ -389,6 +391,30 @@ public class UserControllerTest {
             .andExpect(content().contentType(contentType))
             .andExpect(jsonPath("$.status", is("error")))
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void authenticateShouldReturnProperResult_when_ValidTokenIsGiven() throws Exception {
+    String username = "Juliska";
+    String jwtToken = JWTUtility.generateToken(username);
+    int userId = 10;
+    int kingdomId = 15;
+
+    TokenDTO tokenDTO = new TokenDTO();
+    tokenDTO.setToken(jwtToken);
+    String tokenDTOJson = objectMapper.writeValueAsString(tokenDTO);
+
+    AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO((long)userId, (long)kingdomId);
+
+    when(kingdomServiceMock.createAuthenticationResponseDTO(any())).thenReturn(authenticationResponseDTO);
+
+    mockMvc.perform(post("/auth")
+            .contentType(contentType)
+            .content(tokenDTOJson))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.userId", is(userId)))
+            .andExpect(jsonPath("$.kingdomId", is(kingdomId)));
   }
 
 }
