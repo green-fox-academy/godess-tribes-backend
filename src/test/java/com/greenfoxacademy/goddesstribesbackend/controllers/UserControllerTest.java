@@ -312,4 +312,24 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
   }
 
+  @Test
+  public void loginShouldReturnErrorMessage_when_UsernameOrPasswordIsIncorrect() throws Exception {
+    LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+    loginRequestDTO.setUsername("Juliska");
+    loginRequestDTO.setPassword("jancsi123");
+    String loginRequestDTOJson = objectMapper.writeValueAsString(loginRequestDTO);
+
+    String expectedErrorMessage = "Username or password is incorrect.";
+
+    when(userServiceMock.checkUserByNameAndPassword(any(), any())).thenReturn(false);
+
+    mockMvc.perform(post("/login")
+            .contentType(contentType)
+            .content(loginRequestDTOJson))
+            .andExpect(status().is(401))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
 }
