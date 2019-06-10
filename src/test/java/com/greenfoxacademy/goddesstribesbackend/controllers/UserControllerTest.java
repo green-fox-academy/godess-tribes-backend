@@ -48,7 +48,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void registerShouldReturnErrorMessage_when_noUserAndPasswordIsGiven() throws Exception {
+  public void registerShouldReturnErrorMessage_when_noUsernameAndPasswordIsGiven() throws Exception {
     RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
     String registerRequestDTOJson = objectMapper.writeValueAsString(registerRequestDTO);
 
@@ -64,7 +64,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void registerShouldReturnErrorMessage_when_UserAndPasswordAreEmptyString() throws Exception {
+  public void registerShouldReturnErrorMessage_when_UsernameAndPasswordAreEmptyString() throws Exception {
     RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
     registerRequestDTO.setUsername("");
     registerRequestDTO.setPassword("");
@@ -82,7 +82,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void registerShouldReturnErrorMessage_when_noUserIsGiven() throws Exception {
+  public void registerShouldReturnErrorMessage_when_noUsernameIsGiven() throws Exception {
     RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
     registerRequestDTO.setPassword("jancsi123");
     String registerRequestDTOJson = objectMapper.writeValueAsString(registerRequestDTO);
@@ -99,7 +99,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void registerShouldReturnErrorMessage_when_EmptyUserIsGiven() throws Exception {
+  public void registerShouldReturnErrorMessage_when_EmptyUsernameIsGiven() throws Exception {
     RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
     registerRequestDTO.setUsername("");
     registerRequestDTO.setPassword("jancsi123");
