@@ -3,6 +3,7 @@ package com.greenfoxacademy.goddesstribesbackend.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.LoginRequestDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.RegisterRequestDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.TokenDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
@@ -355,6 +356,22 @@ public class UserControllerTest {
             .andExpect(content().contentType(contentType))
             .andExpect(jsonPath("$.status", is("ok")))
             .andExpect(jsonPath("$.token", is(expectedJwtToken)));
+  }
+
+  @Test
+  public void authenticateShouldReturnErrorMessage_when_noTokenIsGiven() throws Exception {
+    TokenDTO tokenDTO = new TokenDTO();
+    String tokenDTOJson = objectMapper.writeValueAsString(tokenDTO);
+
+    String expectedErrorMessage = "No token provided.";
+
+    mockMvc.perform(post("/auth")
+            .contentType(contentType)
+            .content(tokenDTOJson))
+            .andExpect(status().is(400))
+            .andExpect(content().contentType(contentType))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
   }
 
 }
