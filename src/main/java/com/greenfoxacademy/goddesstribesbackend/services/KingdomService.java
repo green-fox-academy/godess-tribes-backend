@@ -33,7 +33,7 @@ public class KingdomService {
     this.productionService = productionService;
   }
 
-  public Kingdom findKingdomById(Long kingdomId){
+  public Kingdom findKingdomById(Long kingdomId) {
     return kingdomRepository.findById(kingdomId).orElse(null);
   }
 
