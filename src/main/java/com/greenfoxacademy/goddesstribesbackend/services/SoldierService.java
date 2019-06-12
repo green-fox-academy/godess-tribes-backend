@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.SoldierDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.SoldiersDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Soldier;
 import com.greenfoxacademy.goddesstribesbackend.repositories.SoldierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SoldierService {
@@ -39,15 +39,32 @@ public class SoldierService {
     return consumptionRate;
   }
 
-  public List<SoldierDTO> createSoldierDTOList(Long kingdomId) {
-    ArrayList<Soldier> soldiers = soldierRepository.findSoldiersByBarrack_Kingdom_Id(kingdomId);
-    ArrayList<SoldierDTO> listOfSoldiers = new ArrayList<>();
+  public SoldierDTO createSoldierDTO(Soldier soldier) {
+    SoldierDTO soldierDTO = new SoldierDTO();
 
-    for (Soldier soldier : soldiers) {
-      SoldierDTO soldierDTO = new SoldierDTO(soldier.getId(), soldier.getLevel(), Timestamp.valueOf(soldier.getStartedAt()), Timestamp.valueOf(soldier.getFinishedAt()));
-      listOfSoldiers.add(soldierDTO);
+    soldierDTO.setId(soldier.getId());
+
+    int soldierLevel = soldier.getLevel();
+    if (LocalDateTime.now().isBefore(soldier.getFinishedAt())) {
+      soldierLevel -= 1;
     }
-    return listOfSoldiers;
+    soldierDTO.setLevel(soldierLevel);
+
+    Timestamp startedAt = Timestamp.valueOf(soldier.getStartedAt());
+    soldierDTO.setStartedAt(startedAt);
+    Timestamp finishedAt = Timestamp.valueOf(soldier.getFinishedAt());
+    soldierDTO.setFinishedAt(finishedAt);
+    return soldierDTO;
+  }
+
+  public SoldiersDTO createSoldiersDTO(Long kingdomId) {
+    ArrayList<Soldier> soldierList = soldierRepository.findSoldiersByBarrack_Kingdom_Id(kingdomId);
+    ArrayList<SoldierDTO> soldierDTOList = new ArrayList<>();
+
+    for (Soldier soldier : soldierList) {
+      soldierDTOList.add(createSoldierDTO(soldier));
+    }
+    return new SoldiersDTO(soldierDTOList);
   }
 
 }
