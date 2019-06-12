@@ -1,0 +1,200 @@
+package com.greenfoxacademy.goddesstribesbackend.controllers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Mine;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
+import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
+import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
+import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
+import com.greenfoxacademy.goddesstribesbackend.services.ProductionService;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.nio.charset.Charset;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(BuildingController.class)
+public class BuildingControllerTest {
+
+  private static String username;
+  private static String password;
+  private static String jwtToken;
+  private static User user;
+  private static Kingdom kingdom;
+  private static MediaType contentType;
+  private static BuildingTypeDTO buildingTypeDTO;
+
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private ObjectMapper objectMapper;
+
+  @MockBean
+  private KingdomService kingdomService;
+  @MockBean
+  private ProductionService productionService;
+  @MockBean
+  private BuildingService buildingService;
+
+
+  @BeforeClass
+  public static void init() {
+    username = "Juliska";
+    password = "jancsi123";
+    jwtToken = JWTUtility.generateToken(username);
+    user = new User(username, password);
+    kingdom = new Kingdom(username + "s kingdom", user);
+    kingdom.setId(1L);
+    buildingTypeDTO = new BuildingTypeDTO();
+    contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+        MediaType.APPLICATION_JSON.getSubtype(),
+        Charset.forName("utf8"));
+  }
+
+
+  @Test
+  public void listOfBuildingsShouldReturnUnauthorized_when_noTokedisProvided() throws Exception {
+
+    mockMvc.perform(get("/kingdom/buildings"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void listOfBuildingsShouldReturnUnauthorized_when_inValidTokenIsProvided() throws Exception {
+    String badToken = "badToken";
+
+    mockMvc.perform(get("/kingdom/buildings")
+        .header("Authorization", "Bearer " + badToken))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void listOfBuildingsShouldReturnProperResult_when_validTokenIsProvided() throws Exception {
+
+
+    mockMvc.perform(get("/kingdom/buildings")
+        .header("Authorization", "Bearer " + jwtToken))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void createBuildingShouldReturnUnauthorized_when_noTokedisProvided() throws Exception {
+
+    mockMvc.perform(post("/kingdom/buildings"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void createBuildingShouldReturnUnauthorized_when_inValidTokenIsProvided() throws Exception {
+    String badToken = "badToken";
+
+    mockMvc.perform(post("/kingdom/buildings")
+        .header("Authorization", "Bearer " + badToken))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void createBuildingShouldReturnError_when_typeIsMissing() throws Exception {
+    buildingTypeDTO.setType(null);
+    String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
+    String expectedErrorMessage = "Missing parameter(s): type!";
+
+    mockMvc.perform(post("/kingdom/buildings")
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(buildingTypeDTOJson))
+        .andExpect(status().is(400))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void createBuildingShouldReturnError_when_typeIsInvalid() throws Exception {
+    buildingTypeDTO.setType("invalid type");
+    String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
+    String expectedErrorMessage = "Invalid building type";
+
+    when(buildingService.isValidBuildingType(any())).thenReturn(false);
+
+    mockMvc.perform(post("/kingdom/buildings")
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(buildingTypeDTOJson))
+        .andExpect(status().is(406))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void createBuildingShouldReturnError_when_notEnoughResource() throws Exception {
+    buildingTypeDTO.setType("mine");
+    String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
+    String expectedErrorMessage = "Not enough resource";
+
+    when(buildingService.isValidBuildingType(any())).thenReturn(true);
+    when(productionService.isEnoughMoneyToCreateBuilding(any())).thenReturn(false);
+
+    mockMvc.perform(post("/kingdom/buildings")
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(buildingTypeDTOJson))
+        .andExpect(status().is(409))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void createBuildingShouldReturnProperResult_when_UserIsAutorizedAndTypeAndResourceIsOK() throws Exception {
+    buildingTypeDTO.setType("mine");
+    String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
+    Building building = new Mine(kingdom);
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setLevel(1);
+    buildingDTO.setId(1L);
+    buildingDTO.setType(BuildingTypeENUM.MINE);
+    buildingDTO.setStartedAt(Timestamp.valueOf(LocalDateTime.now()));
+    buildingDTO.setFinishedAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(1)));
+
+    when(buildingService.isValidBuildingType(any())).thenReturn(true);
+    when(productionService.isEnoughMoneyToCreateBuilding(any())).thenReturn(true);
+    when(buildingService.createBuilding(any(), any())).thenReturn(building);
+    when(buildingService.createBuildingDTO(any())).thenReturn(buildingDTO);
+
+    mockMvc.perform(post("/kingdom/buildings")
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(buildingTypeDTOJson))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.id", is(buildingDTO.getId())))
+        .andExpect(jsonPath("$.type", is(buildingDTO.getType())))
+        .andExpect(jsonPath("$.level", is(buildingDTO.getLevel())))
+        .andExpect(jsonPath("$.startedAt", is(buildingDTO.getStartedAt())))
+        .andExpect(jsonPath("$.finishedAt", is(buildingDTO.getFinishedAt())));
+  }
+
+}
