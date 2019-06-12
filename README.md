@@ -21,7 +21,7 @@ spring.logging.level.org.hibernate.SQL=debug
 spring.jpa.show-sql=true
 ```
 
-3.	You should set up the following environmental variables:
+3.	You should set up the following environment variables:
 ```bash
 •	TGB_APP_DB_URL:  the database URL
 •	TGB_APP_DB_USERNAME: username for the database
