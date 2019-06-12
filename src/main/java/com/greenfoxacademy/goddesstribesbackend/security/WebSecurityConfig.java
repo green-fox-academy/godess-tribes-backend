@@ -2,6 +2,7 @@ package com.greenfoxacademy.goddesstribesbackend.security;
 
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,10 +17,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-//  @Bean
-//  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
-//    return new RestAuthenticationEntryPoint();
-//  }
+  @Bean
+  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+    return new RestAuthenticationEntryPoint();
+  }
 
   private static final String[] AUTH_WHITELIST = {
       // -- swagger ui
