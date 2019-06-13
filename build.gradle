@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+                'java'
 
 group = 'com.greenfoxacademy'
 version = '0.0.1-SNAPSHOT'
@@ -24,5 +25,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'junit:junit:4.12'
     compile 'io.jsonwebtoken:jjwt:0.6.0'
+    
+
 }
