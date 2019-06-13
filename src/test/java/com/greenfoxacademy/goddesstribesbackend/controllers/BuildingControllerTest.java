@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.Mine;
-import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
+import com.greenfoxacademy.goddesstribesbackend.models.dtos.LevelDTO;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.*;
 import com.greenfoxacademy.goddesstribesbackend.security.jwt.JWTUtility;
 import com.greenfoxacademy.goddesstribesbackend.services.BuildingService;
 import com.greenfoxacademy.goddesstribesbackend.services.KingdomService;
@@ -16,13 +14,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
@@ -30,8 +26,7 @@ import java.sql.Timestamp;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -143,13 +138,11 @@ public class BuildingControllerTest {
     when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
     when(buildingServiceMock.isValidBuildingType(any())).thenReturn(false);
 
-    ResultActions resultAction =  mockMvc.perform(post("/kingdom/buildings")
+    mockMvc.perform(post("/kingdom/buildings")
         .header("Authorization", "Bearer " + jwtToken)
         .contentType(contentType)
-        .content(buildingTypeDTOJson));
-    System.out.println(resultAction);
-
-    resultAction.andExpect(status().is(406))
+        .content(buildingTypeDTOJson))
+        .andExpect(status().is(406))
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.status", is("error")))
         .andExpect(jsonPath("$.message", is(expectedErrorMessage)))
@@ -166,13 +159,11 @@ public class BuildingControllerTest {
     when(buildingServiceMock.isValidBuildingType(anyString())).thenReturn(true);
     when(productionServiceMock.isEnoughMoneyToCreateBuilding(anyLong())).thenReturn(false);
 
-    ResultActions resultAction =  mockMvc.perform(post("/kingdom/buildings")
+    mockMvc.perform(post("/kingdom/buildings")
         .header("Authorization", "Bearer " + jwtToken)
         .contentType(contentType)
-        .content(buildingTypeDTOJson));
-    System.out.println(resultAction);
-
-    resultAction.andExpect(status().is(409))
+        .content(buildingTypeDTOJson))
+        .andExpect(status().is(409))
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.status", is("error")))
         .andExpect(jsonPath("$.message", is(expectedErrorMessage)))
@@ -269,6 +260,192 @@ public class BuildingControllerTest {
 
     mockMvc.perform(get("/kingdom/buildings/{id}", 1L)
         .header("Authorization", "Bearer " + jwtToken))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.id", is(id)))
+        .andExpect(jsonPath("$.type", is(type.name())))
+        .andExpect(jsonPath("$.level", is(level)))
+        .andExpect(jsonPath("$.startedAt", is(startedAt.getTime())))
+        .andExpect(jsonPath("$.finishedAt", is(finishedAt.getTime())));
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnUnauthorized_when_noTokedisProvided() throws Exception {
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnUnauthorized_when_inValidTokenIsProvided() throws Exception {
+    String badToken = "badToken";
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + badToken))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnError_when_levelIsNull() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(null);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    Building buildingToUpgrade = new Mine(kingdom);
+    String expectedErrorMessage = "Missing parameter(s): <level>!";
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(buildingToUpgrade);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
+        .andExpect(status().is(400))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnError_when_noBuildingWithId() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(2);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    String expectedErrorMessage = "No building with such id found in your kingdom!";
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(null);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
+        .andExpect(status().is(404))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnError_when_levelIsInvalid() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(4);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    Building buildingToUpgrade = new Mine(kingdom);
+    String expectedErrorMessage = "Invalid building level: can upgrade only 1 grade at a time, and other buildings level must be less than or equal with townhall level!";
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(buildingToUpgrade);
+    when(buildingServiceMock.isValidLevel(anyInt(), anyInt(), anyLong(), any())).thenReturn(false);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
+        .andExpect(status().is(406))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void buildingUpgradeShouldReturnError_when_notEnoughResource() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(2);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    Building buildingToUpgrade = new Mine(kingdom);
+    String expectedErrorMessage = "Not enough resource!";
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(buildingToUpgrade);
+    when(buildingServiceMock.isValidLevel(anyInt(), anyInt(), anyLong(), any())).thenReturn(true);
+    when(productionServiceMock.isEnoughMoneyToUpgradeBuilding(anyLong(), anyLong())).thenReturn(false);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
+        .andExpect(status().is(409))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void mineUpgradeShouldReturnProperResult_when_levelIsValidHaveEnoughResource() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(2);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    Building buildingToUpgrade = new Mine(kingdom);
+    int id = 2;
+    ProductionBuilding upgradedProductionBuilding = new Mine(kingdom);
+    Townhall upgradedTownhall = new Townhall(kingdom);
+    BuildingTypeENUM type = BuildingTypeENUM.MINE;
+    int level = levelDTO.getLevel();
+    Timestamp startedAt = Timestamp.valueOf(upgradedProductionBuilding.getStartedAt());
+    Timestamp finishedAt = Timestamp.valueOf(upgradedProductionBuilding.getFinishedAt());
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setId((long)id);
+    buildingDTO.setLevel(level);
+    buildingDTO.setType(type);
+    buildingDTO.setStartedAt(startedAt);
+    buildingDTO.setFinishedAt(finishedAt);
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(buildingToUpgrade);
+    when(buildingServiceMock.isValidLevel(anyInt(), anyInt(), anyLong(), any())).thenReturn(true);
+    when(productionServiceMock.isEnoughMoneyToUpgradeBuilding(anyLong(), anyLong())).thenReturn(true);
+    when(buildingServiceMock.upgradeTownhall(anyLong(), anyLong(), anyInt())).thenReturn(upgradedTownhall);
+    when(buildingServiceMock.upgradeProductionBuilding(anyLong(), anyLong(), anyInt())).thenReturn(upgradedProductionBuilding);
+    when(buildingServiceMock.upgradeBuilding(anyLong(), anyLong(), anyInt())).thenReturn(upgradedProductionBuilding);
+    when(buildingServiceMock.createBuildingDTO(any())).thenReturn(buildingDTO);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", (long)id)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.id", is(id)))
+        .andExpect(jsonPath("$.type", is(type.name())))
+        .andExpect(jsonPath("$.level", is(level)))
+        .andExpect(jsonPath("$.startedAt", is(startedAt.getTime())))
+        .andExpect(jsonPath("$.finishedAt", is(finishedAt.getTime())));
+  }
+
+  @Test
+  public void townhallUpgradeShouldReturnProperResult_when_levelIsValidHaveEnoughResource() throws Exception {
+    LevelDTO levelDTO = new LevelDTO();
+    levelDTO.setLevel(2);
+    String levelDTOJson = objectMapper.writeValueAsString(levelDTO);
+    Building buildingToUpgrade = new Townhall(kingdom);
+    int id = 2;
+    ProductionBuilding upgradedProductionBuilding = new Mine(kingdom);
+    Townhall upgradedTownhall = new Townhall(kingdom);
+    BuildingTypeENUM type = BuildingTypeENUM.MINE;
+    int level = levelDTO.getLevel();
+    Timestamp startedAt = Timestamp.valueOf(upgradedProductionBuilding.getStartedAt());
+    Timestamp finishedAt = Timestamp.valueOf(upgradedProductionBuilding.getFinishedAt());
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setId((long)id);
+    buildingDTO.setLevel(level);
+    buildingDTO.setType(type);
+    buildingDTO.setStartedAt(startedAt);
+    buildingDTO.setFinishedAt(finishedAt);
+
+    when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(buildingToUpgrade);
+    when(buildingServiceMock.isValidLevel(anyInt(), anyInt(), anyLong(), any())).thenReturn(true);
+    when(productionServiceMock.isEnoughMoneyToUpgradeBuilding(anyLong(), anyLong())).thenReturn(true);
+    when(buildingServiceMock.upgradeTownhall(anyLong(), anyLong(), anyInt())).thenReturn(upgradedTownhall);
+    when(buildingServiceMock.upgradeProductionBuilding(anyLong(), anyLong(), anyInt())).thenReturn(upgradedProductionBuilding);
+    when(buildingServiceMock.upgradeBuilding(anyLong(), anyLong(), anyInt())).thenReturn(upgradedProductionBuilding);
+    when(buildingServiceMock.createBuildingDTO(any())).thenReturn(buildingDTO);
+
+    mockMvc.perform(put("/kingdom/buildings/{id}", (long)id)
+        .header("Authorization", "Bearer " + jwtToken)
+        .contentType(contentType)
+        .content(levelDTOJson))
         .andExpect(status().isOk())
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.id", is(id)))
