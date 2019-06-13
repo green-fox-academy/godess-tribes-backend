@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -53,10 +55,10 @@ public class KingdomServiceTest {
     Kingdom expectedKingdom = null;
 
     when(userServiceMock.checkUserByName(any())).thenReturn(false);
-    when(kingdomRepositoryMock.save(any())).thenReturn(expectedKingdom);
 
     Kingdom resultKingdom = kingdomService.saveKingdom(kingdomName, user);
     assertEquals(expectedKingdom, resultKingdom);
+    assertNull(resultKingdom);
   }
 
   @Test
@@ -65,11 +67,9 @@ public class KingdomServiceTest {
     User user = null;
     Kingdom expectedKingdom = null;
 
-    when(userServiceMock.checkUserByName(any())).thenReturn(false);
-    when(kingdomRepositoryMock.save(any())).thenReturn(expectedKingdom);
-
     Kingdom resultKingdom = kingdomService.saveKingdom(kingdomName, user);
     assertEquals(expectedKingdom, resultKingdom);
+    assertNull(resultKingdom);
   }
 
   @Test
@@ -78,13 +78,13 @@ public class KingdomServiceTest {
     String password = "jancsi123";
     String kingdomName = null;
     User user = new User(username, password);
-    Kingdom expectedKingdom = new Kingdom(username + "'s kingdom", user);
+    String expectedKingdomName = username + "'s kingdom";
 
     when(userServiceMock.checkUserByName(any())).thenReturn(true);
-    when(kingdomRepositoryMock.save(any())).thenReturn(expectedKingdom);
+    when(kingdomRepositoryMock.save(any())).then(returnsFirstArg());
 
     Kingdom resultKingdom = kingdomService.saveKingdom(kingdomName, user);
-    assertEquals(expectedKingdom.getKingdomName(), resultKingdom.getKingdomName());
+    assertEquals(expectedKingdomName, resultKingdom.getKingdomName());
   }
 
 }
