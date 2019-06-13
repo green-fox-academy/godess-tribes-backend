@@ -59,4 +59,17 @@ public class KingdomServiceTest {
     assertEquals(expectedKingdom, resultKingdom);
   }
 
+  @Test
+  public void saveKingdomShouldReturnNull_when_UserIsNull() {
+    String kingdomName = "Tündérország";
+    User user = null;
+    Kingdom expectedKingdom = null;
+
+    when(userServiceMock.checkUserByName(any())).thenReturn(false);
+    when(kingdomRepositoryMock.save(any())).thenReturn(expectedKingdom);
+
+    Kingdom resultKingdom = kingdomService.saveKingdom(kingdomName, user);
+    assertEquals(expectedKingdom, resultKingdom);
+  }
+
 }
