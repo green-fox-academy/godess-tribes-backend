@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -100,6 +102,36 @@ public class KingdomServiceTest {
 
     Kingdom renamedKingdom = kingdomService.renameKingdom(newName, kingdom);
     assertEquals(newName, renamedKingdom.getKingdomName());
+  }
+
+  @Test
+  public void findKingdomByIdShouldReturnProperResult_when_KingdomIsFound() {
+    String username = "Juliska";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    User user = new User(username, password);
+    Kingdom expectedKingdom = new Kingdom(kingdomName, user);
+    Optional<Kingdom> kingdomOptional = Optional.of(expectedKingdom);
+
+    when(kingdomRepositoryMock.findById(1L)).thenReturn(kingdomOptional);
+
+    Kingdom resultKingdom = kingdomService.findKingdomById(1L);
+    assertEquals(expectedKingdom, resultKingdom);
+  }
+
+  @Test
+  public void findKingdomByIdShouldReturnNull_when_KingdomIsNotFound() {
+    String username = "Juliska";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    User user = new User(username, password);
+    Kingdom expectedKingdom = null;
+
+    when(kingdomRepositoryMock.findById(1L)).thenReturn(Optional.empty());
+
+    Kingdom resultKingdom = kingdomService.findKingdomById(1L);
+    assertEquals(expectedKingdom, resultKingdom);
+    assertNull(resultKingdom);
   }
 
 }
