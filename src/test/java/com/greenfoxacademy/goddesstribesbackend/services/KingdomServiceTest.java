@@ -1,6 +1,7 @@
 package com.greenfoxacademy.goddesstribesbackend.services;
 
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Kingdom;
+import com.greenfoxacademy.goddesstribesbackend.models.entities.Townhall;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.User;
 import com.greenfoxacademy.goddesstribesbackend.repositories.KingdomRepository;
 import org.junit.BeforeClass;
@@ -13,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class KingdomServiceTest {
@@ -29,8 +32,8 @@ public class KingdomServiceTest {
   @BeforeClass
   public static void init() {
     kingdomService = new KingdomService(kingdomRepositoryMock, userServiceMock,
-                                        buildingServiceMock, resourceServiceMock,
-                                        soldierServiceMock, productionServiceMock);
+            buildingServiceMock, resourceServiceMock,
+            soldierServiceMock, productionServiceMock);
   }
 
   @Test
@@ -132,6 +135,59 @@ public class KingdomServiceTest {
     Kingdom resultKingdom = kingdomService.findKingdomById(1L);
     assertEquals(expectedKingdom, resultKingdom);
     assertNull(resultKingdom);
+  }
+
+  @Test
+  public void kingdomShouldBeInitialized_when_initKingdomIsCalled_when_KingdomIsInactive() {
+    String username = "Julcsi";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    User user = new User(username, password);
+    Kingdom kingdom = new Kingdom(kingdomName, user);
+    Optional<Kingdom> kingdomOptional = Optional.of(kingdom);
+    Townhall townhall = new Townhall(kingdom);
+
+    when(userServiceMock.checkUserByName(any())).thenReturn(true);
+    when(kingdomRepositoryMock.findKingdomByUser_Username(any())).thenReturn(kingdomOptional);
+    when(buildingServiceMock.saveTownhall(any())).thenReturn(townhall);
+
+    kingdomService.initKingdom(username);
+
+    verify(userServiceMock, times(1)).checkUserByName(username);
+    verify(kingdomRepositoryMock, times(1)).findKingdomByUser_Username(username);
+    verify(buildingServiceMock, times(1)).saveTownhall(kingdom);
+    verify(resourceServiceMock, times(1)).saveFoodAtStart(townhall);
+    verify(resourceServiceMock, times(1)).saveGoldAtStart(townhall);
+    verify(buildingServiceMock, times(1)).saveFarmAtStart(kingdom);
+    verify(buildingServiceMock, times(1)).saveMineAtStart(kingdom);
+    verify(kingdomRepositoryMock, times(1)).save(kingdom);
+  }
+
+
+  @Test
+  public void kingdomShouldNotBeInitialized_when_initKingdomIsCalled_when_KingdomIsActive() {
+    String username = "Julcsika";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    User user = new User(username, password);
+    Kingdom kingdom = new Kingdom(kingdomName, user);
+    kingdom.setActive(true);
+    Optional<Kingdom> kingdomOptional = Optional.of(kingdom);
+    Townhall townhall = new Townhall(kingdom);
+
+    when(userServiceMock.checkUserByName(any())).thenReturn(true);
+    when(kingdomRepositoryMock.findKingdomByUser_Username(any())).thenReturn(kingdomOptional);
+
+    kingdomService.initKingdom(username);
+
+    verify(userServiceMock, times(1)).checkUserByName(username);
+    verify(kingdomRepositoryMock, times(1)).findKingdomByUser_Username(username);
+    verify(buildingServiceMock, times(0)).saveTownhall(kingdom);
+    verify(resourceServiceMock, times(0)).saveFoodAtStart(townhall);
+    verify(resourceServiceMock, times(0)).saveGoldAtStart(townhall);
+    verify(buildingServiceMock, times(0)).saveFarmAtStart(kingdom);
+    verify(buildingServiceMock, times(0)).saveMineAtStart(kingdom);
+    verify(kingdomRepositoryMock, times(0)).save(kingdom);
   }
 
 }
