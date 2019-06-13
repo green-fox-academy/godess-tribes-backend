@@ -24,7 +24,8 @@ public class KingdomService {
 
   @Autowired
   public KingdomService(KingdomRepository kingdomRepository, UserService userService,
-                        BuildingService buildingService, ResourceService resourceService, SoldierService soldierService, ProductionService productionService) {
+                        BuildingService buildingService, ResourceService resourceService,
+                        SoldierService soldierService, ProductionService productionService) {
     this.kingdomRepository = kingdomRepository;
     this.userService = userService;
     this.buildingService = buildingService;
