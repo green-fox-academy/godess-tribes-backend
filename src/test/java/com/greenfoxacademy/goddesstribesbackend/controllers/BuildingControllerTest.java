@@ -1,7 +1,6 @@
 package com.greenfoxacademy.goddesstribesbackend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greenfoxacademy.goddesstribesbackend.models.BuildingTypeENUM;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.dtos.BuildingTypeDTO;
 import com.greenfoxacademy.goddesstribesbackend.models.entities.Building;
@@ -21,13 +20,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -51,11 +50,11 @@ public class BuildingControllerTest {
   private ObjectMapper objectMapper;
 
   @MockBean
-  private KingdomService kingdomService;
+  private KingdomService kingdomServiceMock;
   @MockBean
-  private ProductionService productionService;
+  private ProductionService productionServiceMock;
   @MockBean
-  private BuildingService buildingService;
+  private BuildingService buildingServiceMock;
 
 
   @BeforeClass
@@ -136,13 +135,15 @@ public class BuildingControllerTest {
     String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
     String expectedErrorMessage = "Invalid building type";
 
-    when(buildingService.isValidBuildingType(any())).thenReturn(false);
+    when(buildingServiceMock.isValidBuildingType(any())).thenReturn(false);
 
-    mockMvc.perform(post("/kingdom/buildings")
+    ResultActions resultAction =  mockMvc.perform(post("/kingdom/buildings")
         .header("Authorization", "Bearer " + jwtToken)
         .contentType(contentType)
-        .content(buildingTypeDTOJson))
-        .andExpect(status().is(406))
+        .content(buildingTypeDTOJson));
+    System.out.println(resultAction);
+
+    resultAction.andExpect(status().is(406))
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.status", is("error")))
         .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
@@ -154,14 +155,16 @@ public class BuildingControllerTest {
     String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
     String expectedErrorMessage = "Not enough resource";
 
-    when(buildingService.isValidBuildingType(any())).thenReturn(true);
-    when(productionService.isEnoughMoneyToCreateBuilding(any())).thenReturn(false);
+    when(buildingServiceMock.isValidBuildingType(anyString())).thenReturn(true);
+    when(productionServiceMock.isEnoughMoneyToCreateBuilding(anyLong())).thenReturn(false);
 
-    mockMvc.perform(post("/kingdom/buildings")
+    ResultActions resultAction =  mockMvc.perform(post("/kingdom/buildings")
         .header("Authorization", "Bearer " + jwtToken)
         .contentType(contentType)
-        .content(buildingTypeDTOJson))
-        .andExpect(status().is(409))
+        .content(buildingTypeDTOJson));
+    System.out.println(resultAction);
+
+        resultAction.andExpect(status().is(409))
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.status", is("error")))
         .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
@@ -173,16 +176,16 @@ public class BuildingControllerTest {
     String buildingTypeDTOJson = objectMapper.writeValueAsString(buildingTypeDTO);
     Building building = new Mine(kingdom);
     BuildingDTO buildingDTO = new BuildingDTO();
-    buildingDTO.setLevel(1);
-    buildingDTO.setId(1L);
-    buildingDTO.setType(BuildingTypeENUM.MINE);
-    buildingDTO.setStartedAt(Timestamp.valueOf(LocalDateTime.now()));
-    buildingDTO.setFinishedAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(1)));
+    buildingDTO.setId(2L);
+    buildingDTO.setLevel(building.getLevel());
+    buildingDTO.setType(building.getType());
+    buildingDTO.setStartedAt(Timestamp.valueOf(building.getStartedAt()));
+    buildingDTO.setFinishedAt(Timestamp.valueOf(building.getFinishedAt()));
 
-    when(buildingService.isValidBuildingType(any())).thenReturn(true);
-    when(productionService.isEnoughMoneyToCreateBuilding(any())).thenReturn(true);
-    when(buildingService.createBuilding(any(), any())).thenReturn(building);
-    when(buildingService.createBuildingDTO(any())).thenReturn(buildingDTO);
+    when(buildingServiceMock.isValidBuildingType(any())).thenReturn(true);
+    when(productionServiceMock.isEnoughMoneyToCreateBuilding(any())).thenReturn(true);
+    when(buildingServiceMock.createBuilding(any(), any())).thenReturn(building);
+    when(buildingServiceMock.createBuildingDTO(any())).thenReturn(buildingDTO);
 
     mockMvc.perform(post("/kingdom/buildings")
         .header("Authorization", "Bearer " + jwtToken)
@@ -195,6 +198,48 @@ public class BuildingControllerTest {
         .andExpect(jsonPath("$.level", is(buildingDTO.getLevel())))
         .andExpect(jsonPath("$.startedAt", is(buildingDTO.getStartedAt())))
         .andExpect(jsonPath("$.finishedAt", is(buildingDTO.getFinishedAt())));
+  }
+
+  @Test
+  public void findBuildingShouldReturnUnauthorized_when_noTokedisProvided() throws Exception {
+
+    mockMvc.perform(get("/kingdom/buildings/{id}",1L))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void findBuildingShouldReturnUnauthorized_when_inValidTokenIsProvided() throws Exception {
+    String badToken = "badToken";
+
+    mockMvc.perform(get("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + badToken))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void indBuildingShouldReturnError_when_idNotFound() throws Exception {
+    String expectedErrorMessage = "No building with such id found in your kingdom!";
+
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(null);
+
+    mockMvc.perform(get("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken))
+        .andExpect(status().is(404))
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.status", is("error")))
+        .andExpect(jsonPath("$.message", is(expectedErrorMessage)));
+  }
+
+  @Test
+  public void indBuildingShouldReturnProperResult_when_validTokenIsProvided() throws Exception {
+    Building building = new Mine(kingdom);
+
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(null);
+
+    mockMvc.perform(get("/kingdom/buildings/{id}", 1L)
+        .header("Authorization", "Bearer " + jwtToken))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(contentType));
   }
 
 }
