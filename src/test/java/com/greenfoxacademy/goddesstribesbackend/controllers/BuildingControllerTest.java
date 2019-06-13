@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -232,7 +233,7 @@ public class BuildingControllerTest {
   }
 
   @Test
-  public void indBuildingShouldReturnError_when_idNotFound() throws Exception {
+  public void findBuildingShouldReturnError_when_idNotFound() throws Exception {
     String expectedErrorMessage = "No building with such id found in your kingdom!";
 
     when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
@@ -247,16 +248,34 @@ public class BuildingControllerTest {
   }
 
   @Test
-  public void indBuildingShouldReturnProperResult_when_validTokenIsProvided() throws Exception {
+  public void findBuildingShouldReturnProperResult_when_validTokenIsProvided() throws Exception {
     Building building = new Mine(kingdom);
+    int id = 2;
+    BuildingTypeENUM type = BuildingTypeENUM.MINE;
+    int level = building.getLevel();
+    Timestamp startedAt = Timestamp.valueOf(building.getStartedAt());
+    Timestamp finishedAt = Timestamp.valueOf(building.getFinishedAt());
+    BuildingDTO buildingDTO = new BuildingDTO();
+    buildingDTO.setId((long)id);
+    buildingDTO.setLevel(level);
+    buildingDTO.setType(type);
+    buildingDTO.setStartedAt(startedAt);
+    buildingDTO.setFinishedAt(finishedAt);
+
 
     when(kingdomServiceMock.findKingdomByUsername(any())).thenReturn(kingdom);
-    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(null);
+    when(buildingServiceMock.findBuildingByKingdomAndBuildingId(anyLong(), anyLong())).thenReturn(building);
+    when(buildingServiceMock.createBuildingDTO(any())).thenReturn(buildingDTO);
 
     mockMvc.perform(get("/kingdom/buildings/{id}", 1L)
         .header("Authorization", "Bearer " + jwtToken))
         .andExpect(status().isOk())
-        .andExpect(content().contentType(contentType));
+        .andExpect(content().contentType(contentType))
+        .andExpect(jsonPath("$.id", is(id)))
+        .andExpect(jsonPath("$.type", is(type.name())))
+        .andExpect(jsonPath("$.level", is(level)))
+        .andExpect(jsonPath("$.startedAt", is(startedAt.getTime())))
+        .andExpect(jsonPath("$.finishedAt", is(finishedAt.getTime())));
   }
 
 }
