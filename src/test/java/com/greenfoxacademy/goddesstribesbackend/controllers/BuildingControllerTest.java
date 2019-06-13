@@ -211,8 +211,8 @@ public class BuildingControllerTest {
         .andExpect(jsonPath("$.id", is(id)))
         .andExpect(jsonPath("$.type", is(type.name())))
         .andExpect(jsonPath("$.level", is(level)))
-        .andExpect(jsonPath("$.startedAt", is(startedAt)))
-        .andExpect(jsonPath("$.finishedAt", is(finishedAt)));
+        .andExpect(jsonPath("$.startedAt", is(startedAt.getTime())))
+        .andExpect(jsonPath("$.finishedAt", is(finishedAt.getTime())));
   }
 
   @Test
