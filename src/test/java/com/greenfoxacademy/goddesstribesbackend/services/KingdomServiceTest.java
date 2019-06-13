@@ -87,4 +87,19 @@ public class KingdomServiceTest {
     assertEquals(expectedKingdomName, resultKingdom.getKingdomName());
   }
 
+  @Test
+  public void renameKingdomShouldReturnProperResult_when_KingdomIsRenamed() {
+    String username = "Juliska";
+    String password = "jancsi123";
+    String kingdomName = "Tündérország";
+    User user = new User(username, password);
+    Kingdom kingdom = new Kingdom(kingdomName, user);
+    String newName = "Sárkányország";
+
+    when(kingdomRepositoryMock.save(any())).then(returnsFirstArg());
+
+    Kingdom renamedKingdom = kingdomService.renameKingdom(newName, kingdom);
+    assertEquals(newName, renamedKingdom.getKingdomName());
+  }
+
 }
