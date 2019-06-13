@@ -32,8 +32,8 @@ public class KingdomServiceTest {
   @BeforeClass
   public static void init() {
     kingdomService = new KingdomService(kingdomRepositoryMock, userServiceMock,
-            buildingServiceMock, resourceServiceMock,
-            soldierServiceMock, productionServiceMock);
+                                        buildingServiceMock, resourceServiceMock,
+                                        soldierServiceMock, productionServiceMock);
   }
 
   @Test
@@ -99,12 +99,12 @@ public class KingdomServiceTest {
     String kingdomName = "Tündérország";
     User user = new User(username, password);
     Kingdom kingdom = new Kingdom(kingdomName, user);
-    String newName = "Sárkányország";
+    String newKingdomName = "Sárkányország";
 
     when(kingdomRepositoryMock.save(any())).then(returnsFirstArg());
 
-    Kingdom renamedKingdom = kingdomService.renameKingdom(newName, kingdom);
-    assertEquals(newName, renamedKingdom.getKingdomName());
+    Kingdom renamedKingdom = kingdomService.renameKingdom(newKingdomName, kingdom);
+    assertEquals(newKingdomName, renamedKingdom.getKingdomName());
   }
 
   @Test
